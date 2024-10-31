@@ -1,5 +1,7 @@
 package fr.lirmm.graphik.NAry;
 
+import fr.lirmm.graphik.NAry.ArgumentationFramework.Argument;
+
 public class Defeater {
 	public Argument argument;
 	public int defeatType;

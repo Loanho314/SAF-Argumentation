@@ -19,6 +19,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 import fr.lirmm.graphik.NAry.DungAF;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.Argument;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.Attack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import fr.lirmm.graphik.DEFT.gad.GADEdge;
@@ -76,7 +78,6 @@ import fr.lirmm.graphik.util.stream.IteratorException;
 import fr.lirmm.graphik.NAry.Defeater;
 import fr.lirmm.graphik.DEFT.dialectical_tree.ArgumentationFramework;
 import fr.lirmm.graphik.DEFT.dialectical_tree.argument_preference.ArgumentPreference;
-import fr.lirmm.graphik.NAry.Argument;
 
 
 

@@ -123,7 +123,10 @@ public class TestLLoad {
 	//static final String inputFileName  = "/Users/tho310/Data test/test.rdf";
 	//static final String inputFileName = "/Users/tho310/surfdrive/Data test 2/BIOGRAPHY BENCHMARK/BIO-5000-Birthdate.rdf";
 	//static final String inputFileName  = "/Users/tho310/surfdrive/Data test 2/test.nt";
-	  static final String inputFileName  = "/Users/tho310/surfdrive/Data test 2/Lumb Ontology/u1conf50.nt";
+	//  static final String inputFileName  = "/Users/tho310/surfdrive/Data test 2/Lumb Ontology/u1conf50.nt";
+	//static final String inputFileName = "/Users/tho310/Data test/Test-DBpedia.rdf";
+	
+	static final String inputFileName = "C:/Users/tho310/Data test/DBpedia/output.rdf";
 	//	public static Term term0
 	//public static Term term1;
 
@@ -376,7 +379,7 @@ public class TestLLoad {
 						atomSet.add(a);
 					}
 					else
-						System.out.println("da ton tai");
+						System.out.println("It exists");
 
 				}
 			}

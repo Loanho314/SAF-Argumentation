@@ -14,11 +14,11 @@ import javax.swing.border.TitledBorder;
 
 import fr.lirmm.graphik.DEFT.core.DefeasibleKB;
 import fr.lirmm.graphik.NAry.App1;
-import fr.lirmm.graphik.NAry.Argument;
-import fr.lirmm.graphik.NAry.Attack;
 import fr.lirmm.graphik.NAry.Distance;
 import fr.lirmm.graphik.NAry.DungAF;
 import fr.lirmm.graphik.NAry.Graph;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.Argument;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.Attack;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.AtomSet;
 import fr.lirmm.graphik.graal.api.core.AtomSetException;
