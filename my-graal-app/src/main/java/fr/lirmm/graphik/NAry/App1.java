@@ -22,9 +22,11 @@ import fr.lirmm.graphik.DEFT.gad.GADEdge;
 import fr.lirmm.graphik.DEFT.gad.Derivation;
 import fr.lirmm.graphik.DEFT.core.DefeasibleKB;
 
-import fr.lirmm.graphik.NAry.Argument;
-import fr.lirmm.graphik.NAry.Attack;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.Argument;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.Attack;
+import fr.lirmm.graphik.NAry.Query;
 
+import fr.lirmm.graphik.graal.api.backward_chaining.QueryRewriter;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.AtomSet;
 import fr.lirmm.graphik.graal.api.core.AtomSetException;
@@ -86,7 +88,8 @@ public class App1 {
 	// private static String file = "/Users/tho310/Data test/LUMP Example.dlgp";
 	// private static String file = "/Users/tho310/Data test/BIO benchmark.dlgp";
 	// private static String file = "/Users/tho310/Data test/TestDurum.dlgp";
-	static private String file = "C:/Users/tho310/Data test/Lum test.dlgp";
+	//static private String file = "C:/Users/tho310/Data test/Lum test.dlgp";
+	static private String file = "C:/Users/tho310/Data test/DBpedia/4Classes-1DisjoinWith.dlgp";
 	private static boolean haveParameters = true;
 	private static String filePath = null;
 
@@ -107,6 +110,7 @@ public class App1 {
 	// public static ArrayList<Argument> Path;
 	private static ArrayList<Argument> ListArgument;
 	private static List<List<Argument>> tree;
+	public static ArrayList<AtomSet> allMinimalConflicts;
 
 	public static DungAF af;
 
@@ -126,13 +130,15 @@ public class App1 {
 			DefeasibleKB kb = new DefeasibleKB(file);
 			DefeasibleKB kb1 = new DefeasibleKB(file);
 			DefeasibleKB kbGenArgs = new DefeasibleKB();
-			AtomSet InitialFacts = new LinkedListAtomSet();
-			RuleSet negativeruleset = new LinkedListRuleSet();
-			RuleSet positiveruleset = new LinkedListRuleSet();
+			AtomSet initialFacts = new LinkedListAtomSet();
+			RuleSet negativeRuleSet = new LinkedListRuleSet();
+			RuleSet positiveRuleSet = new LinkedListRuleSet();
 			RuleSet rules = new LinkedListRuleSet();
 			RuleSet functionalruleset = new LinkedListRuleSet();
 			RuleSet ruleset = new LinkedListRuleSet();
-			InitialFacts.addAll(kb.facts);
+			initialFacts.addAll(kb.facts);
+			
+			
 
 //			 Read all prioritized instances
 //			CloseableIterator<Atom> iter1 = InitialFacts.iterator();
@@ -142,13 +148,13 @@ public class App1 {
 //			}
 
 			// read all rules
-			negativeruleset = kb.negativeConstraintSet;
-			System.out.println("Negative rules:" + negativeruleset);
-			positiveruleset = kb.rules;
-			System.out.println("Positive rules:" + positiveruleset);
+			negativeRuleSet = kb.negativeConstraintSet;
+			System.out.println("Negative rules:" + negativeRuleSet);
+			positiveRuleSet = kb.rules;
+			System.out.println("Positive rules:" + positiveRuleSet);
 
 			// get functional rules (equality-EGD)
-			Iterator ck = positiveruleset.iterator();
+			Iterator ck = positiveRuleSet.iterator();
 			while (ck.hasNext()) {
 				Rule r1 = (Rule) ck.next();
 				if (r1.getHead().iterator().next().getPredicate().equals(Predicate.EQUALITY)) {
@@ -159,20 +165,19 @@ public class App1 {
 
 			}
 
-			ruleset.addAll(positiveruleset.iterator());
-			ruleset.addAll(negativeruleset.iterator());
+			ruleset.addAll(positiveRuleSet.iterator());
+			ruleset.addAll(negativeRuleSet.iterator());
 
-			/*
-			 * Since quality rules can not be used for generating arguments, we create a KB2
-			 * that has only TGDs, no equality and negative rules to generate arguments.
-			 */
+			// Since quality rules can not be used for generating arguments,
+			// we create a KB2 that has only TGDs, no equality and negative rules to
+			// generate arguments.
 
-			CloseableIterator<Atom> it = (CloseableIterator<Atom>) InitialFacts.iterator();
+			CloseableIterator<Atom> it = (CloseableIterator<Atom>) initialFacts.iterator();
 			while (it.hasNext()) {
 				Atom a = it.next();
 				kbGenArgs.addAtom(a);
 			}
-			Iterator it2 = positiveruleset.iterator();
+			Iterator it2 = positiveRuleSet.iterator();
 			while (it2.hasNext()) {
 				Rule r2 = (Rule) it2.next();
 				if (!r2.getHead().iterator().next().getPredicate().equals(Predicate.EQUALITY)) {
@@ -183,13 +188,14 @@ public class App1 {
 			kbGenArgs.saturate();
 			InMemoryAtomSet saturatedAtoms = new LinkedListAtomSet();
 			saturatedAtoms.addAll(kbGenArgs.facts);
+			kbGenArgs.unsaturate();
 
-			/* Generate arguments deduced from a KB */
+			// Generate arguments deduced from a KB
 			ListArgument = generateArgs(kbGenArgs);
-			/*
-			 * Check whether premises of arguments are consistent If Yes, remove it from
-			 * ListArgument, otherwise, keep it.
-			 */
+
+			// Check whether premises of arguments are consistent
+			// If Yes, remove it from ListArgument, otherwise, keep it.
+
 			AtomSet Test;
 			for (int i = ListArgument.size() - 1; i >= 0; i--) {
 				Test = new LinkedListAtomSet();
@@ -211,40 +217,30 @@ public class App1 {
 			long duration = endTime - startTime;
 			System.out.println(duration / 1000000L + " ms");
 
-			/* Compute all attackers for an argument */
+			// Compute all attackers
+			//Attacks = new ArrayList();
+			//kb.saturate();
 
-			Attacks = new ArrayList();
-			kb.saturate();
-
-			/* compute attacks under equality rule */
-			if (!functionalruleset.isEmpty()) {
-				for (Argument a : ListArgument) {
-					ArrayList<Atom> supportsA = a.getPremises();
-					for (Argument b : ListArgument) {
-						Atom conB = b.head;
-
-						/* Compare the conclusion of B to the support of A */
-						ArrayList<Argument> temp = new ArrayList<Argument>();
-						if (checkInequality(supportsA, conB, functionalruleset) == true) {
-							temp.add(b);
-						}
-						/*
-						 * Check whether an argument b is in the premises of another argument if Yes,
-						 * then we donot add b to attackers of the argument a if No, then add b to
-						 * attackers of the argument a
-						 */
-						if (!temp.isEmpty()) {
-							Attack add = new Attack(temp, a);
-							if (checkAttacks(Attacks, add) == false) {
-								Attacks.add(add);
-							}
-						}
-					}
-				}
-			}
+			// compute attacks under equality rule
+			/*
+			 * if (!functionalruleset.isEmpty()) { for (Argument a : ListArgument) {
+			 * ArrayList<Atom> supportsA = a.getPremises(); for (Argument b : ListArgument)
+			 * { Atom conB = b.head;
+			 * 
+			 * // Compare the conclusion of B to the support of A ArrayList<Argument> temp =
+			 * new ArrayList<Argument>(); if (checkInequality(supportsA, conB,
+			 * functionalruleset) == true) { temp.add(b); }
+			 * 
+			 * // Check whether an argument b is in the premises of another argument // if
+			 * Yes, then we donot add b to attackers of the argument a // if No, then we add
+			 * b to attackers of the argument a
+			 * 
+			 * if (!temp.isEmpty()) { Attack add = new Attack(temp, a); if
+			 * (checkAttacks(Attacks, add) == false) { Attacks.add(add); } } } } }
+			 */
 
 			/*
-			 * if (!negativeruleset.isEmpty()) { for (Argument a : ListArgument) {
+			 * if (!negativeRuleSet.isEmpty()) { for (Argument a : ListArgument) {
 			 * ArrayList<Atom> supA = a.getPremises();
 			 * 
 			 * for (Argument b : ListArgument) { if (!b.equals(a)) { AtomSet u = new
@@ -258,163 +254,97 @@ public class App1 {
 			 */
 
 			/* the case of negative rules */
-			ArrayList<AtomSet> repairs = new ArrayList<AtomSet>();
-			if (!negativeruleset.isEmpty()) {
-				// Step1: Convert LinkedListAtomSet to ArrayList
+			/*
+			 * ArrayList<AtomSet> repairs = new ArrayList<AtomSet>(); if
+			 * (!negativeRuleSet.isEmpty()) { // Step1: Convert LinkedListAtomSet to
+			 * ArrayList
+			 * 
+			 * // Compute a set of repairs.
+			 * 
+			 * repairs = ComputeAllRepairs(kb1); ArrayList<ArrayList<String>> repairString =
+			 * new ArrayList(); Iterator<AtomSet> s = repairs.iterator(); ArrayList subList
+			 * = new ArrayList(); ArrayList<String> tempt = new ArrayList(); while
+			 * (s.hasNext()) { AtomSet pr = s.next(); tempt =
+			 * AtomSetIntoArrayWithoutArity(pr); repairString.add(tempt); }
+			 * 
+			 * // Convert ArrayList<ArrayList<String>> (repairString) to //
+			 * ArrayList<ArrayList<Atom>> (repairsAtom) ArrayList repairsAtom = new
+			 * ArrayList(); Iterator localIterator3; Iterator localIterator2 =
+			 * repairString.iterator(); CloseableIterator T; for (int i = 0; i <
+			 * repairString.size(); i++) { ArrayList R = (ArrayList) repairString.get(i);
+			 * localIterator3 = R.iterator(); while (localIterator3.hasNext()) { String r =
+			 * (String) localIterator3.next(); repairsAtom.add(new ArrayList()); T =
+			 * saturatedAtoms.iterator(); while (T.hasNext()) { Atom t = (Atom) T.next(); if
+			 * (AtomWithoutArity(t).equals(r)) { ((ArrayList)
+			 * repairsAtom.get(repairsAtom.size() - 1)).add(t); } } } }
+			 * 
+			 * System.out.println("repair: " + repairs);
+			 * 
+			 * // Step2: Compute a set of arguments apprearing in the repairs.
+			 * 
+			 * HashMap<AtomSet, ArrayList<Argument>> Arg = new HashMap<AtomSet,
+			 * ArrayList<Argument>>(); Iterator<AtomSet> localIterator4 =
+			 * repairs.iterator(); while (localIterator4.hasNext()) { AtomSet r =
+			 * localIterator4.next(); Arg.put(r, new ArrayList<Argument>());
+			 * Iterator<Argument> T1 = ListArgument.iterator(); while (T1.hasNext()) {
+			 * Argument Ar = (Argument) T1.next(); ArrayList<Atom> atom1 = Ar.getPremises();
+			 * Boolean checkAtom = true; for (int k = 0; k < atom1.size(); k++) { if
+			 * (!r.contains(atom1.get(k))) { checkAtom = false; } } if (checkAtom == true) {
+			 * Arg.get(r).add(Ar); } } }
+			 * 
+			 * // ArrayList Attacks = new ArrayList(); for (AtomSet As : repairs) {
+			 * ArrayList<Argument> NotInArg = new ArrayList<Argument>(); // Step 4: compute
+			 * a set of arguments that are not in Arg, and them to NotInArg.
+			 * ArrayList<Argument> arrayArg = Arg.get(As); for (Argument a : ListArgument) {
+			 * if (!arrayArg.contains(a)) { NotInArg.add(a); } }
+			 * 
+			 * // Step 5: For each argument that is NotInArg, compute attack relation of //
+			 * arguments for (Argument temp : NotInArg) { Argument aInTemp = temp; ArrayList
+			 * newS = new ArrayList(); newS.add(new ArrayList()); AllSubset(newS, arrayArg);
+			 * // get(r) newS.remove(0); for (int i = newS.size() - 1; i >= 0; i--) {
+			 * ArrayList Concs = new ArrayList(); for (Object b1 : (ArrayList) newS.get(i))
+			 * { Argument b = (Argument) b1; Concs.add(b.head); } // check whether two
+			 * arguments are conflict (inconsistent)
+			 * 
+			 * int iter = 0; boolean inconsistent = false; while ((!inconsistent) && (iter <
+			 * aInTemp.getPremises().size())) { AtomSet u = new LinkedListAtomSet(); for
+			 * (Object c1 : Concs) { Atom c = (Atom) c1; u.add(c); } u.add((Atom)
+			 * aInTemp.getPremises().get(iter));
+			 * 
+			 * kb.strictAtomSet = u; kb.saturate(); InMemoryAtomSet newSaturatedAtoms = new
+			 * LinkedListAtomSet(); newSaturatedAtoms.addAll(kb.facts); inconsistent =
+			 * IsInconsistent(newSaturatedAtoms, ruleset); iter++; } if (!inconsistent) {
+			 * newS.remove(i); }
+			 * 
+			 * }
+			 * 
+			 * ArrayList truth = new ArrayList(); for (int i = 0; i < newS.size(); i++)
+			 * truth.add(Boolean.valueOf(true)); for (int i = newS.size() - 1; i >= 1; i--)
+			 * { for (int j = i - 1; j >= 0; j--) { if (((ArrayList)
+			 * newS.get(i)).containsAll((Collection) newS.get(j))) { truth.set(i,
+			 * Boolean.valueOf(false)); } else if (((ArrayList)
+			 * newS.get(j)).containsAll((Collection) newS.get(i))) { truth.set(j,
+			 * Boolean.valueOf(false)); } } }
+			 * 
+			 * for (int j = newS.size() - 1; j >= 0; j--) { if (!((Boolean)
+			 * truth.get(j)).booleanValue()) { newS.remove(j); } }
+			 * 
+			 * for (int k = 0; k < newS.size(); k++) { Attack toAdd = new Attack((ArrayList)
+			 * newS.get(k), aInTemp); // if (!Attacks.contains(toAdd)) { //
+			 * Attacks.add(toAdd); // } // check whether an attack is in the set of attacks
+			 * if (checkAttacks(Attacks, toAdd) == false) { Attacks.add(toAdd); } }
+			 * 
+			 * } } }
+			 */
 
-				// Compute a set of repairs.
-
-				repairs = ComputeAllRepairs(kb1);
-				ArrayList<ArrayList<String>> repairString = new ArrayList();
-				Iterator<AtomSet> s = repairs.iterator();
-				ArrayList subList = new ArrayList();
-				ArrayList<String> tempt = new ArrayList();
-				while (s.hasNext()) {
-					AtomSet pr = s.next();
-					tempt = AtomSetIntoArrayWithoutArity(pr);
-					repairString.add(tempt);
-				}
-
-				// Convert ArrayList<ArrayList<String>> (repairString) to
-				// ArrayList<ArrayList<Atom>> (repairsAtom)
-				ArrayList repairsAtom = new ArrayList();
-				Iterator localIterator3;
-				Iterator localIterator2 = repairString.iterator();
-				CloseableIterator T;
-				for (int i = 0; i < repairString.size(); i++) {
-					ArrayList R = (ArrayList) repairString.get(i);
-					localIterator3 = R.iterator();
-					while (localIterator3.hasNext()) {
-						String r = (String) localIterator3.next();
-						repairsAtom.add(new ArrayList());
-						T = saturatedAtoms.iterator();
-						while (T.hasNext()) {
-							Atom t = (Atom) T.next();
-							if (AtomWithoutArity(t).equals(r)) {
-								((ArrayList) repairsAtom.get(repairsAtom.size() - 1)).add(t);
-							}
-						}
-					}
-				}
-
-				System.out.println("repair: " + repairs);
-
-				// Step2: Compute a set of arguments apprearing in the repairs.
-
-				HashMap<AtomSet, ArrayList<Argument>> Arg = new HashMap<AtomSet, ArrayList<Argument>>();
-				Iterator<AtomSet> localIterator4 = repairs.iterator();
-				while (localIterator4.hasNext()) {
-					AtomSet r = localIterator4.next();
-					Arg.put(r, new ArrayList<Argument>());
-					Iterator<Argument> T1 = ListArgument.iterator();
-					while (T1.hasNext()) {
-						Argument Ar = (Argument) T1.next();
-						ArrayList<Atom> atom1 = Ar.getPremises();
-						Boolean checkAtom = true;
-						for (int k = 0; k < atom1.size(); k++) {
-							if (!r.contains(atom1.get(k))) {
-								checkAtom = false;
-							}
-						}
-						if (checkAtom == true) {
-							Arg.get(r).add(Ar);
-						}
-					}
-				}
-
-				// ArrayList Attacks = new ArrayList();
-				for (AtomSet As : repairs) {
-					ArrayList<Argument> NotInArg = new ArrayList<Argument>();
-					// Step 4: compute a set of arguments that are not in Arg, and them to NotInArg.
-					ArrayList<Argument> arrayArg = Arg.get(As);
-					for (Argument a : ListArgument) {
-						if (!arrayArg.contains(a)) {
-							NotInArg.add(a);
-						}
-					}
-
-					// Step 5: For each argument that is NotInArg, compute attack relation of
-					// arguments
-					for (Argument temp : NotInArg) {
-						Argument aInTemp = temp;
-						ArrayList newS = new ArrayList();
-						newS.add(new ArrayList());
-						AllSubset(newS, arrayArg); // get(r)
-						newS.remove(0);
-						for (int i = newS.size() - 1; i >= 0; i--) {
-							ArrayList Concs = new ArrayList();
-							for (Object b1 : (ArrayList) newS.get(i)) {
-								Argument b = (Argument) b1;
-								Concs.add(b.head);
-							}
-							// check whether two arguments are conflict (inconsistent)
-
-							int iter = 0;
-							boolean inconsistent = false;
-							while ((!inconsistent) && (iter < aInTemp.getPremises().size())) {
-								AtomSet u = new LinkedListAtomSet();
-								for (Object c1 : Concs) {
-									Atom c = (Atom) c1;
-									u.add(c);
-								}
-								u.add((Atom) aInTemp.getPremises().get(iter));
-
-								kb.strictAtomSet = u;
-								kb.saturate();
-								InMemoryAtomSet newSaturatedAtoms = new LinkedListAtomSet();
-								newSaturatedAtoms.addAll(kb.facts);
-								inconsistent = IsInconsistent(newSaturatedAtoms, ruleset);
-								iter++;
-							}
-							if (!inconsistent) {
-								newS.remove(i);
-							}
-
-						}
-
-						ArrayList truth = new ArrayList();
-						for (int i = 0; i < newS.size(); i++)
-							truth.add(Boolean.valueOf(true));
-						for (int i = newS.size() - 1; i >= 1; i--) {
-							for (int j = i - 1; j >= 0; j--) {
-								if (((ArrayList) newS.get(i)).containsAll((Collection) newS.get(j))) {
-									truth.set(i, Boolean.valueOf(false));
-								} else if (((ArrayList) newS.get(j)).containsAll((Collection) newS.get(i))) {
-									truth.set(j, Boolean.valueOf(false));
-								}
-							}
-						}
-
-						for (int j = newS.size() - 1; j >= 0; j--) {
-							if (!((Boolean) truth.get(j)).booleanValue()) {
-								newS.remove(j);
-							}
-						}
-
-						for (int k = 0; k < newS.size(); k++) {
-							Attack toAdd = new Attack((ArrayList) newS.get(k), aInTemp);
-							// if (!Attacks.contains(toAdd)) {
-							// Attacks.add(toAdd);
-							// }
-							// check whether an attack is in the set of attacks
-							if (checkAttacks(Attacks, toAdd) == false) {
-								Attacks.add(toAdd);
-							}
-						}
-
-					}
-				}
-			}
-
-			System.out.println("...............");
-			Iterator At = Attacks.iterator();
-			while (At.hasNext()) {
-				Attack a = (Attack) ((Iterator) At).next();
-				System.out.println(a);
-			}
-			System.out.println("There are " + ListArgument.size() + " arguments and " + Attacks.size() + " attacks.");
-
-			ArrayList<Attack> tempAtt = new ArrayList<Attack>(Attacks);
+			/*
+			 * System.out.println("..............."); Iterator At = Attacks.iterator();
+			 * while (At.hasNext()) { Attack a = (Attack) ((Iterator) At).next();
+			 * System.out.println(a); } System.out.println("There are " +
+			 * ListArgument.size() + " arguments and " + Attacks.size() + " attacks.");
+			 * 
+			 * ArrayList<Attack> tempAtt = new ArrayList<Attack>(Attacks);
+			 */
 			/*
 			 * Compute attacks with preferences if (filePath != null) { Integer result =
 			 * null; CloseableIterator<Atom> it1 = InitialFacts.iterator();
@@ -422,10 +352,12 @@ public class App1 {
 			 * AtomWithoutArity(atom); for (Map.Entry<String, Integer> atom1 :
 			 * preAtoms.entrySet()) { if (aString.compareTo(atom1.getKey()) == 0) { result =
 			 * atom1.getValue(); } } }
-			 * 
-			 * // compute attacks with considering preferences
-			 * 
-			 * //ArrayList<Attack> tempAtt = new ArrayList<Attack>(Attacks);
+			 */
+
+			// compute attacks with considering preferences
+			//ArrayList<Attack> tempAtt = new ArrayList<Attack>(Attacks);
+
+			/*
 			 * ArrayList<Attack> tempAtt = new ArrayList<Attack>(); for (int i = 0; i <
 			 * Attacks.size(); i++) { Attack att = Attacks.get(i); ArrayList<Argument>
 			 * sourceAtt = att.source; System.out.println(sourceAtt); ArrayList<Atom>
@@ -435,18 +367,18 @@ public class App1 {
 			 * preAtoms) == true ) { tempAtt.add(att); } } } }
 			 */
 
-			/* compute stable/ preferred extensions */
+			// compute stable/ preferred extensions
 
-			HashSet<String> argString = new HashSet<String>();
+		/*	HashSet<String> argString = new HashSet<String>();
 			af = new DungAF();
-			/* read arguments from ListArgument (ArrayList<Argument>) to HashSet<String> */
+			// read arguments from ListArgument (ArrayList<Argument>) to HashSet<String>
 			for (Argument a : ListArgument) {
 				String aString = "A" + a.myID;
 				af.addArgs(aString);
 			}
 			argString = af.getArgs();
 
-			/* read attacks from Attacks (ArrayList<Attack>) to HashSet<String> */
+			// read attacks from Attacks (ArrayList<Attack>) to HashSet<String> 
 
 			HashSet<String[]> atts = new HashSet<>();
 			for (int i = 0; i < tempAtt.size(); i++) {
@@ -456,17 +388,16 @@ public class App1 {
 				for (Argument argS : at.source) {
 					source = "A" + argS.myID;
 				}
-				af.addAtts(new String[][] {{ source, target }});
+				af.addAtts(new String[][] { { source, target } });
 			}
 			atts = af.getAtts();
 
-
-			/* Compute preferred sematics */
+			// Compute preferred sematics
 			HashSet<HashSet<String>> preferredExts = new HashSet<HashSet<String>>();
 			preferredExts = af.getPreferredExts();
 			System.out.println("preferred extensions: " + preferredExts);
 
-			/* Compute grounded sematics */
+			// Compute grounded sematics
 			HashSet<String> groundedExts = new HashSet<String>();
 			groundedExts = af.getGroundedExt();
 			System.out.println("Grounded extensions: " + groundedExts);
@@ -484,12 +415,8 @@ public class App1 {
 				}
 			}
 
-			// System.out.println("grounded extension: " + grd);
-
-			/*
-			 * convert extensions from HashSet<HashSet<String>> to
-			 * ArrayList<ArrayList<Argument>>
-			 */
+			// convert extensions from HashSet<HashSet<String>> to ArrayList<ArrayList<Argument>>
+			
 
 			extensions = new ArrayList<ArrayList<Argument>>();
 			for (HashSet<String> extString : preferredExts) {
@@ -502,56 +429,57 @@ public class App1 {
 
 				}
 				extensions.add(ext);
-			}
-
-			/*
-			 * System.out.println("Extension after convert: ");
-			 * 
-			 * for (ArrayList<Argument> print : extensions) { System.out.println(print); }
-			 */
+			} */
 
 			/* Get union of extensions for skeptical semantics */
+			/*
+			 * ArrayList<Argument> preferredScepticalExt = new ArrayList<Argument>();
+			 * preferredScepticalExt = getPreferredScepticalExt(extensions);
+			 * System.out.println("Sceptical extensions: " + preferredScepticalExt);
+			 */
 
-			ArrayList<Argument> preferredScepticalExt = new ArrayList<Argument>();
-			preferredScepticalExt = getPreferredScepticalExt(extensions);
-
-			System.out.println("Sceptical extensions: " + preferredScepticalExt);
+			/* Get answers from a CQ query or an Instance query */
 
 			// ConjunctiveQuery query = DlgpParser.parseQuery("? :- professor(ann).");
-			ConjunctiveQuery query = DlgpParser.parseQuery("? :- postdoc(ann).");
 			// ConjunctiveQuery query = DlgpParser.parseQuery("? :- phD(ann),
 			// teach(ann,X).");
 			// ConjunctiveQuery query = DlgpParser.parseQuery("?(X) :- teach(ann,X).");
 			// ConjunctiveQuery query = DlgpParser.parseQuery("? :- advisor(ann,bob).");
 			// ConjunctiveQuery query = DlgpParser.parseQuery("? :-
 			// associateProfessor(ann).");
+			// String queryString = "? :- postdoc(ann).";
+			/*String queryString = "?(X) :-" + " professor(X).";
 
-			ArrayList<Argument> argumentForQuery = new ArrayList<Argument>();
-			argumentForQuery = GetArgumentForQuery(query, ListArgument, saturatedAtoms);
-			System.out.println("Set of Arguments for Query: " + argumentForQuery);
+			ConjunctiveQuery query = DlgpParser.parseQuery(queryString);
+
+			ArrayList<AtomSet> ans = Query.getAnswers(query, positiveRuleSet, saturatedAtoms);
+			System.out.println("Answers: " + ans); */
+
+			// Get a set of arguments for a given query
+
+			/*HashMap<AtomSet, ArrayList<Argument>> argsForQuery = new HashMap<>();
+			argsForQuery = getArgumentsForQuery(query, positiveRuleSet, saturatedAtoms, ListArgument);
+			System.out.println("Arguments for a given query: " + argsForQuery); */
+			
+			// get attacks for an argument
+			
+			allMinimalConflicts = FindMinIncSets.findMinimalIncSubsets(kb);
+			
+			System.out.println("All minimal conflicts: " + allMinimalConflicts);
 
 			// check IAR semantic or Grounded extension
-			int count = 0;
-			if (includesArrayList(grd, argumentForQuery) == true) {
-				System.out.println("accepted under grounded extenions");
-			} else {
-				/* Check credulous, skepcitcal, non-accept for argument */
-				for (Argument arg : argumentForQuery) {
-					for (int i = 0; i < extensions.size(); i++) {
-						if (extensions.get(i).contains(arg)) {
-							count++;
-						}
-					}
-				}
-				if (count == 0) {
-					System.out.println("non-accepted");
-				} else if ((count == extensions.size()) || (count / extensions.size() == extensions.size())) {
-					System.out.println("sceptical");
-				} else
-					System.out.println("Creduluous");
-			}
-
-			System.out.println();
+			/*
+			 * int count = 0; if (includesArrayList(grd, argumentForQuery) == true) {
+			 * System.out.println("accepted under grounded extenions"); } else { // Check
+			 * credulous, skepcitcal, non-accept for argument for (Argument arg :
+			 * argumentForQuery) { for (int i = 0; i < extensions.size(); i++) { if
+			 * (extensions.get(i).contains(arg)) { count++; } } } if (count == 0) {
+			 * System.out.println("non-accepted"); } else if ((count == extensions.size())
+			 * || (count / extensions.size() == extensions.size())) {
+			 * System.out.println("sceptical"); } else System.out.println("Creduluous"); }
+			 * 
+			 * System.out.println();
+			 */
 
 			// Proceduce ReReach (A, A', n, S)
 			// Reach = new ArrayList<Argument>();
@@ -559,229 +487,137 @@ public class App1 {
 			// Visited0 = new ArrayList<Attack>();
 			// Visited = new ArrayList<Attack>();
 
-			Dist = new ArrayList<Distance>();
-			for (int i = 0; i < ListArgument.size(); i++) {
-				Argument a = ListArgument.get(i);
-				// Reach.add(a);
-				Dist.add(new Distance(a, a, 0));
-				for (int j = 0; j < ListArgument.size(); j++) {
-					if (j != i) {
-						Argument b = ListArgument.get(j);
-						Dist.add(new Distance(a, b, 0));
-					}
-				}
-			}
+			/*
+			 * Dist = new ArrayList<Distance>(); for (int i = 0; i < ListArgument.size();
+			 * i++) { Argument a = ListArgument.get(i); // Reach.add(a); Dist.add(new
+			 * Distance(a, a, 0)); for (int j = 0; j < ListArgument.size(); j++) { if (j !=
+			 * i) { Argument b = ListArgument.get(j); Dist.add(new Distance(a, b, 0)); } } }
+			 * 
+			 * if (includesArrayList(grd, argumentForQuery) == true) { for (Argument a :
+			 * argumentForQuery) { Visited = new ArrayList<Attack>(); NewDist = new
+			 * ArrayList<Distance>(); Reach = new ArrayList<Argument>(); ReReach(a, a, 0,
+			 * null, Attacks); ArrayList<Argument> reachOdd = new ArrayList<>();
+			 * ArrayList<Argument> reachEven = new ArrayList<>(); reachOdd = getReachOdd(a,
+			 * NewDist); reachEven = getReachEven(a, NewDist);
+			 * 
+			 * // print paths from A to B
+			 * 
+			 * Graph graph = new Graph(); // addEdge to graph for (int i = 0; i <
+			 * tempAtt.size(); i++) { Attack at = (Attack) tempAtt.get(i);
+			 * graph.addEdge(at.target, at.source); }
+			 * 
+			 * Argument start = a; for (Argument b : grd) { Argument end = b; if
+			 * (!start.equals(end)) { graph.printAllPaths(start, end); } } }
+			 * 
+			 * // there is no attacks }
+			 */
 
-			if (includesArrayList(grd, argumentForQuery) == true) {
-				for (Argument a : argumentForQuery) {
-					Visited = new ArrayList<Attack>();
-					NewDist = new ArrayList<Distance>();
-					Reach = new ArrayList<Argument>();
-					ReReach(a, a, 0, null, Attacks);
-					ArrayList<Argument> reachOdd = new ArrayList<>();
-					ArrayList<Argument> reachEven = new ArrayList<>();
-					reachOdd = getReachOdd(a, NewDist);
-					reachEven = getReachEven(a, NewDist);
-
-					// print paths from A to B
-
-					Graph graph = new Graph();
-					// addEdge to graph
-					for (int i = 0; i < tempAtt.size(); i++) {
-						Attack at = (Attack) tempAtt.get(i);
-						graph.addEdge(at.target, at.source);
-					}
-
-					Argument start = a;
-					for (Argument b : grd) {
-						Argument end = b;
-						if (!start.equals(end)) {
-							graph.printAllPaths(start, end);
-						}
-					}
-				}
-
-				// there is no attacks
-			}
-
-			if (count == 0) {
-
-				for (Argument a : argumentForQuery) {
-					Visited = new ArrayList<Attack>();
-					NewDist = new ArrayList<Distance>();
-					Reach = new ArrayList<Argument>();
-					ReReach(a, a, 0, null, Attacks);
-
-					ArrayList<Argument> reachOdd = new ArrayList<>();
-					ArrayList<Argument> reachEven = new ArrayList<>();
-					reachOdd = getReachOdd(a, NewDist);
-
-					// Compute NotDef for an argument wrt extensions
-					ArrayList<ArrayList<Argument>> NotDefOfA = computeNotDefBy(reachOdd, extensions, NewDist);
-					// merge all extensions to one
-					Set<Argument> set = new HashSet<Argument>();
-					for (int i = 0; i < NotDefOfA.size(); i++) {
-						set.addAll(NotDefOfA.get(i));
-					}
-					ArrayList<Argument> combinedList = new ArrayList<>(set);
-					System.out.println(combinedList);
-
-					// print paths from A to B
-					Graph graph = new Graph();
-					// addEdge to graph
-					for (int i = 0; i < tempAtt.size(); i++) {
-						Attack at = (Attack) tempAtt.get(i);
-						graph.addEdge(at.target, at.source);
-					}
-					Argument start = a;
-					System.out.println("path: ");
-					tree = new ArrayList<>();
-					List<List<Argument>> paths = new ArrayList<>();
-					for (Argument b : combinedList) {
-						Argument end = b;
-						paths = graph.printAllPathsEven(start, end);
-						for (List<Argument> path : paths) {
-							tree.add(path);
-						}
-					}
-				}
-				for (List<Argument> p : tree) {
-					System.out.println(p);
-				}
-
-			} else if ((count == extensions.size()) || (count / extensions.size() == extensions.size())) {
-				for (Argument a : argumentForQuery) {
-					Visited = new ArrayList<Attack>();
-					NewDist = new ArrayList<Distance>();
-					Reach = new ArrayList<Argument>();
-					ReReach(a, a, 0, null, Attacks);
-					ArrayList<Argument> reachOdd = new ArrayList<>();
-					ArrayList<Argument> reachEven = new ArrayList<>();
-					reachOdd = getReachOdd(a, NewDist);
-					// System.out.println("Reach odd: " + reachOdd);
-					reachEven = getReachEven(a, NewDist);
-					ArrayList<Argument> DefBy = reachEven;
-
-					// Compute Def for an argument wrt extensions
-					/*
-					 * ArrayList<ArrayList<Argument>> DefByExt = new ArrayList<>(); for (int i = 0;
-					 * i < extensions.size(); i++) { ArrayList<Argument> subDef =
-					 * intersection(DefBy, extensions.get(i)); DefByExt.add(subDef); }
-					 * System.out.println("DefBy: " + DefByExt);
-					 */
-
-					// compute a set of extension for an argument and merge them into one set.
-					Set<Argument> merge = new HashSet<Argument>();
-					for (int i = 0; i < extensions.size(); i++) {
-						ArrayList<Argument> subDef = intersection(DefBy, extensions.get(i));
-						merge.addAll(subDef);
-					}
-					ArrayList<Argument> DefByExt = new ArrayList<>(merge);
-					// System.out.println("DefBy: " + DefByExt);
-
-					// print paths from A to B
-
-					Graph graph = new Graph();
-					// addEdge to graph
-					for (int i = 0; i < tempAtt.size(); i++) {
-						Attack at = (Attack) tempAtt.get(i);
-						graph.addEdge(at.target, at.source);
-					}
-
-					Argument start = a;
-					List<List<Argument>> allPaths = new ArrayList<>();
-					tree = new ArrayList<>();
-					for (Argument b : DefByExt) {
-
-						Argument end = b;
-						if (!start.equals(end)) {
-							allPaths = graph.printAllPathsOdd(start, end);
-							// allPaths = graph.printAllPaths(start, end);
-							for (List<Argument> path : allPaths) {
-								tree.add(path);
-							}
-						}
-
-					}
-
-					for (List<Argument> t : tree) {
-						System.out.println(t.toString());
-						printDialogue(t);
-					}
-
-					/*
-					 * for (ArrayList<Argument> defBy : DefByExt) { for (Argument b : defBy) {
-					 * Argument end = b; if (!start.equals(end)) { graph.printAllPathsOdd(start,
-					 * end); } } }
-					 */
-				}
-
-			}
+			/*
+			 * if (count == 0) {
+			 * 
+			 * for (Argument a : argumentForQuery) { Visited = new ArrayList<Attack>();
+			 * NewDist = new ArrayList<Distance>(); Reach = new ArrayList<Argument>();
+			 * ReReach(a, a, 0, null, Attacks);
+			 * 
+			 * ArrayList<Argument> reachOdd = new ArrayList<>(); ArrayList<Argument>
+			 * reachEven = new ArrayList<>(); reachOdd = getReachOdd(a, NewDist);
+			 * 
+			 * // Compute NotDef for an argument wrt extensions
+			 * ArrayList<ArrayList<Argument>> NotDefOfA = computeNotDefBy(reachOdd,
+			 * extensions, NewDist); // merge all extensions to one Set<Argument> set = new
+			 * HashSet<Argument>(); for (int i = 0; i < NotDefOfA.size(); i++) {
+			 * set.addAll(NotDefOfA.get(i)); } ArrayList<Argument> combinedList = new
+			 * ArrayList<>(set); System.out.println(combinedList);
+			 * 
+			 * // print paths from A to B Graph graph = new Graph(); // addEdge to graph for
+			 * (int i = 0; i < tempAtt.size(); i++) { Attack at = (Attack) tempAtt.get(i);
+			 * graph.addEdge(at.target, at.source); } Argument start = a;
+			 * System.out.println("path: "); tree = new ArrayList<>(); List<List<Argument>>
+			 * paths = new ArrayList<>(); for (Argument b : combinedList) { Argument end =
+			 * b; paths = graph.printAllPathsEven(start, end); for (List<Argument> path :
+			 * paths) { tree.add(path); } } } for (List<Argument> p : tree) {
+			 * System.out.println(p); }
+			 * 
+			 * }
+			 */
+			/*
+			 * else if ((count == extensions.size()) || (count / extensions.size() ==
+			 * extensions.size())) { for (Argument a : argumentForQuery) { Visited = new
+			 * ArrayList<Attack>(); NewDist = new ArrayList<Distance>(); Reach = new
+			 * ArrayList<Argument>(); ReReach(a, a, 0, null, Attacks); ArrayList<Argument>
+			 * reachOdd = new ArrayList<>(); ArrayList<Argument> reachEven = new
+			 * ArrayList<>(); reachOdd = getReachOdd(a, NewDist); //
+			 * System.out.println("Reach odd: " + reachOdd); reachEven = getReachEven(a,
+			 * NewDist); ArrayList<Argument> DefBy = reachEven;
+			 * 
+			 * // compute a set of extension for an argument and merge them into one set.
+			 * Set<Argument> merge = new HashSet<Argument>(); for (int i = 0; i <
+			 * extensions.size(); i++) { ArrayList<Argument> subDef = intersection(DefBy,
+			 * extensions.get(i)); merge.addAll(subDef); } ArrayList<Argument> DefByExt =
+			 * new ArrayList<>(merge); // System.out.println("DefBy: " + DefByExt);
+			 * 
+			 * // print paths from A to B
+			 * 
+			 * Graph graph = new Graph(); // addEdge to graph for (int i = 0; i <
+			 * tempAtt.size(); i++) { Attack at = (Attack) tempAtt.get(i);
+			 * graph.addEdge(at.target, at.source); }
+			 * 
+			 * Argument start = a; List<List<Argument>> allPaths = new ArrayList<>(); tree =
+			 * new ArrayList<>(); for (Argument b : DefByExt) {
+			 * 
+			 * Argument end = b; if (!start.equals(end)) { allPaths =
+			 * graph.printAllPathsOdd(start, end); // allPaths = graph.printAllPaths(start,
+			 * end); for (List<Argument> path : allPaths) { tree.add(path); } }
+			 * 
+			 * }
+			 * 
+			 * for (List<Argument> t : tree) { System.out.println(t.toString());
+			 * printDialogue(t); } }
+			 * 
+			 * }
+			 */
 			// credulous
-			else {
-				for (Argument a : argumentForQuery) {
-					Visited = new ArrayList<Attack>();
-					NewDist = new ArrayList<Distance>();
-					Reach = new ArrayList<Argument>();
-					ReReach(a, a, 0, null, Attacks);
-
-					ArrayList<Argument> reachOdd = new ArrayList<>();
-					ArrayList<Argument> reachEven = new ArrayList<>();
-					reachOdd = getReachOdd(a, NewDist);
-					reachEven = getReachEven(a, NewDist);
-					ArrayList<Argument> DefBy = reachEven;
-					// Compute Def for an argument wrt extensions
-
-					Set<Argument> merge = new HashSet<Argument>();
-					for (int i = 0; i < extensions.size(); i++) {
-						ArrayList<Argument> subDef = intersection(DefBy, extensions.get(i));
-						merge.addAll(subDef);
-					}
-					ArrayList<Argument> DefByExt = new ArrayList<>(merge);
-
-					ArrayList<ArrayList<Argument>> NotDefOfA = computeNotDefBy(reachOdd, extensions, NewDist);
-					Set<Argument> set = new HashSet<Argument>();
-					for (int i = 0; i < NotDefOfA.size(); i++) {
-						set.addAll(NotDefOfA.get(i));
-					}
-					ArrayList<Argument> combinedList = new ArrayList<>(set);
-
-					Graph graph = new Graph();
-					// addEdge to graph
-					for (int i = 0; i < tempAtt.size(); i++) {
-						Attack at = (Attack) tempAtt.get(i);
-						graph.addEdge(at.target, at.source);
-					}
-
-					Argument start = a;
-					tree = new ArrayList<>();
-					for (Argument b : combinedList) {
-						Argument end1 = b;
-
-						List<List<Argument>> paths = graph.printAllPathsEven(start, end1);
-						for (List<Argument> p : paths) {
-							tree.add(p);
-						}
-					}
-
-					for (Argument b : DefByExt) {
-						Argument end = b;
-						List<List<Argument>> paths1 = graph.printAllPaths(start, end);
-						for (List<Argument> p : paths1) {
-							tree.add(p);
-						}
-					}
-
-					for (List<Argument> t : tree) {
-						System.out.println(t);
-						printDialogue(t);
-					}
-				}
-
-			}
-
+			/*
+			 * else { for (Argument a : argumentForQuery) { Visited = new
+			 * ArrayList<Attack>(); NewDist = new ArrayList<Distance>(); Reach = new
+			 * ArrayList<Argument>(); ReReach(a, a, 0, null, Attacks);
+			 * 
+			 * ArrayList<Argument> reachOdd = new ArrayList<>(); ArrayList<Argument>
+			 * reachEven = new ArrayList<>(); reachOdd = getReachOdd(a, NewDist); reachEven
+			 * = getReachEven(a, NewDist); ArrayList<Argument> DefBy = reachEven; // Compute
+			 * Def for an argument wrt extensions
+			 * 
+			 * Set<Argument> merge = new HashSet<Argument>(); for (int i = 0; i <
+			 * extensions.size(); i++) { ArrayList<Argument> subDef = intersection(DefBy,
+			 * extensions.get(i)); merge.addAll(subDef); } ArrayList<Argument> DefByExt =
+			 * new ArrayList<>(merge);
+			 * 
+			 * ArrayList<ArrayList<Argument>> NotDefOfA = computeNotDefBy(reachOdd,
+			 * extensions, NewDist); Set<Argument> set = new HashSet<Argument>(); for (int i
+			 * = 0; i < NotDefOfA.size(); i++) { set.addAll(NotDefOfA.get(i)); }
+			 * ArrayList<Argument> combinedList = new ArrayList<>(set);
+			 * 
+			 * Graph graph = new Graph(); // addEdge to graph for (int i = 0; i <
+			 * tempAtt.size(); i++) { Attack at = (Attack) tempAtt.get(i);
+			 * graph.addEdge(at.target, at.source); }
+			 * 
+			 * Argument start = a; tree = new ArrayList<>(); for (Argument b : combinedList)
+			 * { Argument end1 = b;
+			 * 
+			 * List<List<Argument>> paths = graph.printAllPathsEven(start, end1); for
+			 * (List<Argument> p : paths) { tree.add(p); } }
+			 * 
+			 * for (Argument b : DefByExt) { Argument end = b; List<List<Argument>> paths1 =
+			 * graph.printAllPaths(start, end); for (List<Argument> p : paths1) {
+			 * tree.add(p); } }
+			 * 
+			 * for (List<Argument> t : tree) { System.out.println(t); printDialogue(t); } }
+			 * 
+			 * }
+			 * 
+			 * }
+			 */
 		}
-		// }
 
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -795,9 +631,9 @@ public class App1 {
 			e.printStackTrace();
 		} catch (HomomorphismException e) {
 			e.printStackTrace();
-		} catch (OWL2ParserException e) {
-			e.printStackTrace();
-		}
+		} // catch (OWL2ParserException e) {
+			// e.printStackTrace();
+			// }
 
 		long endTime = System.nanoTime();
 		long duration = endTime - startTime;
@@ -805,10 +641,38 @@ public class App1 {
 	}
 
 	/*
-	 * Generate a set of arguments from KB The function includes: 1)
-	 * cartesianProduct for computing all sets 2) allSubsets 3) recurSiveArgs 4)
-	 * generateArgs
+	 * Generate a set of arguments from KB, which includes steps: 1)
+	 * cartesianProduct for computing all sets 2) allSubsets for computing all
+	 * subsets of arguments 3) recurSiveArgs for recursively computing the structure
+	 * of arguments 4) generateArgs. This function to generate all arguments
 	 */
+
+	// 1) compute all sets of atoms
+	protected static <T> List<List<T>> cartesianProduct(List<List<T>> lists) {
+		List resultLists = new ArrayList();
+		if (lists.size() == 0) {
+			resultLists.add(new ArrayList());
+			return resultLists;
+		}
+		List firstList = (List) lists.get(0);
+		List remainingLists = cartesianProduct(lists.subList(1, lists.size()));
+		Iterator localIterator1 = firstList.iterator();
+		while (localIterator1.hasNext()) {
+			Object condition = (Object) localIterator1.next();
+			Iterator localIterator2 = remainingLists.iterator();
+
+			while (localIterator2.hasNext()) {
+				List remainingList = (List) localIterator2.next();
+				ArrayList resultList = new ArrayList();
+				resultList.add(condition);
+				resultList.addAll(remainingList);
+				resultLists.add(resultList);
+			}
+		}
+		return resultLists;
+	}
+
+	// 2) compute all set of arguments
 
 	public static void AllSubset(ArrayList<ArrayList<Argument>> S, ArrayList<Argument> F)
 			throws AtomSetException, ChaseException, HomomorphismException {
@@ -837,29 +701,7 @@ public class App1 {
 		}
 	}
 
-	protected static <T> List<List<T>> cartesianProduct(List<List<T>> lists) {
-		List resultLists = new ArrayList();
-		if (lists.size() == 0) {
-			resultLists.add(new ArrayList());
-			return resultLists;
-		}
-		List firstList = (List) lists.get(0);
-		List remainingLists = cartesianProduct(lists.subList(1, lists.size()));
-		Iterator localIterator1 = firstList.iterator();
-		while (localIterator1.hasNext()) {
-			Object condition = (Object) localIterator1.next();
-			Iterator localIterator2 = remainingLists.iterator();
-
-			while (localIterator2.hasNext()) {
-				List remainingList = (List) localIterator2.next();
-				ArrayList resultList = new ArrayList();
-				resultList.add(condition);
-				resultList.addAll(remainingList);
-				resultLists.add(resultList);
-			}
-		}
-		return resultLists;
-	}
+	// 3) compute recursively arguments deduced from a KBs
 
 	public static void recurSiveArgs(Atom a, HashMap<Atom, ArrayList<Argument>> dico, DefeasibleKB kb) {
 		try {
@@ -917,10 +759,10 @@ public class App1 {
 							copy.addAll(p);
 
 							boolean contain = false;
-							// for (Argument z : (ArrayList)dico.get(a)) {
-							for (Object z1 : (ArrayList) dico.get(a)) {
-								Argument z = (Argument) z1;
 
+							// for (Object z1 : (ArrayList) dico.get(a)) {
+							// Argument z = (Argument) z1;
+							for (Argument z : (ArrayList<Argument>) dico.get(a)) {
 								if ((z.body.containsAll(copy)) && (copy.containsAll(z.body))) {
 									contain = true;
 								}
@@ -937,6 +779,8 @@ public class App1 {
 			e.printStackTrace();
 		}
 	}
+
+	// 4) compute all arguments from a KBs
 
 	public static ArrayList<Argument> generateArgs(DefeasibleKB kb) {
 		ArrayList<Argument> result = new ArrayList<>();
@@ -955,12 +799,27 @@ public class App1 {
 		return result;
 	}
 
+	// This function is used to remove the premises of argument that are
+	// inconsistent
+	public static boolean RIncosistent(DefeasibleKB kb) {
+		boolean result = false;
+		try {
+			for (Predicate s : kb.facts.getPredicates())
+				if (s.equals(Predicate.BOTTOM)) {
+					result = true;
+				}
+		} catch (AtomSetException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 	public static ArrayList<AtomSet> ComputeAllRepairs(DefeasibleKB kb)
 			throws AtomSetException, ChaseException, HomomorphismException, OWL2ParserException, IOException {
 		InMemoryAtomSet atomset = new LinkedListAtomSet();
 		RuleSet ruleset = new LinkedListRuleSet();
-		RuleSet negativeruleset = new LinkedListRuleSet();
-		RuleSet positiveruleset = new LinkedListRuleSet();
+		RuleSet negativeRuleSet = new LinkedListRuleSet();
+		RuleSet positiveRuleSet = new LinkedListRuleSet();
 		RuleSet rules = new LinkedListRuleSet();
 		RuleSet functionalRuleSet = new LinkedListRuleSet();
 		ArrayList<AtomSet> S = new ArrayList<AtomSet>();
@@ -975,24 +834,24 @@ public class App1 {
 		InMemoryAtomSet saturatedAtoms = new LinkedListAtomSet();
 		saturatedAtoms.addAll(kb.facts);
 
-		negativeruleset = kb.negativeConstraintSet;
-		positiveruleset = kb.rules;
+		negativeRuleSet = kb.negativeConstraintSet;
+		positiveRuleSet = kb.rules;
 
-		Iterator it = positiveruleset.iterator();
+		Iterator it = positiveRuleSet.iterator();
 
 		/* add equality rules to negative rules */
 
 		while (it.hasNext()) {
 			Rule r = (Rule) it.next();
 			if (r.getHead().iterator().next().getPredicate().equals(Predicate.EQUALITY)) {
-				negativeruleset.add(r);
+				negativeRuleSet.add(r);
 			} else {
 				rules.add(r);
 			}
 		}
 
-		ruleset.addAll(positiveruleset.iterator());
-		ruleset.addAll(negativeruleset.iterator());
+		ruleset.addAll(positiveRuleSet.iterator());
+		ruleset.addAll(negativeRuleSet.iterator());
 
 		// @SuppressWarnings("unchecked")
 		// Chase mychase = new SccChase(ruleset.iterator(), saturatedAtomS);
@@ -1001,7 +860,7 @@ public class App1 {
 		ArrayList IsRepair = null;
 		int numberOfRepairs = 0;
 		ArrayList<AtomSet> setOfRepairs = new ArrayList<AtomSet>();
-		if (!negativeruleset.iterator().hasNext()) {
+		if (!negativeRuleSet.iterator().hasNext()) {
 			S.add(atomset);
 			numberOfRepairs++;
 			IsRepair = new ArrayList();
@@ -1150,14 +1009,70 @@ public class App1 {
 		return true;
 	}
 
-	public static ArrayList<Argument> getArgumentsFor(Atom atom, ArrayList<Argument> ListOfArgs) {
+	// Get arguments for a given query from a given list of arguments.
+
+	// 1) Get arguments for an atom
+	public static ArrayList<Argument> getArgumentsForAtom(Atom atom, ArrayList<Argument> listOfArgs) {
 		ArrayList<Argument> arguments = new ArrayList();
-		for (Argument a : ListOfArgs) {
+		for (Argument a : listOfArgs) {
 			if (a.head.equals(atom))
 				arguments.add(a);
 
 		}
 		return arguments;
+	}
+
+	// 2) Get arguments for an AtomSet (conjunctive atoms)
+	public static ArrayList<ArrayList<Argument>> getArgsForAtomSet(AtomSet set, ArrayList<Argument> listOfArgs)
+			throws IteratorException {
+		ArrayList<ArrayList<Argument>> result = new ArrayList<ArrayList<Argument>>();
+		CloseableIterator<Atom> it = set.iterator();
+		while (it.hasNext()) {
+			Atom a = it.next();
+
+			for (int i = 0; i < listOfArgs.size(); i++) {
+				ArrayList<Argument> argGroup = new ArrayList<Argument>();
+				Argument arg = listOfArgs.get(i);
+				if ((arg.head.equals(a)) || (arg.head.getPredicate().equals(a.getPredicate()) && arg.head.getConstants().equals(a.getConstants()))) {					
+					argGroup.add(arg);
+					result.add(argGroup);
+				}
+			}
+		}
+		return result;
+	}
+
+
+	// Get arguments for a given query that could be IQs or CQs
+
+	/*
+	 * public static ArrayList<ArrayList<Argument>>
+	 * getArgumentsForQuery(ConjunctiveQuery query, RuleSet positiveRuleSet,
+	 * InMemoryAtomSet saturatedAtoms, ArrayList<Argument> listOfArgs) throws
+	 * IteratorException, HomomorphismException { ArrayList<ArrayList<Argument>>
+	 * result = new ArrayList<ArrayList<Argument>>(); ArrayList<AtomSet> answers =
+	 * new ArrayList<AtomSet>(); answers = Query.getAnswers(query, positiveRuleSet,
+	 * saturatedAtoms); Iterator<AtomSet> ck = answers.iterator(); while
+	 * (ck.hasNext()) { AtomSet set = ck.next(); ArrayList<Argument> argsForAtomSet
+	 * = getArgsForAtomSet(set, listOfArgs); result.add(argsForAtomSet); } return
+	 * result; }
+	 */
+
+	public static HashMap<AtomSet, ArrayList<Argument>> getArgumentsForQuery(ConjunctiveQuery query,
+			RuleSet positiveRuleSet, InMemoryAtomSet saturatedAtoms, ArrayList<Argument> listOfArgs)
+			throws IteratorException, HomomorphismException {
+		HashMap<AtomSet, ArrayList<Argument>> result = new HashMap<AtomSet, ArrayList<Argument>>();
+		ArrayList<AtomSet> answers = new ArrayList<AtomSet>();
+		answers = Query.getAnswers(query, positiveRuleSet, saturatedAtoms);
+		Iterator<AtomSet> ck = answers.iterator();
+		while (ck.hasNext()) {
+			AtomSet set = ck.next();
+			ArrayList<ArrayList<Argument>> argGroupsForAtomSet = getArgsForAtomSet(set, listOfArgs);
+			for (ArrayList<Argument> group : argGroupsForAtomSet) {
+				result.put(set, group);
+			}
+		}
+		return result;
 	}
 
 	/*
@@ -1196,18 +1111,6 @@ public class App1 {
 
 	}
 
-	public static boolean RIncosistent(DefeasibleKB kb) {
-		boolean result = false;
-		try {
-			for (Predicate s : kb.facts.getPredicates())
-				if (s.equals(Predicate.BOTTOM)) {
-					result = true;
-				}
-		} catch (AtomSetException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
 	/* Get union of extensions for sceptical semantics */
 
 	public static ArrayList<Argument> getPreferredScepticalExt(ArrayList<ArrayList<Argument>> preferredExts) {
@@ -1448,13 +1351,14 @@ public class App1 {
 	}
 
 	public static int CheckingBooleanQuery(ConjunctiveQuery query, ArrayList<AtomSet> setOfRepairs,
-			InMemoryAtomSet saturatedAtomS) throws IteratorException, AtomSetException {
+			RuleSet positiveRuleSet, InMemoryAtomSet saturatedAtoms)
+			throws IteratorException, AtomSetException, HomomorphismException {
 		InMemoryAtomSet atomQuery = query.getAtomSet();
 		// System.out.println(atomQuery);
 		int count = 0;
-		ArrayList<Atom> answers = new ArrayList<Atom>();
-		answers = getAnswersForCQ(query, saturatedAtoms);
-		Iterator<Atom> ck = answers.iterator();
+		ArrayList<AtomSet> answers = new ArrayList<AtomSet>();
+		answers = Query.getAnswersForCQ(query, positiveRuleSet, saturatedAtoms);
+		Iterator<AtomSet> ck = answers.iterator();
 		// CloseableIterator ck = atomQuery.iterator();
 		while (ck.hasNext()) {
 			Atom at = (Atom) ck.next();
@@ -1464,6 +1368,7 @@ public class App1 {
 				}
 			}
 		}
+
 		if (count == 0) {
 			return 0; // non-acception
 		}
@@ -1471,49 +1376,6 @@ public class App1 {
 			return 1; // sckeptical
 		} else
 			return 2; // credulous
-	}
-
-	/* Get answers for a conjunctive query */
-
-	public static ArrayList<Atom> getAnswersForQuery(ConjunctiveQuery query, InMemoryAtomSet saturatedAtoms)
-			throws IteratorException {
-		ArrayList<Atom> results = new ArrayList<Atom>();
-
-		CloseableIterator<Substitution> substitutions = SmartHomomorphism.instance().execute(query, saturatedAtoms);
-		while (substitutions.hasNext()) {
-			Substitution sub = substitutions.next();
-			AtomSet atoms = new LinkedListAtomSet();
-			atoms = sub.createImageOf(query.getAtomSet());
-			results.add(atoms);
-		}
-
-		/*
-		 * CloseableIterator<Atom> it4 = query.iterator(); while (it4.hasNext()) { Atom
-		 * atomQ = it4.next(); CloseableIterator<Atom> it3 = saturatedAtomS.iterator();
-		 * while (it3.hasNext()) { Atom initialAtom = it3.next(); if
-		 * ((atomQ.getPredicate().equals(initialAtom.getPredicate())) &&
-		 * (atomQ.getTerm(0).equals(initialAtom.getTerm(0)))) {
-		 * answers.add(initialAtom); } } }
-		 */
-		return answers;
-	}
-
-	/* Get answers for atomic queries */
-
-	public static ArrayList<Atom> getAnswersForAQ(ConjunctiveQuery query, InMemoryAtomSet saturatedAtomS)
-			throws IteratorException {
-		ArrayList<Atom> answers = new ArrayList<Atom>();
-		
-		BFASFLASDFLSDA
-		/*
-		 * CloseableIterator<Atom> it4 = query.iterator(); while (it4.hasNext()) { Atom
-		 * atomQ = it4.next(); CloseableIterator<Atom> it3 = saturatedAtomS.iterator();
-		 * while (it3.hasNext()) { Atom initialAtom = it3.next(); if
-		 * ((atomQ.getPredicate().equals(initialAtom.getPredicate())) &&
-		 * (atomQ.getTerm(0).equals(initialAtom.getTerm(0)))) {
-		 * answers.add(initialAtom); } } }
-		 */
-		return answers;
 	}
 
 	public static boolean checkInequality(ArrayList<Atom> supportsA, Atom conB, RuleSet functionRules) {
@@ -1549,27 +1411,6 @@ public class App1 {
 		}
 		return false;
 
-	}
-
-	public static ArrayList<Argument> GetArgumentForQuery(ConjunctiveQuery query, ArrayList<Argument> ListArgument,
-			InMemoryAtomSet saturatedAtomS) throws IteratorException {
-		ArrayList<Argument> argumentsFor = new ArrayList<Argument>();
-		ArrayList<Atom> answers = new ArrayList<Atom>();
-		answers = getAnswersForQuery(query, saturatedAtomS);
-		// InMemoryAtomSet atomQuery = query.getAtomSet();
-		// CloseableIterator ck = query.iterator();
-		Iterator<Atom> ck = answers.iterator();
-		while (ck.hasNext()) {
-			Atom at = (Atom) ck.next();
-			for (int i = 0; i < ListArgument.size(); i++) {
-				Argument arg = ListArgument.get(i);
-				if (arg.head.equals(at)) {
-					argumentsFor.add(arg);
-				}
-
-			}
-		}
-		return argumentsFor;
 	}
 
 	public static boolean checkAttacks(ArrayList<Attack> A, Attack b) {
@@ -1808,23 +1649,24 @@ public class App1 {
 		return result;
 	}
 
-	public static void ExpForScepticalSem(InMemoryAtomSet saturatedAtomS, ArrayList<ArrayList<Argument>> extensions,
-			ArrayList<Argument> ListArgument, ArrayList<Attack> AttPriority) throws IteratorException {
+	/*public static void ExpForScepticalSem(ConjunctiveQuery query, RuleSet positiveRuleSet,
+			InMemoryAtomSet saturatedAtoms, ArrayList<ArrayList<Argument>> extensions, ArrayList<Argument> ListArgument,
+			ArrayList<Attack> AttPriority) throws IteratorException, HomomorphismException {
 		/*
 		 * ArrayList<Attack> Visited = new ArrayList<Attack>(); ArrayList<Distance>
 		 * NewDist = new ArrayList<Distance>(); ArrayList<Argument>Reach = new
 		 * ArrayList<Argument>(); ArrayList<Distance> Dist;
 		 */
 
-		ConjunctiveQuery query = DlgpParser.parseQuery("? :- professor(ann).");
+		// ConjunctiveQuery query = DlgpParser.parseQuery("? :- professor(ann).");
 		// compute a set of supporting arguments
 		// check crecuslous
 		// calculate explanation: set of arguments is in each extension
 
-		ArrayList<Argument> supportingArgs = new ArrayList<Argument>();
-		supportingArgs = GetArgumentForQuery(query, ListArgument, saturatedAtomS);
+		/*ArrayList<ArrayList<Argument>> supportingArgs = new ArrayList<ArrayList<Argument>>();
+		supportingArgs = getArgumentsForQuery(query, positiveRuleSet, saturatedAtoms, supportingArgs);
 
-		/* Check credulous, skepcitcal, non-accept for argument */
+		// Check credulous, skepcitcal, non-accept for argument
 
 		int count = 0;
 		for (Argument arg : supportingArgs) {
@@ -1885,7 +1727,7 @@ public class App1 {
 				}
 			}
 		}
-	}
+	}*/
 
 	public static HashMap<String, Integer> readPreferenceAtoms(String filePath, AtomSet InitialFacts)
 			throws FileNotFoundException, IOException {

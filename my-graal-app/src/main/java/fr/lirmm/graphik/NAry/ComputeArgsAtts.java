@@ -25,6 +25,8 @@ import fr.lirmm.graphik.graal.core.ruleset.LinkedListRuleSet;
 import fr.lirmm.graphik.util.stream.CloseableIterator;
 import fr.lirmm.graphik.util.stream.IteratorException;
 import fr.lirmm.graphik.NAry.DungAF;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.Argument;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.Attack;
 
 public class ComputeArgsAtts {
 	//	private static String file = "bio-bench.dlgp";

@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import fr.lirmm.graphik.NAry.ArgumentationFramework.Argument;
+
 //import cern.colt.list.BooleanArrayList;
 
 import java.util.HashSet;

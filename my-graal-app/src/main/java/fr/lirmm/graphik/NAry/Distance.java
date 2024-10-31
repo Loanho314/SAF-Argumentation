@@ -1,5 +1,7 @@
 package fr.lirmm.graphik.NAry;
 
+import fr.lirmm.graphik.NAry.ArgumentationFramework.Argument;
+
 public class Distance {
 	public Argument source;
 	public Argument target;
