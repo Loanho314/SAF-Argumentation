@@ -15,10 +15,11 @@ import javax.swing.border.TitledBorder;
 import fr.lirmm.graphik.DEFT.core.DefeasibleKB;
 import fr.lirmm.graphik.NAry.App1;
 import fr.lirmm.graphik.NAry.Distance;
-import fr.lirmm.graphik.NAry.DungAF;
+import javaDungAF.DungAF;
 import fr.lirmm.graphik.NAry.Graph;
-import fr.lirmm.graphik.NAry.ArgumentationFramework.Argument;
-import fr.lirmm.graphik.NAry.ArgumentationFramework.Attack;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.StructuredArgument;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.SetAttack;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.StructuredArgument;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.AtomSet;
 import fr.lirmm.graphik.graal.api.core.AtomSetException;
@@ -82,7 +83,7 @@ public class UserInterface extends JFrame {
 	private static JButton btnChoose;
 	private static JButton btnShift;
 	private static JButton btnEnd;
-	private static JComboBox<Argument> cbQuestioner;
+	private static JComboBox<StructuredArgument> cbQuestioner;
 	private static DefaultComboBoxModel subModel;
 	private static boolean haveParameters = true;	
 	public static InMemoryAtomSet bottomAtomset = new LinkedListAtomSet();
@@ -95,7 +96,7 @@ public class UserInterface extends JFrame {
 	private static FileReader fileReader2; 
 	private static JTextArea txtTree;
 	private static JTextArea txtExp;
-	private static ArrayList<Attack> SetOfAtts;
+	private static ArrayList<SetAttack> SetOfAtts;
 	private static DefeasibleKB kb;
 	private static DefeasibleKB kb1;
 	private static DefeasibleKB kb2;	
@@ -106,33 +107,33 @@ public class UserInterface extends JFrame {
 	private static RuleSet functionalruleset;
 	private static RuleSet ruleset;
 
-	private static ArrayList<ArrayList<Argument>> extensions;
-	private static ArrayList<Argument> ext;
-	private static ArrayList<Attack> Visited0;
-	private static ArrayList<Attack> Visited;
-	private static ArrayList<Argument> Reach;
+	private static ArrayList<ArrayList<StructuredArgument>> extensions;
+	private static ArrayList<StructuredArgument> ext;
+	private static ArrayList<SetAttack> Visited0;
+	private static ArrayList<SetAttack> Visited;
+	private static ArrayList<StructuredArgument> Reach;
 	private static ArrayList<Distance> Dist;
 	private static ArrayList<Distance> NewDist;
 
-	private static Map<Argument, ArrayList<Argument>> adjacencyList;
-	private static ArrayList<Argument> ListArgument;
+	private static Map<StructuredArgument, ArrayList<StructuredArgument>> adjacencyList;
+	private static ArrayList<StructuredArgument> ListArgument;
 	private static InMemoryAtomSet saturatedAtom;
-	private static ArrayList<Argument> grd;
-	private static ArrayList<Attack> tempAtt;
-	private static List<List<Argument>> forestTrees;
+	private static ArrayList<StructuredArgument> grd;
+	private static ArrayList<SetAttack> tempAtt;
+	private static List<List<StructuredArgument>> forestTrees;
 	private static String filePath;
 	private static String filename;
-	private static HashMap<Argument, ArrayList<List<Argument>>> argValues;
+	private static HashMap<StructuredArgument, ArrayList<List<StructuredArgument>>> argValues;
 	private final JFileChooser openFileChooser;
 	private BufferedReader bufferedReader;
 	private static ConjunctiveQuery query;
-	private static ArrayList<Argument> argumentForQuery; 
+	private static ArrayList<StructuredArgument> argumentForQuery; 
 	private JTextField txtfQuery;
-	private static List<List<Argument>> forestTreeFor;
-	private static ArrayList<Argument> newArgForQuery;
+	private static List<List<StructuredArgument>> forestTreeFor;
+	private static ArrayList<StructuredArgument> newArgForQuery;
 	private static int index;
-	private static List<Argument> previousArgs = new ArrayList<>();
-	private static Argument argCr;
+	private static List<StructuredArgument> previousArgs = new ArrayList<>();
+	private static StructuredArgument argCr;
 	private static List<String> itemCr;
 	private static int removedItIndex;
 	private static List<Integer> listToRemove = new ArrayList();
@@ -315,7 +316,7 @@ public class UserInterface extends JFrame {
 					for (int i = ListArgument.size() - 1; i >= 0; i--)
 					{
 						Test = new LinkedListAtomSet();
-						for (Atom p : ((Argument)ListArgument.get(i)).getPremises()) {
+						for (Atom p : ((StructuredArgument)ListArgument.get(i)).getPremises()) {
 							Test.add(p);
 						}
 						kb2.strictAtomSet = Test;
@@ -333,20 +334,20 @@ public class UserInterface extends JFrame {
 					SetOfAtts = new ArrayList();
 					//compute attacks under equality rule
 					if (!functionalruleset.isEmpty()) {
-						for(Argument a: ListArgument) {
+						for(StructuredArgument a: ListArgument) {
 							ArrayList<Atom> supportsA = a.getPremises();
-							for (Argument b : ListArgument){
+							for (StructuredArgument b : ListArgument){
 								Atom conB = b.head;
 
 								// compare conB to supportsA
-								ArrayList<Argument> temp = new ArrayList<Argument>();
+								ArrayList<StructuredArgument> temp = new ArrayList<StructuredArgument>();
 								if (App1.checkInequality(supportsA,conB,functionalruleset) == true) {
 									temp.add(b);						
 								}
 								//System.out.println(a);
 								// check b co trong cau truc cua mot argument khac ko? - co => ko add, ko =>add
 								if (!temp.isEmpty()) {
-									Attack add = new Attack(temp, a);						
+									SetAttack add = new SetAttack(temp, a);						
 									if (App1.checkAttacks(SetOfAtts, add) == false) {
 										SetOfAtts.add(add);
 									}
@@ -358,13 +359,13 @@ public class UserInterface extends JFrame {
 						//System.out.println(SetOfAtts);
 						txtArg.setText("");
 						txtArg.append("Set of arguments: \n");
-						for (Argument arg : ListArgument) {
+						for (StructuredArgument arg : ListArgument) {
 							txtArg.append(arg.toString() + "\n");
 						}
 
 
 						if (filePath == null) {
-							tempAtt = new ArrayList<Attack>(SetOfAtts);
+							tempAtt = new ArrayList<SetAttack>(SetOfAtts);
 
 						} else {
 							// Read all prioritized instances
@@ -379,11 +380,11 @@ public class UserInterface extends JFrame {
 
 							// compute attacks with considering preferences
 
-							tempAtt = new ArrayList<Attack>();
+							tempAtt = new ArrayList<SetAttack>();
 
 							for (int i = 0; i < SetOfAtts.size(); i++) {
-								Attack att = SetOfAtts.get(i);
-								ArrayList<Argument> sourceAtt = att.source;
+								SetAttack att = SetOfAtts.get(i);
+								ArrayList<StructuredArgument> sourceAtt = att.source;
 								ArrayList<Atom> targetAtom = att.target.getPremises();
 								for (int j = 0; j < sourceAtt.size(); j++) {
 									ArrayList<Atom> sourceAtom = sourceAtt.get(j).getPremises();
@@ -395,7 +396,7 @@ public class UserInterface extends JFrame {
 						}
 
 
-						for (Attack at : tempAtt) {
+						for (SetAttack at : tempAtt) {
 							txtArg.append(at.toString() + "\n");
 						}
 
@@ -454,14 +455,14 @@ public class UserInterface extends JFrame {
 
 						// Step2: Compute a set of arguments apprearing in the repairs.
 
-						HashMap<AtomSet,ArrayList<Argument>> Arg = new HashMap<AtomSet, ArrayList<Argument>>();		
+						HashMap<AtomSet,ArrayList<StructuredArgument>> Arg = new HashMap<AtomSet, ArrayList<StructuredArgument>>();		
 						Iterator<AtomSet> localIterator4 = repairs.iterator();				 
 						while(localIterator4.hasNext()) {				
 							AtomSet r = localIterator4.next();					
-							Arg.put(r, new ArrayList<Argument>());
-							Iterator<Argument> T1 = ListArgument.iterator();
+							Arg.put(r, new ArrayList<StructuredArgument>());
+							Iterator<StructuredArgument> T1 = ListArgument.iterator();
 							while (T1.hasNext()) {
-								Argument Ar = (Argument)T1.next();
+								StructuredArgument Ar = (StructuredArgument)T1.next();
 								ArrayList<Atom> atom1 = Ar.getPremises();
 								Boolean checkAtom = true;
 								for (int k=0; k<atom1.size(); k++) {										
@@ -477,18 +478,18 @@ public class UserInterface extends JFrame {
 						}	
 
 						for (AtomSet As: repairs) {
-							ArrayList<Argument> NotInArg = new ArrayList<Argument>();
+							ArrayList<StructuredArgument> NotInArg = new ArrayList<StructuredArgument>();
 							// Step 4: compute a set of arguments that are not in Arg, and them to NotInArg.
-							ArrayList<Argument> arrayArg = Arg.get(As);
-							for (Argument a : ListArgument) {
+							ArrayList<StructuredArgument> arrayArg = Arg.get(As);
+							for (StructuredArgument a : ListArgument) {
 								if (!arrayArg.contains(a)) {						
 									NotInArg.add(a);
 								}
 							}
 
 							// Step 5: For each argument that is NotInArg, compute attack relation of arguments
-							for (Argument temp : NotInArg) {					
-								Argument aInTemp = temp;
+							for (StructuredArgument temp : NotInArg) {					
+								StructuredArgument aInTemp = temp;
 								ArrayList newS = new ArrayList();
 								newS.add(new ArrayList());
 								App1.AllSubset(newS, arrayArg); //get(r)
@@ -496,7 +497,7 @@ public class UserInterface extends JFrame {
 								for (int i = newS.size() - 1; i >= 0; i--) {					
 									ArrayList Concs = new ArrayList();
 									for (Object b1 : (ArrayList)newS.get(i)) {
-										Argument b = (Argument)b1;
+										StructuredArgument b = (StructuredArgument)b1;
 										Concs.add(b.head);
 									}
 									// check whether two arguments are conflict (inconsistent)
@@ -547,7 +548,7 @@ public class UserInterface extends JFrame {
 								}
 
 								for (int k = 0; k < newS.size(); k++) {
-									Attack toAdd = new Attack((ArrayList)newS.get(k), aInTemp);								
+									SetAttack toAdd = new SetAttack((ArrayList)newS.get(k), aInTemp);								
 									//check whether an attack is in the set of attacks
 									if (App1.checkAttacks(SetOfAtts, toAdd) == false) {							
 										SetOfAtts.add(toAdd);
@@ -560,14 +561,14 @@ public class UserInterface extends JFrame {
 
 					txtArg.setText("");
 					txtArg.append("Set of arguments: \n");
-					for (Argument arg : ListArgument) {
+					for (StructuredArgument arg : ListArgument) {
 						txtArg.append(arg.toString() + "\n");
 					}
 
 					// compute attacks with considering preferences
 
 					if (filePath == null) {
-						tempAtt = new ArrayList<Attack>(SetOfAtts);
+						tempAtt = new ArrayList<SetAttack>(SetOfAtts);
 
 					} else {
 						// Read all prioritized instances
@@ -582,10 +583,10 @@ public class UserInterface extends JFrame {
 
 						// compute attacks with considering preferences
 
-						tempAtt = new ArrayList<Attack>();
+						tempAtt = new ArrayList<SetAttack>();
 						for (int i = 0; i < SetOfAtts.size(); i++) {
-							Attack att = SetOfAtts.get(i);
-							ArrayList<Argument> sourceAtt = att.source;
+							SetAttack att = SetOfAtts.get(i);
+							ArrayList<StructuredArgument> sourceAtt = att.source;
 							ArrayList<Atom> targetAtom = att.target.getPremises();
 							for (int j = 0; j < sourceAtt.size(); j++) {
 								ArrayList<Atom> sourceAtom = sourceAtt.get(j).getPremises();
@@ -597,7 +598,7 @@ public class UserInterface extends JFrame {
 					}
 
 					txtArg.append("Set of attacks: \n");
-					for (Attack at : tempAtt) {
+					for (SetAttack at : tempAtt) {
 						txtArg.append(at.toString() + "\n");
 					}
 
@@ -606,20 +607,20 @@ public class UserInterface extends JFrame {
 					// compute stable/ prefered extensions				  
 					HashSet<String> argString = new HashSet<String>();
 					af = new DungAF();
-					/* read arguments from ListArgument (ArrayList<Argument>) to HashSet<String> */
-					for (Argument a : ListArgument) {				
+					/* read arguments from ListArgument (ArrayList<StructuredArgument>) to HashSet<String> */
+					for (StructuredArgument a : ListArgument) {				
 						String aString = "A" + a.myID;								
 						af.addArgs(aString);
 					}
 					argString = af.getArgs();
 
-					/* read attacks from Attacks (ArrayList<Attack>) to HashSet<String>[] []*/
+					/* read attacks from Attacks (ArrayList<SetAttack>) to HashSet<String>[] []*/
 					HashSet<String[] []> atts = new HashSet<String[] []>();
 					for (int i = 0; i < tempAtt.size(); i++) {
-						Attack at = (Attack) tempAtt.get(i);				
+						SetAttack at = (SetAttack) tempAtt.get(i);				
 						String target = "A" + at.target.myID;			
 						String source = new String();
-						for (Argument argS : at.source) {
+						for (StructuredArgument argS : at.source) {
 							source = "A" + argS.myID;
 						}
 						//af.addAtts(new String[][] {{source, target}});
@@ -639,12 +640,12 @@ public class UserInterface extends JFrame {
 					txtArg.append("Grounded Extensions: ");
 					txtArg.setText(txtArg.getText() + groundedExts.toString() + "\n");
 
-					// convert grounded extentions from HashSet<String> to ArrayList<Argument>
+					// convert grounded extentions from HashSet<String> to ArrayList<StructuredArgument>
 
-					grd = new ArrayList<Argument>();
+					grd = new ArrayList<StructuredArgument>();
 
 					for (String s : groundedExts) {
-						for (Argument arg : ListArgument) {
+						for (StructuredArgument arg : ListArgument) {
 							String id = "A" + arg.myID;
 							if (s.contains(id)) {
 								grd.add(arg);
@@ -655,12 +656,12 @@ public class UserInterface extends JFrame {
 					//System.out.println("grounded extension: " + grd);
 
 
-					/*convert extensions from HashSet<HashSet<String>> to ArrayList<ArrayList<Argument>>*/
+					/*convert extensions from HashSet<HashSet<String>> to ArrayList<ArrayList<StructuredArgument>>*/
 
-					extensions = new ArrayList<ArrayList<Argument>>();
+					extensions = new ArrayList<ArrayList<StructuredArgument>>();
 					for(HashSet<String> extString : preferredExts) {
-						ext = new ArrayList<Argument>();
-						for (Argument arg : ListArgument) {
+						ext = new ArrayList<StructuredArgument>();
+						for (StructuredArgument arg : ListArgument) {
 							String argID = "A" + arg.myID;
 							if (extString.contains(argID)) {
 								ext.add(arg);
@@ -672,13 +673,13 @@ public class UserInterface extends JFrame {
 
 					//System.out.println("Extension after convert: " );
 
-					//for (ArrayList<Argument> print : extensions) {			
+					//for (ArrayList<StructuredArgument> print : extensions) {			
 					//	System.out.println(print);
 					//}
 
 					/*Get union of extensions for skeptical semantics*/
 
-					ArrayList<Argument> preferredScepticalExt = new ArrayList<Argument>();
+					ArrayList<StructuredArgument> preferredScepticalExt = new ArrayList<StructuredArgument>();
 					preferredScepticalExt = App1.getPreferredScepticalExt(extensions);
 
 					//System.out.println("Sceptical extensions: " + preferredScepticalExt);
@@ -820,7 +821,7 @@ public class UserInterface extends JFrame {
 						txtExp.setText("");
 						txtExp.append("Questioner: Why is the answer certain?");
 						cbQuestioner.removeAllItems();
-						for (Argument arg : argumentForQuery) {
+						for (StructuredArgument arg : argumentForQuery) {
 							cbQuestioner.addItem(arg);
 						}
 					}
@@ -829,7 +830,7 @@ public class UserInterface extends JFrame {
 						txtExp.setText("");
 						txtExp.append("Questioner: Why is the answer possible?");
 						cbQuestioner.removeAllItems();
-						for (Argument arg : argumentForQuery) {
+						for (StructuredArgument arg : argumentForQuery) {
 							cbQuestioner.addItem(arg);
 						}
 						btnChoose.setVisible(true);
@@ -840,7 +841,7 @@ public class UserInterface extends JFrame {
 						txtExp.setText("");
 						txtExp.append("Questioner: Why is not the answer?");
 						cbQuestioner.removeAllItems();
-						for (Argument arg : argumentForQuery) {
+						for (StructuredArgument arg : argumentForQuery) {
 							cbQuestioner.addItem(arg);
 						}
 					}
@@ -849,7 +850,7 @@ public class UserInterface extends JFrame {
 						txtExp.setText("");
 						txtExp.append("Questioner: Why is the answer accepted under grounded semantics?");
 						cbQuestioner.removeAllItems();
-						for (Argument arg : argumentForQuery) {
+						for (StructuredArgument arg : argumentForQuery) {
 							cbQuestioner.addItem(arg);
 						}
 
@@ -872,7 +873,7 @@ public class UserInterface extends JFrame {
 								"Message Dialog", JOptionPane.PLAIN_MESSAGE);
 					} else
 						if (cbQuestioner.getSelectedIndex()>=0) {
-							argCr = (Argument) cbQuestioner.getSelectedItem();
+							argCr = (StructuredArgument) cbQuestioner.getSelectedItem();
 							cbQuestioner.removeAllItems();
 							itemCr = new ArrayList<>();
 							itemCr.add(0, "Why do you think that " + App1.convertNegListAtoms(App1.convertToArrayListAtom(query.getAtomSet())));
@@ -896,10 +897,10 @@ public class UserInterface extends JFrame {
 		cbQuery.setVisible(false);
 
 
-		/*argValues = new HashMap<Argument,ArrayList<List<Argument>>>();					
+		/*argValues = new HashMap<Argument,ArrayList<List<StructuredArgument>>>();					
 		for (Argument arg : argumentForQuery) {
-			argValues.put(arg, new ArrayList<List<Argument>>());
-			for (List<Argument> t : forestTrees) {
+			argValues.put(arg, new ArrayList<List<StructuredArgument>>());
+			for (List<StructuredArgument> t : forestTrees) {
 				if (arg.myID == t.get(0).myID) {
 					argValues.get(arg).add(t);
 				}
@@ -922,21 +923,21 @@ public class UserInterface extends JFrame {
 						if (subModel.getIndexOf(selectedItem) == 0)   {
 							removedItIndex = 0;
 							txtExp.append("\nQuestioner: Why do you think that " + App1.convertNegListAtoms(App1.convertToArrayListAtom(query.getAtomSet())));
-							Argument arg = argCr;
+							StructuredArgument arg = argCr;
 							forestTreeFor = findPathsforArgument(arg, forestTrees);
-							List<List<Argument>> oddPaths = findOddPathsForArg(arg, forestTreeFor);
-							List<List<Argument>> evenPaths = findEvenPathsForArg(arg, forestTreeFor);
+							List<List<StructuredArgument>> oddPaths = findOddPathsForArg(arg, forestTreeFor);
+							List<List<StructuredArgument>> evenPaths = findEvenPathsForArg(arg, forestTreeFor);
 							if (arg.body.isEmpty()) {
-								List<Argument> argsAt = new ArrayList<>();
+								List<StructuredArgument> argsAt = new ArrayList<>();
 								argsAt = findArgumentsAt(1, evenPaths);
 								//System.out.println(argsAt);
 								txtExp.append("\nAnswerer: I am certain that " + App1.convertNegListAtoms(App1.convertToArrayListAtom(query.getAtomSet())));
 								txtExp.append(", because we know that ");
-								List<Argument> nextArg = new ArrayList<>();
-								List<Argument> newList = new ArrayList<>();
+								List<StructuredArgument> nextArg = new ArrayList<>();
+								List<StructuredArgument> newList = new ArrayList<>();
 
 								for (int i = 0; i < argsAt.size(); i++) {
-									Argument a = argsAt.get(i);
+									StructuredArgument a = argsAt.get(i);
 									// a case that the argument a is the last place in argsAt. Should have a case check whether a.body.isnotempty. In this code, we assume that a.body.isEmpty
 									if (i == argsAt.size()-1) {
 										if (a.body.isEmpty()) {
@@ -970,9 +971,9 @@ public class UserInterface extends JFrame {
 								}
 
 								// remove all path has length =2
-								List<List<Argument>> newPaths = new ArrayList<>();
+								List<List<StructuredArgument>> newPaths = new ArrayList<>();
 								for(int m = 0; m < evenPaths.size(); m++) {
-									List<Argument> path = evenPaths.get(m);
+									List<StructuredArgument> path = evenPaths.get(m);
 									if (path.size() > 2) {
 										newPaths.add(path);
 									}
@@ -980,7 +981,7 @@ public class UserInterface extends JFrame {
 
 								// newList considers the elements at i =1 (i.e., the second place in the path) where path.size() >2
 								evenPaths = newPaths;	
-								for (List<Argument> path : evenPaths) {
+								for (List<StructuredArgument> path : evenPaths) {
 									newList.add(path.get(1));
 								}
 								if (newList.isEmpty()) {
@@ -990,7 +991,7 @@ public class UserInterface extends JFrame {
 									cbQuestioner.setModel(subModel);
 								} else {
 									cbQuestioner.removeAllItems();
-									for (Argument temp : newList) {
+									for (StructuredArgument temp : newList) {
 										nextArg.addAll(findNextArgs(temp, 1, evenPaths));
 									}
 									previousArgs.clear();
@@ -998,7 +999,7 @@ public class UserInterface extends JFrame {
 									//	System.out.println("previous: " + previousArgs);
 									//	System.out.println("Next: " + nextArg);
 									//add elements in NextArg to cbQuestioner.
-									for (Argument next : nextArg) {
+									for (StructuredArgument next : nextArg) {
 										cbQuestioner.addItem(next);
 									}
 									index = 2; // consider element at the third place in the path
@@ -1010,13 +1011,13 @@ public class UserInterface extends JFrame {
 								txtExp.append(", because we know that ");
 								txtExp.append(printArg(newArgForQuery.get(0)) + ". We also know that ");
 								// code below is similar to the case of a.body.isEmpty()
-								List<Argument> argsAt = new ArrayList<>();
+								List<StructuredArgument> argsAt = new ArrayList<>();
 								argsAt = findArgumentsAt(1, evenPaths);								
-								List<Argument> nextArg = new ArrayList<>();
-								List<Argument> newList = new ArrayList<>();
+								List<StructuredArgument> nextArg = new ArrayList<>();
+								List<StructuredArgument> newList = new ArrayList<>();
 
 								for (int i = 0; i < argsAt.size(); i++) {
-									Argument a = argsAt.get(i);
+									StructuredArgument a = argsAt.get(i);
 									// a case that the argument a is the last place in argsAt. Should have a case check whether a.body.isnotempty. In this code, we assume that a.body.isEmpty
 									if (i == argsAt.size()-1) {
 										if (a.body.isEmpty()) {
@@ -1050,9 +1051,9 @@ public class UserInterface extends JFrame {
 								}
 
 								// remove all path has length =2
-								List<List<Argument>> newPaths = new ArrayList<>();
+								List<List<StructuredArgument>> newPaths = new ArrayList<>();
 								for(int m = 0; m < evenPaths.size(); m++) {
-									List<Argument> path = evenPaths.get(m);
+									List<StructuredArgument> path = evenPaths.get(m);
 									if (path.size() > 2) {
 										newPaths.add(path);
 									}
@@ -1060,7 +1061,7 @@ public class UserInterface extends JFrame {
 
 								// newList considers the elements at i =1 (i.e., the second place in the path) where path.size() >2
 								evenPaths = newPaths;	
-								for (List<Argument> path : evenPaths) {
+								for (List<StructuredArgument> path : evenPaths) {
 									newList.add(path.get(1));
 								}
 								if (newList.isEmpty()) {
@@ -1070,7 +1071,7 @@ public class UserInterface extends JFrame {
 									cbQuestioner.setModel(subModel);
 								} else {
 									cbQuestioner.removeAllItems();
-									for (Argument temp : newList) {
+									for (StructuredArgument temp : newList) {
 										nextArg.addAll(findNextArgs(temp, 1, evenPaths));
 									}
 									previousArgs.clear();
@@ -1078,7 +1079,7 @@ public class UserInterface extends JFrame {
 									//	System.out.println("previous: " + previousArgs);
 									//	System.out.println("Next: " + nextArg);
 									//add elements in NextArg to cbQuestioner.
-									for (Argument next : nextArg) {
+									for (StructuredArgument next : nextArg) {
 										cbQuestioner.addItem(next);
 									}
 									index = 2; // consider element at the third place in the path
@@ -1095,12 +1096,12 @@ public class UserInterface extends JFrame {
 						else if (subModel.getIndexOf(selectedItem) == 1) {
 							removedItIndex = 1;
 							txtExp.append("\nQuestioner: Why do you think that " + App1.convertListAtoms(App1.convertToArrayListAtom(query.getAtomSet())));						
-							Argument arg = argCr;
+							StructuredArgument arg = argCr;
 							forestTreeFor = findPathsforArgument(arg, forestTrees);
-							List<List<Argument>> oddPaths = findOddPathsForArg(arg, forestTreeFor);
-							List<List<Argument>> evenPaths = findEvenPathsForArg(arg, forestTreeFor);
+							List<List<StructuredArgument>> oddPaths = findOddPathsForArg(arg, forestTreeFor);
+							List<List<StructuredArgument>> evenPaths = findEvenPathsForArg(arg, forestTreeFor);
 
-							List<Argument> nextArgs = new ArrayList<>();
+							List<StructuredArgument> nextArgs = new ArrayList<>();
 							nextArgs = findNextArgs(arg, 0, oddPaths);
 							//	System.out.println("Next at begin: " + nextArgs);
 							previousArgs.clear();
@@ -1111,7 +1112,7 @@ public class UserInterface extends JFrame {
 								// add the next argment to cbQuestioner
 								if (!nextArgs.isEmpty()) {
 									cbQuestioner.removeAllItems();
-									for (Argument a : nextArgs) {
+									for (StructuredArgument a : nextArgs) {
 										cbQuestioner.addItem(a);
 									}
 
@@ -1129,7 +1130,7 @@ public class UserInterface extends JFrame {
 									txtExp.append(printArg(arg));
 									if (!nextArgs.isEmpty()) {
 										cbQuestioner.removeAllItems();
-										for (Argument a : nextArgs) {
+										for (StructuredArgument a : nextArgs) {
 											cbQuestioner.addItem(a);
 										}
 
@@ -1162,11 +1163,11 @@ public class UserInterface extends JFrame {
 					else			
 						if(cbQuestioner.getSelectedIndex() >= 0) {
 
-							Argument arg = (Argument) cbQuestioner.getSelectedItem();
+							StructuredArgument arg = (StructuredArgument) cbQuestioner.getSelectedItem();
 							forestTreeFor = findPathsforArgument(arg, forestTrees);
-							List<List<Argument>> oddPaths = findOddPathsForArg(arg, forestTreeFor); //le
+							List<List<StructuredArgument>> oddPaths = findOddPathsForArg(arg, forestTreeFor); //le
 							//oddPaths = notSubList(oddPaths);
-							List<List<Argument>> evenPaths = findEvenPathsForArg(arg, forestTreeFor); // chan
+							List<List<StructuredArgument>> evenPaths = findEvenPathsForArg(arg, forestTreeFor); // chan
 							//	System.out.println("odd paths: " + oddPaths);
 							//	System.out.println("even paths: " + evenPaths);
 
@@ -1174,16 +1175,16 @@ public class UserInterface extends JFrame {
 
 							if ((oddPaths.size() == 0) && (evenPaths.size() != 0)) { // not accepted
 								if (arg.body.isEmpty()) {
-									List<Argument> argsAt = new ArrayList<>();
+									List<StructuredArgument> argsAt = new ArrayList<>();
 									argsAt = findArgumentsAt(1, evenPaths);
 									//	System.out.println(argsAt);
 									txtExp.append("\nAnswerer: I am certain that " + App1.convertNegListAtoms(App1.convertToArrayListAtom(query.getAtomSet())));
 									txtExp.append(", because we know that ");
-									List<Argument> nextArg = new ArrayList<>();
-									List<Argument> newList = new ArrayList<>();
+									List<StructuredArgument> nextArg = new ArrayList<>();
+									List<StructuredArgument> newList = new ArrayList<>();
 									//for (Argument a : argsAt) {	
 									for (int i = 0; i < argsAt.size(); i++) {
-										Argument a = argsAt.get(i);
+										StructuredArgument a = argsAt.get(i);
 										// a case that the argument a is the last place in argsAt. Should have a case check whether a.body.isnotempty. In this code, we assume that a.body.isEmpty
 										if (i == argsAt.size()-1) {
 											txtExp.append(App1.convertAtom(a.head));
@@ -1194,9 +1195,9 @@ public class UserInterface extends JFrame {
 									}
 
 									// remove all path has length =2
-									List<List<Argument>> newPaths = new ArrayList<>();
+									List<List<StructuredArgument>> newPaths = new ArrayList<>();
 									for(int m = 0; m < evenPaths.size(); m++) {
-										List<Argument> path = evenPaths.get(m);
+										List<StructuredArgument> path = evenPaths.get(m);
 										if (path.size() > 2) {
 											newPaths.add(path);
 										}
@@ -1204,7 +1205,7 @@ public class UserInterface extends JFrame {
 
 									// newList considers the elements at i =1 (i.e., the second place in the path) where path.size() >2
 									evenPaths = newPaths;	
-									for (List<Argument> path : evenPaths) {
+									for (List<StructuredArgument> path : evenPaths) {
 										newList.add(path.get(1));
 									}
 									if (newList.isEmpty()) {
@@ -1214,7 +1215,7 @@ public class UserInterface extends JFrame {
 										cbQuestioner.setModel(subModel);
 									} else {
 										cbQuestioner.removeAllItems();
-										for (Argument temp : newList) {
+										for (StructuredArgument temp : newList) {
 											nextArg.addAll(findNextArgs(temp, 1, evenPaths));
 										}
 										previousArgs.clear();
@@ -1222,7 +1223,7 @@ public class UserInterface extends JFrame {
 										//	System.out.println("previous: " + previousArgs);
 										//	System.out.println("Next: " + nextArg);
 										//add elements in NextArg to cbQuestioner.
-										for (Argument next : nextArg) {
+										for (StructuredArgument next : nextArg) {
 											cbQuestioner.addItem(next);
 										}
 										index = 2; // consider element at the third place in the path
@@ -1264,7 +1265,7 @@ public class UserInterface extends JFrame {
 							}
 
 							else if ((oddPaths.size() != 0) && (evenPaths.size() == 0)) { // sckeptical and grounded semantics
-								List<Argument> nextArgs = new ArrayList<>();
+								List<StructuredArgument> nextArgs = new ArrayList<>();
 								nextArgs = findNextArgs(arg, 0, oddPaths);
 								previousArgs.clear();
 								previousArgs.add(arg);
@@ -1275,7 +1276,7 @@ public class UserInterface extends JFrame {
 
 									if (!nextArgs.isEmpty()) {
 										cbQuestioner.removeAllItems();
-										for (Argument a : nextArgs) {
+										for (StructuredArgument a : nextArgs) {
 											cbQuestioner.addItem(a);
 										}
 
@@ -1293,7 +1294,7 @@ public class UserInterface extends JFrame {
 										txtExp.append(printArg(arg));
 										if (!nextArgs.isEmpty()) {
 											cbQuestioner.removeAllItems();
-											for (Argument a : nextArgs) {
+											for (StructuredArgument a : nextArgs) {
 												cbQuestioner.addItem(a);
 											}
 
@@ -1336,17 +1337,17 @@ public class UserInterface extends JFrame {
 					}
 					else {
 						//get the current items in cbQuestioner
-						List<Argument> currentArgs = new ArrayList<>();
+						List<StructuredArgument> currentArgs = new ArrayList<>();
 						int num = cbQuestioner.getItemCount();
 						for (int i = 0; i < num; i++) {
-							Argument item = cbQuestioner.getItemAt(i);
+							StructuredArgument item = cbQuestioner.getItemAt(i);
 							currentArgs.add(item);
 						}
 
 						System.out.println("current args: " + currentArgs);
 
 						int curentIndex = index;
-						Argument selectedArg = (Argument) cbQuestioner.getSelectedItem();
+						StructuredArgument selectedArg = (StructuredArgument) cbQuestioner.getSelectedItem();
 						System.out.println("curent Index : " + curentIndex + " selectedArg: " + selectedArg );
 
 
@@ -1355,13 +1356,13 @@ public class UserInterface extends JFrame {
 									"Message Dialog", JOptionPane.PLAIN_MESSAGE);
 						}
 						else if(cbQuestioner.getSelectedIndex() >= 0) {
-							Argument arg = (Argument) cbQuestioner.getSelectedItem();
+							StructuredArgument arg = (StructuredArgument) cbQuestioner.getSelectedItem();
 							System.out.print("arg: " + arg + " forestTress: " + forestTrees);
 
-							//List<Argument> nextArgs = findNextArgs(selectedArg, curentIndex, forestTrees);
-							List<Argument> nextArgs1 = findNextArgs(arg, curentIndex, forestTrees);
+							//List<StructuredArgument> nextArgs = findNextArgs(selectedArg, curentIndex, forestTrees);
+							List<StructuredArgument> nextArgs1 = findNextArgs(arg, curentIndex, forestTrees);
 							txtExp.append("\nQuestioner: That is not true. ");
-							for (Argument pre : previousArgs) {
+							for (StructuredArgument pre : previousArgs) {
 								if (previousArgs.lastIndexOf(pre) == previousArgs.size()-1) {
 									if (!pre.body.isEmpty()) {
 										txtExp.append(App1.convertNegListAtoms(pre.getPremises()) + ", because " + App1.convertAtom(arg.head) );
@@ -1408,7 +1409,7 @@ public class UserInterface extends JFrame {
 								if (!nextArgs1.isEmpty()) {
 									txtExp.append("\nAnswerer: " + App1.convertNegListAtoms(arg.getPremises()) + ", because " + App1.convertAtom(nextArgs1.get(0).head) );
 									currentArgs.remove(selectedArg);
-									List<Argument> newArgs1 = currentArgs;
+									List<StructuredArgument> newArgs1 = currentArgs;
 									if (newArgs1.isEmpty()) {
 										if(cbExp.getSelectedItem().equals("Why is the answer certain?") || cbExp.getSelectedItem().equals("Why is the answer accepted under grounded semantics?")) {
 											txtExp.append(". I was right that " + App1.convertListAtoms(App1.convertToArrayListAtom(query.getAtomSet())));
@@ -1493,7 +1494,7 @@ public class UserInterface extends JFrame {
 						btnChoose.setVisible(true);
 					}
 					cbQuestioner.removeAllItems();					
-					for (Argument arg : newArgForQuery) {
+					for (StructuredArgument arg : newArgForQuery) {
 						cbQuestioner.addItem(arg);
 					}
 
@@ -1524,7 +1525,7 @@ public class UserInterface extends JFrame {
 					} else {
 						query = DlgpParser.parseQuery(strQuery);
 						txtTree.setText("");
-						argumentForQuery = new ArrayList<Argument>();
+						argumentForQuery = new ArrayList<StructuredArgument>();
 						argumentForQuery = App1.GetArgumentForQuery(query, ListArgument, saturatedAtom);
 						//	System.out.println("Set of Arguments for Query: " + argumentForQuery);
 
@@ -1541,7 +1542,7 @@ public class UserInterface extends JFrame {
 							} 
 							else {
 								// Check credulous, skepcitcal, non-accept for argument			
-								for (Argument arg: argumentForQuery) {
+								for (StructuredArgument arg: argumentForQuery) {
 									for (int i=0; i<extensions.size(); i++) {
 										if (extensions.get(i).contains(arg)){
 											count++;
@@ -1564,12 +1565,12 @@ public class UserInterface extends JFrame {
 
 							Dist = new ArrayList<Distance>();
 							for (int i=0; i < ListArgument.size(); i++) {
-								Argument a = ListArgument.get(i);
+								StructuredArgument a = ListArgument.get(i);
 								//Reach.add(a);
 								Dist.add(new Distance(a,a,0));
 								for (int j=0; j < ListArgument.size(); j++) {
 									if (j != i) {
-										Argument b = ListArgument.get(j);
+										StructuredArgument b = ListArgument.get(j);
 										Dist.add(new Distance(a, b, 0 ));
 									}
 								}
@@ -1577,42 +1578,42 @@ public class UserInterface extends JFrame {
 
 							if ((count == extensions.size()) || (count/extensions.size() ==  extensions.size())) { // certain
 								forestTrees = new ArrayList<>();
-								ArrayList<ArrayList<Argument>> printDef = new ArrayList<>();
-								for (Argument a : argumentForQuery) {
-									Visited = new ArrayList<Attack>();
+								ArrayList<ArrayList<StructuredArgument>> printDef = new ArrayList<>();
+								for (StructuredArgument a : argumentForQuery) {
+									Visited = new ArrayList<SetAttack>();
 									NewDist = new ArrayList<Distance>();
-									Reach = new ArrayList<Argument>();
+									Reach = new ArrayList<StructuredArgument>();
 									NewReReach(a, a, 0, null, SetOfAtts);
-									ArrayList<Argument> reachOdd = new ArrayList<>();
-									ArrayList<Argument> reachEven = new ArrayList<>();
+									ArrayList<StructuredArgument> reachOdd = new ArrayList<>();
+									ArrayList<StructuredArgument> reachEven = new ArrayList<>();
 									reachOdd = App1.getReachOdd(a, NewDist);
 									reachEven = App1.getReachEven(a, NewDist);
-									ArrayList<Argument> DefBy = reachEven;
+									ArrayList<StructuredArgument> DefBy = reachEven;
 
 									// compute a set of extension for an argument and merge them into one set.
-									Set<Argument> merge = new HashSet<Argument>();
+									Set<StructuredArgument> merge = new HashSet<StructuredArgument>();
 									for (int i = 0; i < extensions.size(); i++) {
-										ArrayList<Argument> subDef = App1.intersection(DefBy, extensions.get(i));
+										ArrayList<StructuredArgument> subDef = App1.intersection(DefBy, extensions.get(i));
 										merge.addAll(subDef);				
 									}
-									ArrayList<Argument> DefByExt = new ArrayList<>(merge);
+									ArrayList<StructuredArgument> DefByExt = new ArrayList<>(merge);
 									printDef.add(DefBy);
 
 									//print paths from A to B
 									Graph graph = new Graph();
 									//addEdge to graph
 									for (int i = 0; i < tempAtt.size(); i++) {
-										Attack at = (Attack) tempAtt.get(i);
+										SetAttack at = (SetAttack) tempAtt.get(i);
 										graph.addEdge(at.target, at.source);
 									}
-									Argument start = a;
-									List<List<Argument>> paths = new ArrayList<>();
+									StructuredArgument start = a;
+									List<List<StructuredArgument>> paths = new ArrayList<>();
 
-									for (Argument b : DefByExt) {
-										Argument end = b;
+									for (StructuredArgument b : DefByExt) {
+										StructuredArgument end = b;
 										if (!start.equals(end)) {
 											paths = graph.printAllPathsOdd(start, end);
-											for(List<Argument> path : paths) {
+											for(List<StructuredArgument> path : paths) {
 												forestTrees.add(path);										
 											}
 										}
@@ -1622,7 +1623,7 @@ public class UserInterface extends JFrame {
 								txtTree.append("Explanation for the certain answer: <{ " + argumentForQuery + "}, { " + printDef);
 
 								txtTree.append("\nDispute Forest: \n");
-								for (List<Argument> t : forestTrees) {
+								for (List<StructuredArgument> t : forestTrees) {
 									txtTree.append(printPathUser(t) + "\n");
 								}
 
@@ -1631,15 +1632,15 @@ public class UserInterface extends JFrame {
 							} 
 							else	if (App1.includesArrayList(grd, argumentForQuery) == true) { //grounded semantic
 								forestTrees = new ArrayList<>();
-								ArrayList<ArrayList<Argument>> printDef = new ArrayList<>();
+								ArrayList<ArrayList<StructuredArgument>> printDef = new ArrayList<>();
 
-								for (Argument a : argumentForQuery) {
-									Visited = new ArrayList<Attack>();
+								for (StructuredArgument a : argumentForQuery) {
+									Visited = new ArrayList<SetAttack>();
 									NewDist = new ArrayList<Distance>();
-									Reach = new ArrayList<Argument>();
+									Reach = new ArrayList<StructuredArgument>();
 									NewReReach(a, a, 0, null, SetOfAtts);
-									ArrayList<Argument> reachOdd = new ArrayList<>();
-									ArrayList<Argument> reachEven = new ArrayList<>();
+									ArrayList<StructuredArgument> reachOdd = new ArrayList<>();
+									ArrayList<StructuredArgument> reachEven = new ArrayList<>();
 									reachOdd = App1.getReachOdd(a, NewDist);
 									reachEven = App1.getReachEven(a, NewDist);
 									printDef.add(reachEven);
@@ -1648,18 +1649,18 @@ public class UserInterface extends JFrame {
 									Graph graph = new Graph();
 									//addEdge to graph
 									for (int i = 0; i < tempAtt.size(); i++) {
-										Attack at = (Attack) tempAtt.get(i);
+										SetAttack at = (SetAttack) tempAtt.get(i);
 										graph.addEdge(at.target, at.source);
 									}
 
-									Argument start = a;
-									List<List<Argument>> paths = new ArrayList<>();
+									StructuredArgument start = a;
+									List<List<StructuredArgument>> paths = new ArrayList<>();
 
-									for (Argument b : grd) {
-										Argument end = b;
+									for (StructuredArgument b : grd) {
+										StructuredArgument end = b;
 										if (!start.equals(end)) {											
 											paths = graph.printAllPaths(start, end);
-											for(List<Argument> path : paths) {
+											for(List<StructuredArgument> path : paths) {
 												forestTrees.add(path);
 												//	txtTree.append(printPathUser(path) + "\n");
 											}
@@ -1673,7 +1674,7 @@ public class UserInterface extends JFrame {
 								} else {
 									txtTree.append("Explanation for acceptance under grounded semantics: <{ " + argumentForQuery + "}, { " + printDef + "}>");
 									txtTree.append("\nDispute Trees: \n");
-									for (List<Argument> t : forestTrees) {
+									for (List<StructuredArgument> t : forestTrees) {
 										txtTree.append(printPathUser(t) + "\n");
 									}
 								}
@@ -1688,41 +1689,41 @@ public class UserInterface extends JFrame {
 							}
 							else if (count == 0) { // non-acceptance
 								forestTrees = new ArrayList<>();
-								ArrayList<ArrayList<Argument>> printAtt = new ArrayList<>();
-								for (Argument a : argumentForQuery) {
-									Visited = new ArrayList<Attack>();
+								ArrayList<ArrayList<StructuredArgument>> printAtt = new ArrayList<>();
+								for (StructuredArgument a : argumentForQuery) {
+									Visited = new ArrayList<SetAttack>();
 									NewDist = new ArrayList<Distance>();
-									Reach = new ArrayList<Argument>();
+									Reach = new ArrayList<StructuredArgument>();
 									NewReReach(a, a, 0, null, SetOfAtts);
 
-									ArrayList<Argument> reachOdd = new ArrayList<>();
-									ArrayList<Argument> reachEven = new ArrayList<>();
+									ArrayList<StructuredArgument> reachOdd = new ArrayList<>();
+									ArrayList<StructuredArgument> reachEven = new ArrayList<>();
 									reachOdd = App1.getReachOdd(a, NewDist);
 									printAtt.add(reachOdd);
 
 									//Compute NotDef for an argument wrt extensions
-									ArrayList<ArrayList<Argument>> NotDefOfA = App1.computeNotDefBy(reachOdd, extensions, NewDist);
+									ArrayList<ArrayList<StructuredArgument>> NotDefOfA = App1.computeNotDefBy(reachOdd, extensions, NewDist);
 									// merge all extensions to one
-									Set<Argument> set = new HashSet<Argument>();
+									Set<StructuredArgument> set = new HashSet<StructuredArgument>();
 									for (int i = 0; i < NotDefOfA.size(); i++) {
 										set.addAll(NotDefOfA.get(i));				
 									}
-									ArrayList<Argument> combinedList = new ArrayList<>(set);
+									ArrayList<StructuredArgument> combinedList = new ArrayList<>(set);
 
 									//print paths from A to B
 									Graph graph = new Graph();
 									//addEdge to graph
 									for (int i = 0; i < tempAtt.size(); i++) {
-										Attack at = (Attack) tempAtt.get(i);
+										SetAttack at = (SetAttack) tempAtt.get(i);
 										graph.addEdge(at.target, at.source);
 									}
-									Argument start = a;
-									List<List<Argument>> paths = new ArrayList<>();
-									for (Argument b : combinedList) {
-										Argument end = b;
+									StructuredArgument start = a;
+									List<List<StructuredArgument>> paths = new ArrayList<>();
+									for (StructuredArgument b : combinedList) {
+										StructuredArgument end = b;
 										if (b.myID != a.myID) {
 											paths = graph.printAllPathsEven(start, end);
-											for(List<Argument> path : paths) {
+											for(List<StructuredArgument> path : paths) {
 												forestTrees.add(path);
 											}
 										}
@@ -1730,7 +1731,7 @@ public class UserInterface extends JFrame {
 								} 
 								txtTree.append("Explanation for the non-acceptance answer: <{ " + argumentForQuery + "}, { " + printAtt + " }>");
 								txtTree.append("\nDispute Trees: \n");
-								for (List<Argument> t : forestTrees) {
+								for (List<StructuredArgument> t : forestTrees) {
 									txtTree.append(printPathUser(t) + "\n");
 								}
 
@@ -1740,63 +1741,63 @@ public class UserInterface extends JFrame {
 							}
 							else {// credulous
 								forestTrees = new ArrayList<>();
-								ArrayList<ArrayList<Argument>> printAtt = new ArrayList<>();
-								ArrayList<ArrayList<Argument>> printDef = new ArrayList<>();
-								for (Argument a : argumentForQuery) {
-									Visited = new ArrayList<Attack>();
+								ArrayList<ArrayList<StructuredArgument>> printAtt = new ArrayList<>();
+								ArrayList<ArrayList<StructuredArgument>> printDef = new ArrayList<>();
+								for (StructuredArgument a : argumentForQuery) {
+									Visited = new ArrayList<SetAttack>();
 									NewDist = new ArrayList<Distance>();
-									Reach = new ArrayList<Argument>();
+									Reach = new ArrayList<StructuredArgument>();
 									NewReReach(a, a, 0, null, SetOfAtts);
 
-									ArrayList<Argument> reachOdd = new ArrayList<>();
-									ArrayList<Argument> reachEven = new ArrayList<>();
+									ArrayList<StructuredArgument> reachOdd = new ArrayList<>();
+									ArrayList<StructuredArgument> reachEven = new ArrayList<>();
 									reachOdd = App1.getReachOdd(a, NewDist);
 									reachEven = App1.getReachEven(a, NewDist);
-									ArrayList<Argument> DefBy = reachEven;
+									ArrayList<StructuredArgument> DefBy = reachEven;
 									printDef.add(DefBy);
 									printAtt.add(reachOdd);
 									//Compute Def for an argument wrt extensions
 
-									Set<Argument> merge = new HashSet<Argument>();
+									Set<StructuredArgument> merge = new HashSet<StructuredArgument>();
 									for (int i = 0; i < extensions.size(); i++) {
-										ArrayList<Argument> subDef = App1.intersection(DefBy, extensions.get(i));
+										ArrayList<StructuredArgument> subDef = App1.intersection(DefBy, extensions.get(i));
 										merge.addAll(subDef);				
 									}
-									ArrayList<Argument> DefByExt = new ArrayList<>(merge);
+									ArrayList<StructuredArgument> DefByExt = new ArrayList<>(merge);
 
-									ArrayList<ArrayList<Argument>> NotDefOfA = App1.computeNotDefBy(reachOdd, extensions, NewDist);
-									Set<Argument> set = new HashSet<Argument>();
+									ArrayList<ArrayList<StructuredArgument>> NotDefOfA = App1.computeNotDefBy(reachOdd, extensions, NewDist);
+									Set<StructuredArgument> set = new HashSet<StructuredArgument>();
 									for (int i = 0; i < NotDefOfA.size(); i++) {
 										set.addAll(NotDefOfA.get(i));				
 									}
-									ArrayList<Argument> combinedList = new ArrayList<>(set);
+									ArrayList<StructuredArgument> combinedList = new ArrayList<>(set);
 
 									Graph graph = new Graph();
 									//addEdge to graph
 									for (int i = 0; i < tempAtt.size(); i++) {
-										Attack at = (Attack) tempAtt.get(i);
+										SetAttack at = (SetAttack) tempAtt.get(i);
 										graph.addEdge(at.target, at.source);
 									}
 
-									Argument start = a;
+									StructuredArgument start = a;
 
 									//print paths to explain the non-acceptance
-									List<List<Argument>> pathsForNon = new ArrayList<>();
-									for (Argument b : combinedList) {
-										Argument end1 = b;
+									List<List<StructuredArgument>> pathsForNon = new ArrayList<>();
+									for (StructuredArgument b : combinedList) {
+										StructuredArgument end1 = b;
 										if (b.myID != a.myID) {
 											pathsForNon = graph.printAllPathsEven(start, end1);
-											for(List<Argument> path : pathsForNon) {
+											for(List<StructuredArgument> path : pathsForNon) {
 												forestTrees.add(path);										
 											}
 										}
 									}
-									List<List<Argument>>  paths = new ArrayList<>();
-									for (Argument b : DefByExt) {
-										Argument end = b;	
+									List<List<StructuredArgument>>  paths = new ArrayList<>();
+									for (StructuredArgument b : DefByExt) {
+										StructuredArgument end = b;	
 										if (a.myID != b.myID) {
 											paths = graph.printAllPaths(start, end);
-											for(List<Argument> path : paths) {
+											for(List<StructuredArgument> path : paths) {
 												forestTrees.add(path);										
 											}
 										} 
@@ -1818,7 +1819,7 @@ public class UserInterface extends JFrame {
 
 
 								txtTree.append("\nDispute Trees: \n");
-								for (List<Argument> t : forestTrees) {
+								for (List<StructuredArgument> t : forestTrees) {
 									txtTree.append(printPathUser(t) + "\n");
 								}
 
@@ -1992,15 +1993,15 @@ public class UserInterface extends JFrame {
 		}	
 	}
 
-	private static List<Argument> findArgumentsAt(int index, List<List<Argument>> forestTrees){
-		List<Argument> argsAt = new ArrayList<>();
-		for (List<Argument> tree : forestTrees) {
+	private static List<StructuredArgument> findArgumentsAt(int index, List<List<StructuredArgument>> forestTrees){
+		List<StructuredArgument> argsAt = new ArrayList<>();
+		for (List<StructuredArgument> tree : forestTrees) {
 			for (int i=0; i<tree.size(); i++) {
 				argsAt.add(tree.get(index));
 			}
 		}
 
-		List<Argument> uniqueArgs = argsAt.stream()
+		List<StructuredArgument> uniqueArgs = argsAt.stream()
 				.distinct()
 				.collect(Collectors.toList());
 		return uniqueArgs;
@@ -2023,9 +2024,9 @@ public class UserInterface extends JFrame {
 			}
 			txtExp.append(". \n");	
 			cbQuestioner.removeAllItems();
-			List<Argument> argsAt = new ArrayList<>();
+			List<StructuredArgument> argsAt = new ArrayList<>();
 			argsAt = findArgumentsAt(1,forestTrees);
-			for (Argument arg : argsAt) {
+			for (StructuredArgument arg : argsAt) {
 				cbQuestioner.addItem(arg);
 			}
 
@@ -2046,9 +2047,9 @@ public class UserInterface extends JFrame {
 
 
 
-	private static List<List<Argument>> findPathsforArgument (Argument arg, List<List<Argument>> forestTrees ){
-		List<List<Argument>> newForestTrees = new ArrayList<>();
-		for (List<Argument> tree : forestTrees) {
+	private static List<List<StructuredArgument>> findPathsforArgument (StructuredArgument arg, List<List<StructuredArgument>> forestTrees ){
+		List<List<StructuredArgument>> newForestTrees = new ArrayList<>();
+		for (List<StructuredArgument> tree : forestTrees) {
 			if (tree.contains(arg)) {
 				newForestTrees.add(tree);
 			}
@@ -2059,9 +2060,9 @@ public class UserInterface extends JFrame {
 
 
 
-	private static List<List<Argument>> findOddPathsForArg (Argument arg, List<List<Argument>> forestTrees ){
-		List<List<Argument>> newForestTrees = new ArrayList<>();
-		for (List<Argument> tree : forestTrees) {
+	private static List<List<StructuredArgument>> findOddPathsForArg (StructuredArgument arg, List<List<StructuredArgument>> forestTrees ){
+		List<List<StructuredArgument>> newForestTrees = new ArrayList<>();
+		for (List<StructuredArgument> tree : forestTrees) {
 			if (tree.contains(arg)) {
 				if (tree.size() % 2 != 0 ) {
 					newForestTrees.add(tree);
@@ -2071,9 +2072,9 @@ public class UserInterface extends JFrame {
 		return newForestTrees;
 	}
 
-	private static List<List<Argument>> findEvenPathsForArg (Argument arg, List<List<Argument>> forestTrees ){
-		List<List<Argument>> newForestTrees = new ArrayList<>();
-		for (List<Argument> tree : forestTrees) {
+	private static List<List<StructuredArgument>> findEvenPathsForArg (StructuredArgument arg, List<List<StructuredArgument>> forestTrees ){
+		List<List<StructuredArgument>> newForestTrees = new ArrayList<>();
+		for (List<StructuredArgument> tree : forestTrees) {
 			if (tree.contains(arg)) {
 				if (tree.size() % 2 == 0 ) {
 					newForestTrees.add(tree);
@@ -2083,9 +2084,9 @@ public class UserInterface extends JFrame {
 		return newForestTrees;
 	}
 
-	/*private static int findPathsAtIndex (Argument arg, int index, List<List<Argument>> forestTrees){
-		List<List<Argument>> newForestTrees = new ArrayList<>();
-		for (List<Argument> tree : forestTrees) {
+	/*private static int findPathsAtIndex (Argument arg, int index, List<List<StructuredArgument>> forestTrees){
+		List<List<StructuredArgument>> newForestTrees = new ArrayList<>();
+		for (List<StructuredArgument> tree : forestTrees) {
 			tree.
 		}
 
@@ -2096,9 +2097,9 @@ public class UserInterface extends JFrame {
 
 	//}
 
-	private static List<Argument> findNextArgs (Argument arg, int index, List<List<Argument>> Paths) {
-		List<Argument> nextArgs = new ArrayList<>();
-		for (List<Argument> path : Paths) {
+	private static List<StructuredArgument> findNextArgs (StructuredArgument arg, int index, List<List<StructuredArgument>> Paths) {
+		List<StructuredArgument> nextArgs = new ArrayList<>();
+		for (List<StructuredArgument> path : Paths) {
 			if(path.size() > 2) {
 				for (int i = 0; i < path.size(); i++) {			
 					if ( path.get(i).equals(arg) && i == index ) {
@@ -2109,9 +2110,9 @@ public class UserInterface extends JFrame {
 		}
 		return nextArgs;
 	}
-	private static boolean checkArgAtPath2 (Argument a, List<List<Argument>> Paths) {
+	private static boolean checkArgAtPath2 (StructuredArgument a, List<List<StructuredArgument>> Paths) {
 		List<Boolean> result = new ArrayList();
-		for (List<Argument> path : Paths) {
+		for (List<StructuredArgument> path : Paths) {
 			if (path.contains(a)){
 				if ((path.size() == 2) && (path.indexOf(a) == path.size()-1)) {
 					result.add(true);
@@ -2130,16 +2131,16 @@ public class UserInterface extends JFrame {
 
 
 
-	private static List<List<Argument>> notSubList (List<List<Argument>> evenTrees) {
-		List<List<Argument>> newEvenTrees = new ArrayList<>(evenTrees);
-		List<List<Argument>> list1 = new ArrayList<>(evenTrees);
-		List<List<Argument>> list2 = new ArrayList<>(evenTrees);
+	private static List<List<StructuredArgument>> notSubList (List<List<StructuredArgument>> evenTrees) {
+		List<List<StructuredArgument>> newEvenTrees = new ArrayList<>(evenTrees);
+		List<List<StructuredArgument>> list1 = new ArrayList<>(evenTrees);
+		List<List<StructuredArgument>> list2 = new ArrayList<>(evenTrees);
 
 		for (int i = 0; i< list1.size() -1; i++) {
-			List<Argument> first = evenTrees.get(i);
+			List<StructuredArgument> first = evenTrees.get(i);
 
 			for (int j = 0; j <list2.size(); j++) {
-				List<Argument> second = evenTrees.get(j);
+				List<StructuredArgument> second = evenTrees.get(j);
 				if (first.containsAll(second)) {
 					if (isSubsetWithCommonPosition(second, first) == true ) {
 						newEvenTrees.remove(j);				
@@ -2150,7 +2151,7 @@ public class UserInterface extends JFrame {
 		return newEvenTrees;
 	}
 
-	public static boolean isSubsetWithCommonPosition(List<Argument> array1, List<Argument> array2) {
+	public static boolean isSubsetWithCommonPosition(List<StructuredArgument> array1, List<StructuredArgument> array2) {
 		if (array1.size() > array2.size()) {
 			return false; // array1 can't be a subset with common positions if it's longer
 		}
@@ -2166,16 +2167,16 @@ public class UserInterface extends JFrame {
 
 
 
-	public static void NewReReach(Argument a, Argument b, int n, ArrayList<Attack> S, ArrayList<Attack> Attacks){
+	public static void NewReReach(StructuredArgument a, StructuredArgument b, int n, ArrayList<SetAttack> S, ArrayList<SetAttack> Attacks){
 		Visited0 = S;
 
 		//get all attacks having the target as b and the source as c
-		ArrayList<Attack> Att = App1.GetAttacksFromArg(b,Attacks);
+		ArrayList<SetAttack> Att = App1.GetAttacksFromArg(b,Attacks);
 		//System.out.println("Att: " + Att);
-		for(Attack at : Att) {
+		for(SetAttack at : Att) {
 
 			for (int i = 0; i < at.source.size(); i++) {
-				Argument c = at.source.get(i);
+				StructuredArgument c = at.source.get(i);
 				if ((Visited0 == null) || (!Visited.contains(at))) {
 					if (!Reach.contains(c)) {
 						Reach.add(c);
@@ -2195,7 +2196,7 @@ public class UserInterface extends JFrame {
 			}
 		}
 	}
-	private String[] getComboBoxItems(List<Argument> path) {
+	private String[] getComboBoxItems(List<StructuredArgument> path) {
 		String[] items = new String[path.size()];
 		for (int i = 0; i < path.size(); i++) {
 			items[i] = path.get(i).toString();
@@ -2203,7 +2204,7 @@ public class UserInterface extends JFrame {
 		return items;
 	}
 
-	private static String printPathUser(List<Argument> path) {
+	private static String printPathUser(List<StructuredArgument> path) {
 		StringBuilder s = new StringBuilder();
 
 		s.append(stringArg(path.get(0)));
@@ -2216,7 +2217,7 @@ public class UserInterface extends JFrame {
 		return s.toString();
 	}
 
-	private static String stringArg(Argument a) {	
+	private static String stringArg(StructuredArgument a) {	
 		String result = "A" + a.myID + " :";
 		if (a.body.isEmpty()) {
 			result = result + App1.AtomWithoutArity(a.head);
@@ -2227,7 +2228,7 @@ public class UserInterface extends JFrame {
 
 	}
 
-	private static String printArg(Argument a) {
+	private static String printArg(StructuredArgument a) {
 		String result = new String();
 		if (a.body.isEmpty()) {
 			result = "";

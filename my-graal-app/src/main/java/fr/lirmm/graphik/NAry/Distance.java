@@ -1,13 +1,13 @@
 package fr.lirmm.graphik.NAry;
 
-import fr.lirmm.graphik.NAry.ArgumentationFramework.Argument;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.StructuredArgument;
 
 public class Distance {
-	public Argument source;
-	public Argument target;
+	public StructuredArgument source;
+	public StructuredArgument target;
 	public int dist;
 	
-	public Distance(Argument source, Argument target, int dist) {
+	public Distance(StructuredArgument source, StructuredArgument target, int dist) {
 		this.source = source;
 		this.target = target;
 		this.dist = dist;
