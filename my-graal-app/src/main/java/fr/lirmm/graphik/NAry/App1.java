@@ -22,8 +22,8 @@ import fr.lirmm.graphik.DEFT.gad.GADEdge;
 import fr.lirmm.graphik.DEFT.gad.Derivation;
 import fr.lirmm.graphik.DEFT.core.DefeasibleKB;
 
-import fr.lirmm.graphik.NAry.ArgumentationFramework.Argument;
-import fr.lirmm.graphik.NAry.ArgumentationFramework.Attack;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.StructuredArgument;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.SetAttack;
 import fr.lirmm.graphik.NAry.Query;
 
 import fr.lirmm.graphik.graal.api.backward_chaining.QueryRewriter;
@@ -98,18 +98,18 @@ public class App1 {
 	public static ConjunctiveQuery bottomQuery = new DefaultConjunctiveQuery(bottomAtomset, Collections.emptyList());
 	private static AtomSet defeasibleFacts = new LinkedListAtomSet();
 
-	private static ArrayList<ArrayList<Argument>> extensions;
-	private static ArrayList<Argument> ext;
-	private static ArrayList<Attack> Attacks;
-	private static ArrayList<Attack> Visited0;
-	private static ArrayList<Attack> Visited;
-	private static ArrayList<Argument> Reach;
+	private static ArrayList<ArrayList<StructuredArgument>> extensions;
+	private static ArrayList<StructuredArgument> ext;
+	private static ArrayList<SetAttack> Attacks;
+	private static ArrayList<SetAttack> Visited0;
+	private static ArrayList<SetAttack> Visited;
+	private static ArrayList<StructuredArgument> Reach;
 	private static ArrayList<Distance> Dist;
 	private static ArrayList<Distance> NewDist;
-	private static Map<Argument, ArrayList<Argument>> adjacencyList;
-	// public static ArrayList<Argument> Path;
-	private static ArrayList<Argument> ListArgument;
-	private static List<List<Argument>> tree;
+	private static Map<StructuredArgument, ArrayList<StructuredArgument>> adjacencyList;
+	// public static ArrayList<StructuredArgument> Path;
+	private static ArrayList<StructuredArgument> ListArgument;
+	private static List<List<StructuredArgument>> tree;
 	public static ArrayList<AtomSet> allMinimalConflicts;
 
 	public static DungAF af;
@@ -199,7 +199,7 @@ public class App1 {
 			AtomSet Test;
 			for (int i = ListArgument.size() - 1; i >= 0; i--) {
 				Test = new LinkedListAtomSet();
-				for (Atom p : ((Argument) ListArgument.get(i)).getPremises()) {
+				for (Atom p : ((StructuredArgument) ListArgument.get(i)).getPremises()) {
 					Test.add(p);
 				}
 				kbGenArgs.strictAtomSet = Test;
@@ -209,7 +209,7 @@ public class App1 {
 			}
 
 			System.out.println(".......List of arguments.......");
-			for (Argument A : ListArgument) {
+			for (StructuredArgument A : ListArgument) {
 				System.out.println(A);
 			}
 			System.out.println("Number of args: " + ListArgument.size());
@@ -223,7 +223,7 @@ public class App1 {
 
 			// compute attacks under equality rule
 			/*
-			 * if (!functionalruleset.isEmpty()) { for (Argument a : ListArgument) {
+			 * if (!functionalruleset.isEmpty()) { for (StructuredArgument a : ListArgument) {
 			 * ArrayList<Atom> supportsA = a.getPremises(); for (Argument b : ListArgument)
 			 * { Atom conB = b.head;
 			 * 
@@ -674,13 +674,13 @@ public class App1 {
 
 	// 2) compute all set of arguments
 
-	public static void AllSubset(ArrayList<ArrayList<Argument>> S, ArrayList<Argument> F)
+	public static void AllSubset(ArrayList<ArrayList<StructuredArgument>> S, ArrayList<StructuredArgument> F)
 			throws AtomSetException, ChaseException, HomomorphismException {
 		ArrayList F2 = new ArrayList();
 		F2.addAll(F);
 
 		if (!F2.isEmpty()) {
-			Argument a = (Argument) F2.get(0);
+			StructuredArgument a = (StructuredArgument) F2.get(0);
 
 			ArrayList Temp = new ArrayList();
 			for (ArrayList s : S) {
@@ -703,7 +703,7 @@ public class App1 {
 
 	// 3) compute recursively arguments deduced from a KBs
 
-	public static void recurSiveArgs(Atom a, HashMap<Atom, ArrayList<Argument>> dico, DefeasibleKB kb) {
+	public static void recurSiveArgs(Atom a, HashMap<Atom, ArrayList<StructuredArgument>> dico, DefeasibleKB kb) {
 		try {
 			Iterator localIterator2;
 			Iterator localIterator1 = kb.gad.getDerivations(a).iterator();
@@ -716,17 +716,23 @@ public class App1 {
 					if ((ge.getSources() == null) && (ge.getTarget().equals(a))) // this is a fact
 					{
 						if (dico.get(a) == null) {
-							dico.put(a, new ArrayList());
+							dico.put(a, new ArrayList<StructuredArgument>());
 						}
 						boolean contain = false;
-						for (Object p1 : (ArrayList) dico.get(a)) {
-							Argument p = (Argument) p1;
+						for (StructuredArgument p : dico.get(a)) {
 							if (((p.IsPremise = Boolean.valueOf(true)).booleanValue()) && (p.head.equals(a))) {
 								contain = true;
 							}
-						}
+	
+						}		
+						//for (Object p1 : (ArrayList) dico.get(a)) {
+						//	StructuredArgument p = (StructuredArgument) p1;
+						//	if (((p.IsPremise = Boolean.valueOf(true)).booleanValue()) && (p.head.equals(a))) {
+						//		contain = true;
+						//	}
+						//}
 						if (!contain)
-							((ArrayList) dico.get(a)).add(new Argument(new ArrayList(), a, Boolean.valueOf(true)));
+							((ArrayList) dico.get(a)).add(new StructuredArgument(new ArrayList(), a, Boolean.valueOf(true)));
 					}
 
 					else if (ge.getTarget().equals(a)) {
@@ -747,8 +753,6 @@ public class App1 {
 						}
 						List T = new ArrayList();
 						for (Atom m : Source) {
-							// for (Object m1 : Source) {
-							// Atom m = (Atom)m1;
 							T.add((List) dico.get(m));
 						}
 						// for (List p : cartesianProduct(T)) {
@@ -760,16 +764,14 @@ public class App1 {
 
 							boolean contain = false;
 
-							// for (Object z1 : (ArrayList) dico.get(a)) {
-							// Argument z = (Argument) z1;
-							for (Argument z : (ArrayList<Argument>) dico.get(a)) {
+							for (StructuredArgument z : (ArrayList<StructuredArgument>) dico.get(a)) {
 								if ((z.body.containsAll(copy)) && (copy.containsAll(z.body))) {
 									contain = true;
 								}
 							}
 
 							if (!contain) {
-								((ArrayList) dico.get(a)).add(new Argument(copy, a, Boolean.valueOf(false)));
+								((ArrayList) dico.get(a)).add(new StructuredArgument(copy, a, Boolean.valueOf(false)));
 							}
 						}
 					}
@@ -782,8 +784,8 @@ public class App1 {
 
 	// 4) compute all arguments from a KBs
 
-	public static ArrayList<Argument> generateArgs(DefeasibleKB kb) {
-		ArrayList<Argument> result = new ArrayList<>();
+	public static ArrayList<StructuredArgument> generateArgs(DefeasibleKB kb) {
+		ArrayList<StructuredArgument> result = new ArrayList<>();
 		HashMap dictionnary = new HashMap();
 
 		for (Atom a : kb.gad.getVertices()) {
@@ -1012,9 +1014,9 @@ public class App1 {
 	// Get arguments for a given query from a given list of arguments.
 
 	// 1) Get arguments for an atom
-	public static ArrayList<Argument> getArgumentsForAtom(Atom atom, ArrayList<Argument> listOfArgs) {
-		ArrayList<Argument> arguments = new ArrayList();
-		for (Argument a : listOfArgs) {
+	public static ArrayList<StructuredArgument> getArgumentsForAtom(Atom atom, ArrayList<StructuredArgument> listOfArgs) {
+		ArrayList<StructuredArgument> arguments = new ArrayList();
+		for (StructuredArgument a : listOfArgs) {
 			if (a.head.equals(atom))
 				arguments.add(a);
 
@@ -1023,16 +1025,16 @@ public class App1 {
 	}
 
 	// 2) Get arguments for an AtomSet (conjunctive atoms)
-	public static ArrayList<ArrayList<Argument>> getArgsForAtomSet(AtomSet set, ArrayList<Argument> listOfArgs)
+	public static ArrayList<ArrayList<StructuredArgument>> getArgsForAtomSet(AtomSet set, ArrayList<StructuredArgument> listOfArgs)
 			throws IteratorException {
-		ArrayList<ArrayList<Argument>> result = new ArrayList<ArrayList<Argument>>();
+		ArrayList<ArrayList<StructuredArgument>> result = new ArrayList<ArrayList<StructuredArgument>>();
 		CloseableIterator<Atom> it = set.iterator();
 		while (it.hasNext()) {
 			Atom a = it.next();
 
 			for (int i = 0; i < listOfArgs.size(); i++) {
-				ArrayList<Argument> argGroup = new ArrayList<Argument>();
-				Argument arg = listOfArgs.get(i);
+				ArrayList<StructuredArgument> argGroup = new ArrayList<StructuredArgument>();
+				StructuredArgument arg = listOfArgs.get(i);
 				if ((arg.head.equals(a)) || (arg.head.getPredicate().equals(a.getPredicate()) && arg.head.getConstants().equals(a.getConstants()))) {					
 					argGroup.add(arg);
 					result.add(argGroup);
@@ -1058,17 +1060,17 @@ public class App1 {
 	 * result; }
 	 */
 
-	public static HashMap<AtomSet, ArrayList<Argument>> getArgumentsForQuery(ConjunctiveQuery query,
-			RuleSet positiveRuleSet, InMemoryAtomSet saturatedAtoms, ArrayList<Argument> listOfArgs)
+	public static HashMap<AtomSet, ArrayList<StructuredArgument>> getArgumentsForQuery(ConjunctiveQuery query,
+			RuleSet positiveRuleSet, InMemoryAtomSet saturatedAtoms, ArrayList<StructuredArgument> listOfArgs)
 			throws IteratorException, HomomorphismException {
-		HashMap<AtomSet, ArrayList<Argument>> result = new HashMap<AtomSet, ArrayList<Argument>>();
+		HashMap<AtomSet, ArrayList<StructuredArgument>> result = new HashMap<AtomSet, ArrayList<StructuredArgument>>();
 		ArrayList<AtomSet> answers = new ArrayList<AtomSet>();
 		answers = Query.getAnswers(query, positiveRuleSet, saturatedAtoms);
 		Iterator<AtomSet> ck = answers.iterator();
 		while (ck.hasNext()) {
 			AtomSet set = ck.next();
-			ArrayList<ArrayList<Argument>> argGroupsForAtomSet = getArgsForAtomSet(set, listOfArgs);
-			for (ArrayList<Argument> group : argGroupsForAtomSet) {
+			ArrayList<ArrayList<StructuredArgument>> argGroupsForAtomSet = getArgsForAtomSet(set, listOfArgs);
+			for (ArrayList<StructuredArgument> group : argGroupsForAtomSet) {
 				result.put(set, group);
 			}
 		}
@@ -1113,28 +1115,28 @@ public class App1 {
 
 	/* Get union of extensions for sceptical semantics */
 
-	public static ArrayList<Argument> getPreferredScepticalExt(ArrayList<ArrayList<Argument>> preferredExts) {
-		ArrayList<Argument> preferredScepticalExt = new ArrayList<Argument>();
+	public static ArrayList<StructuredArgument> getPreferredScepticalExt(ArrayList<ArrayList<StructuredArgument>> preferredExts) {
+		ArrayList<StructuredArgument> preferredScepticalExt = new ArrayList<StructuredArgument>();
 
 		if (preferredScepticalExt.isEmpty()) {
-			preferredScepticalExt = new ArrayList<Argument>(preferredExts.iterator().next()); // initialize
+			preferredScepticalExt = new ArrayList<StructuredArgument>(preferredExts.iterator().next()); // initialize
 																								// preferredScepticalExt
 																								// to a random
 																								// preferredExt;
 
-			for (ArrayList<Argument> nextExt : preferredExts) {
+			for (ArrayList<StructuredArgument> nextExt : preferredExts) {
 				preferredScepticalExt.retainAll(nextExt);
 			} // remove everything which isn't in every preferred extension;
 		}
 
-		return new ArrayList<Argument>(preferredScepticalExt);
+		return new ArrayList<StructuredArgument>(preferredScepticalExt);
 	}
 
 	/* check whether an argument is created from assertion without applying rules */
 
-	public static boolean checkAtomArg(ArrayList<Argument> A) {
+	public static boolean checkAtomArg(ArrayList<StructuredArgument> A) {
 		for (int i = 0; i < A.size(); i++) {
-			Argument a = A.get(i);
+			StructuredArgument a = A.get(i);
 			if (a.getPremises().equals(a.head)) {
 				return true;
 			}
@@ -1145,22 +1147,22 @@ public class App1 {
 	public static LinkedList getRemoves(LinkedList setOfAttackers) {
 		LinkedList removes = new LinkedList();
 		for (int i = 0; i < setOfAttackers.size(); i++) {
-			ArrayList<Argument> A = (ArrayList<Argument>) setOfAttackers.get(i);
+			ArrayList<StructuredArgument> A = (ArrayList<StructuredArgument>) setOfAttackers.get(i);
 			ArrayList<Atom> atomA = new ArrayList<Atom>();
-			ArrayList<Argument> bodyA = new ArrayList<Argument>();
+			ArrayList<StructuredArgument> bodyA = new ArrayList<StructuredArgument>();
 			for (int m = 0; m < A.size(); m++) {
-				Argument a = A.get(m);
+				StructuredArgument a = A.get(m);
 				atomA.addAll(A.get(m).getPremises());
 				bodyA.addAll(a.body);
 			}
 
 			for (int j = i + 1; j < setOfAttackers.size(); j++) {
-				ArrayList<Argument> B = (ArrayList<Argument>) setOfAttackers.get(j);
+				ArrayList<StructuredArgument> B = (ArrayList<StructuredArgument>) setOfAttackers.get(j);
 				if (!A.equals(B)) {
 					ArrayList<Atom> atomB = new ArrayList<Atom>();
-					ArrayList<Argument> bodyB = new ArrayList<Argument>();
+					ArrayList<StructuredArgument> bodyB = new ArrayList<StructuredArgument>();
 					for (int m = 0; m < B.size(); m++) {
-						Argument b = B.get(m);
+						StructuredArgument b = B.get(m);
 						atomB.addAll(B.get(m).getPremises());
 						bodyB.addAll(b.body);
 					}
@@ -1178,8 +1180,8 @@ public class App1 {
 
 	}
 
-	public static LinkedList<Argument> getAttackersFor(Argument arg, ArrayList SetOfAttacks,
-			ArrayList<Argument> ListOfArguments) {
+	public static LinkedList<StructuredArgument> getAttackersFor(StructuredArgument arg, ArrayList SetOfAttacks,
+			ArrayList<StructuredArgument> ListOfArguments) {
 
 		Iterator iter = SetOfAttacks.iterator();
 		LinkedList AttackersFor = new LinkedList();
@@ -1189,7 +1191,7 @@ public class App1 {
 		}
 
 		while (iter.hasNext()) {
-			Attack at = (Attack) iter.next();
+			SetAttack at = (SetAttack) iter.next();
 			if (at.target.equals(arg)) {
 				AttackersFor.add(at.source);
 			}
@@ -1207,18 +1209,18 @@ public class App1 {
 		return AttackersFor;
 	}
 
-	public static LinkedList<Defeater> getDefeatersFor(Argument arg, ArrayList SetOfAttacks,
-			ArrayList<Argument> ListOfArguments) throws AtomSetException, HomomorphismException,
+	public static LinkedList<Defeater> getDefeatersFor(StructuredArgument arg, ArrayList SetOfAttacks,
+			ArrayList<StructuredArgument> ListOfArguments) throws AtomSetException, HomomorphismException,
 			HomomorphismFactoryException, RuleApplicationException, ChaseException, IteratorException {
 		LinkedList<Defeater> defeaters = new LinkedList<Defeater>();
-		LinkedList<Argument> attackers = getAttackersFor(arg, SetOfAttacks, ListOfArguments);
+		LinkedList<StructuredArgument> attackers = getAttackersFor(arg, SetOfAttacks, ListOfArguments);
 
 		Iterator it = attackers.iterator();
 		while (it.hasNext()) {
 			ArrayList tempAttackers = new ArrayList();
 			tempAttackers = (ArrayList) it.next();
 			for (int i = 0; i < tempAttackers.size(); i++) {
-				Argument attacker = (Argument) tempAttackers.get(i);
+				StructuredArgument attacker = (StructuredArgument) tempAttackers.get(i);
 				int attackStatus = Defcompare(attacker, arg);
 				if (attackStatus != 0) {
 					defeaters.add(new Defeater(attacker, attackStatus));
@@ -1229,10 +1231,10 @@ public class App1 {
 		return defeaters;
 	}
 
-	private static boolean checkSubArg(ArrayList parents, Argument a) {
+	private static boolean checkSubArg(ArrayList parents, StructuredArgument a) {
 
 		for (int i = 0; i < parents.size(); i++) {
-			Argument b = (Argument) parents.get(i);
+			StructuredArgument b = (StructuredArgument) parents.get(i);
 			if ((b.getPremises().containsAll(a.getPremises())) || (a.getPremises().containsAll(b.getPremises()))) {
 				return true;
 			}
@@ -1240,9 +1242,9 @@ public class App1 {
 		return false;
 	}
 
-	private static ArrayList<ArrayList<Argument>> getExtentionsForAcceptance(Argument arg,
-			ArrayList<ArrayList<Argument>> extensions) {
-		ArrayList<ArrayList<Argument>> ExtforAcceptance = new ArrayList<ArrayList<Argument>>();
+	private static ArrayList<ArrayList<StructuredArgument>> getExtentionsForAcceptance(StructuredArgument arg,
+			ArrayList<ArrayList<StructuredArgument>> extensions) {
+		ArrayList<ArrayList<StructuredArgument>> ExtforAcceptance = new ArrayList<ArrayList<StructuredArgument>>();
 		for (int i = 0; i < extensions.size(); i++) {
 			if (extensions.get(i).contains(arg)) {
 				ExtforAcceptance.add(extensions.get(i));
@@ -1251,10 +1253,10 @@ public class App1 {
 		return ExtforAcceptance;
 	}
 
-	private static ArrayList<ArrayList<Argument>> getExtentionsForNonAcceptance(Argument arg,
-			ArrayList<ArrayList<Argument>> extensions) {
-		ArrayList<ArrayList<Argument>> ExtforAcceptance = new ArrayList<ArrayList<Argument>>();
-		ArrayList<ArrayList<Argument>> ExtforNonAcceptance = new ArrayList<ArrayList<Argument>>();
+	private static ArrayList<ArrayList<StructuredArgument>> getExtentionsForNonAcceptance(StructuredArgument arg,
+			ArrayList<ArrayList<StructuredArgument>> extensions) {
+		ArrayList<ArrayList<StructuredArgument>> ExtforAcceptance = new ArrayList<ArrayList<StructuredArgument>>();
+		ArrayList<ArrayList<StructuredArgument>> ExtforNonAcceptance = new ArrayList<ArrayList<StructuredArgument>>();
 		for (int i = 0; i < extensions.size(); i++) {
 			if (!extensions.get(i).contains(arg)) {
 				ExtforNonAcceptance.add(extensions.get(i));
@@ -1263,9 +1265,9 @@ public class App1 {
 		return ExtforNonAcceptance;
 	}
 
-	public static boolean isDefeasible(Argument arg) throws IteratorException {
+	public static boolean isDefeasible(StructuredArgument arg) throws IteratorException {
 		boolean isDefeasible = false;
-		ArrayList<Argument> body = arg.body; // body is array list of arguments
+		ArrayList<StructuredArgument> body = arg.body; // body is array list of arguments
 		CloseableIterator<Atom> def = (CloseableIterator<Atom>) defeasibleFacts.iterator();
 		while (def.hasNext()) {
 			Atom at = def.next();
@@ -1279,7 +1281,7 @@ public class App1 {
 
 	}
 
-	public static int Defcompare(Argument attacker, Argument attackee) throws IteratorException {
+	public static int Defcompare(StructuredArgument attacker, StructuredArgument attackee) throws IteratorException {
 
 		if (isDefeasible(attackee) == false && isDefeasible(attacker) == false) {
 			return 2;
@@ -1301,11 +1303,11 @@ public class App1 {
 		}
 	}
 
-	public static ArrayList<Argument> getElementsNotInList2(ArrayList<Argument> list1, ArrayList<Argument> list2) {
-		HashSet<Argument> set2 = new HashSet<>(list2);
-		ArrayList<Argument> result = new ArrayList<>();
+	public static ArrayList<StructuredArgument> getElementsNotInList2(ArrayList<StructuredArgument> list1, ArrayList<StructuredArgument> list2) {
+		HashSet<StructuredArgument> set2 = new HashSet<>(list2);
+		ArrayList<StructuredArgument> result = new ArrayList<>();
 
-		for (Argument element : list1) {
+		for (StructuredArgument element : list1) {
 			if (!set2.contains(element)) {
 				result.add(element);
 			}
@@ -1413,11 +1415,11 @@ public class App1 {
 
 	}
 
-	public static boolean checkAttacks(ArrayList<Attack> A, Attack b) {
+	public static boolean checkAttacks(ArrayList<SetAttack> A, SetAttack b) {
 		boolean result = false;
 
 		for (int i = 0; i < A.size(); i++) {
-			Attack a = A.get(i);
+			SetAttack a = A.get(i);
 			// if (((a.target.equals(b.target)) && (a.source.containsAll(b.source))) ||
 			// ((a.target.equals(b.target) && checkSubArg(a.source, b.source) == true)) {
 			// if (a.target.equals(b.target) && checkSubArg(a.source, b.source) == true) {
@@ -1429,25 +1431,25 @@ public class App1 {
 
 	}
 
-	public static ArrayList<Argument> GetRemovedElements(ArrayList setOfAttackers) {
+	public static ArrayList<StructuredArgument> GetRemovedElements(ArrayList setOfAttackers) {
 		ArrayList removers = new ArrayList<>();
 		for (int i = 0; i < setOfAttackers.size(); i++) {
-			ArrayList<Argument> A = (ArrayList<Argument>) setOfAttackers.get(i);
+			ArrayList<StructuredArgument> A = (ArrayList<StructuredArgument>) setOfAttackers.get(i);
 			ArrayList<Atom> atomA = new ArrayList<Atom>();
-			ArrayList<Argument> bodyA = new ArrayList<Argument>();
+			ArrayList<StructuredArgument> bodyA = new ArrayList<StructuredArgument>();
 			for (int m = 0; m < A.size(); m++) {
-				Argument a = A.get(m);
+				StructuredArgument a = A.get(m);
 				atomA.addAll(A.get(m).getPremises());
 				bodyA.addAll(a.body);
 			}
 
 			for (int j = i + 1; j < setOfAttackers.size(); j++) {
-				ArrayList<Argument> B = (ArrayList<Argument>) setOfAttackers.get(j);
+				ArrayList<StructuredArgument> B = (ArrayList<StructuredArgument>) setOfAttackers.get(j);
 				if (!A.equals(B)) {
 					ArrayList<Atom> atomB = new ArrayList<Atom>();
-					ArrayList<Argument> bodyB = new ArrayList<Argument>();
+					ArrayList<StructuredArgument> bodyB = new ArrayList<StructuredArgument>();
 					for (int m = 0; m < B.size(); m++) {
-						Argument b = B.get(m);
+						StructuredArgument b = B.get(m);
 						atomB.addAll(B.get(m).getPremises());
 						bodyB.addAll(b.body);
 					}
@@ -1466,8 +1468,8 @@ public class App1 {
 	}
 
 	/*
-	 * public static LinkedList<Argument> getAttackersFor(Argument arg, ArrayList
-	 * SetOfAttacks, ArrayList<Argument>ListOfArguments) {
+	 * public static LinkedList<StructuredArgument> getAttackersFor(StructuredArgument arg, ArrayList
+	 * SetOfAttacks, ArrayList<StructuredArgument>ListOfArguments) {
 	 * 
 	 * Iterator iter = SetOfAttacks.iterator(); LinkedList AttackersFor = new
 	 * LinkedList(); LinkedList removes = new LinkedList(); if
@@ -1483,15 +1485,15 @@ public class App1 {
 	 * temp; return AttackersFor; }
 	 */
 
-	public static ArrayList<Argument> removeDuplicates(ArrayList<Argument> inputList) {
+	public static ArrayList<StructuredArgument> removeDuplicates(ArrayList<StructuredArgument> inputList) {
 		// Create a HashSet to store unique elements
-		HashSet<Argument> uniqueElements = new HashSet<>();
+		HashSet<StructuredArgument> uniqueElements = new HashSet<>();
 
 		// Create a new ArrayList to store the result
-		ArrayList<Argument> resultList = new ArrayList<>();
+		ArrayList<StructuredArgument> resultList = new ArrayList<>();
 
 		// Iterate over the inputList
-		for (Argument element : inputList) {
+		for (StructuredArgument element : inputList) {
 			// Add the element to the HashSet only if it hasn't been added before
 			if (uniqueElements.add(element)) {
 				// Add the element to the resultList
@@ -1502,11 +1504,11 @@ public class App1 {
 		return resultList;
 	}
 
-	public static ArrayList<Attack> GetAttacksFromArg(Argument a, ArrayList<Attack> S) {
-		ArrayList<Attack> result = new ArrayList<Attack>();
-		ArrayList<ArrayList<Argument>> attackersFor = new ArrayList<ArrayList<Argument>>();
+	public static ArrayList<SetAttack> GetAttacksFromArg(StructuredArgument a, ArrayList<SetAttack> S) {
+		ArrayList<SetAttack> result = new ArrayList<SetAttack>();
+		ArrayList<ArrayList<StructuredArgument>> attackersFor = new ArrayList<ArrayList<StructuredArgument>>();
 		for (int i = 0; i < S.size(); i++) {
-			Attack att = (Attack) S.get(i);
+			SetAttack att = (SetAttack) S.get(i);
 			if (att.target.equals(a)) {
 				result.add(att);
 				attackersFor.add(att.source);
@@ -1515,7 +1517,7 @@ public class App1 {
 		return result;
 	}
 
-	public static Distance DistFromAtoB(Argument a, Argument b, ArrayList<Distance> Dist) {
+	public static Distance DistFromAtoB(StructuredArgument a, StructuredArgument b, ArrayList<Distance> Dist) {
 		Distance result = null;
 		for (Distance d : Dist) {
 			if ((d.source.equals(a)) & (d.target.equals(b))) {
@@ -1525,18 +1527,18 @@ public class App1 {
 		return result;
 	}
 
-	// public static ArrayList<Attack> ReReach(Argument a, Argument b, int n,
+	// public static ArrayList<Attack> ReReach(StructuredArgument a, StructuredArgument b, int n,
 	// ArrayList<Attack> S){
-	public static void ReReach(Argument a, Argument b, int n, ArrayList<Attack> S, ArrayList<Attack> Attacks) {
+	public static void ReReach(StructuredArgument a, StructuredArgument b, int n, ArrayList<SetAttack> S, ArrayList<SetAttack> Attacks) {
 		Visited0 = S;
 
 		// get all attacks having the target as b and the source as c
-		ArrayList<Attack> Att = GetAttacksFromArg(b, Attacks);
+		ArrayList<SetAttack> Att = GetAttacksFromArg(b, Attacks);
 		// System.out.println("Att: " + Att);
-		for (Attack at : Att) {
+		for (SetAttack at : Att) {
 
 			for (int i = 0; i < at.source.size(); i++) {
-				Argument c = at.source.get(i);
+				StructuredArgument c = at.source.get(i);
 				if ((Visited0 == null) || (!Visited.contains(at))) {
 					if (!Reach.contains(c)) {
 						Reach.add(c);
@@ -1568,15 +1570,15 @@ public class App1 {
 	// - a7 - a0
 	// - a4
 
-	public static ArrayList<Argument> intersection(ArrayList<Argument> list1, ArrayList<Argument> list2) {
+	public static ArrayList<StructuredArgument> intersection(ArrayList<StructuredArgument> list1, ArrayList<StructuredArgument> list2) {
 		// Create a HashSet to store unique elements from list1
-		HashSet<Argument> set1 = new HashSet<>(list1);
+		HashSet<StructuredArgument> set1 = new HashSet<>(list1);
 
 		// Create a new ArrayList to store the intersection
-		ArrayList<Argument> intersectionList = new ArrayList<>();
+		ArrayList<StructuredArgument> intersectionList = new ArrayList<>();
 
 		// Iterate over the elements in list2
-		for (Argument element : list2) {
+		for (StructuredArgument element : list2) {
 			// Check if the element exists in set1
 			if (set1.contains(element)) {
 				// Add the element to the intersectionList
@@ -1589,8 +1591,8 @@ public class App1 {
 		return intersectionList;
 	}
 
-	public static ArrayList<Argument> getReachEven(Argument a, ArrayList<Distance> Dist) {
-		ArrayList<Argument> result = new ArrayList<>();
+	public static ArrayList<StructuredArgument> getReachEven(StructuredArgument a, ArrayList<Distance> Dist) {
+		ArrayList<StructuredArgument> result = new ArrayList<>();
 		for (Distance d : Dist) {
 			if ((d.target.equals(a)) & (d.dist % 2 == 0)) {
 				if (!result.contains(d.source)) {
@@ -1601,8 +1603,8 @@ public class App1 {
 		return result;
 	}
 
-	public static ArrayList<Argument> getReachOdd(Argument a, ArrayList<Distance> Dist) {
-		ArrayList<Argument> result = new ArrayList<>();
+	public static ArrayList<StructuredArgument> getReachOdd(StructuredArgument a, ArrayList<Distance> Dist) {
+		ArrayList<StructuredArgument> result = new ArrayList<>();
 		for (Distance d : Dist) {
 			if ((d.target.equals(a)) & (d.dist % 2 != 0)) {
 				if (!result.contains(d.source)) {
@@ -1613,12 +1615,12 @@ public class App1 {
 		return result;
 	}
 
-	public static boolean isIntersectionEmpty(ArrayList<Argument> list1, ArrayList<Argument> list2) {
+	public static boolean isIntersectionEmpty(ArrayList<StructuredArgument> list1, ArrayList<StructuredArgument> list2) {
 		// Create a HashSet to store unique elements from list1
-		HashSet<Argument> set1 = new HashSet<>(list1);
+		HashSet<StructuredArgument> set1 = new HashSet<>(list1);
 
 		// Iterate over the elements in list2
-		for (Argument element : list2) {
+		for (StructuredArgument element : list2) {
 			// Check if the element exists in set1
 			if (set1.contains(element)) {
 				// Intersection is not empty
@@ -1630,13 +1632,13 @@ public class App1 {
 		return true;
 	}
 
-	public static ArrayList<ArrayList<Argument>> computeNotDefBy(ArrayList<Argument> reachOddOfA,
-			ArrayList<ArrayList<Argument>> extensions, ArrayList<Distance> NewDist) {
-		ArrayList<ArrayList<Argument>> result = new ArrayList<ArrayList<Argument>>();
-		for (ArrayList<Argument> ext : extensions) {
-			ArrayList<Argument> subResult = new ArrayList<>();
-			for (Argument b : reachOddOfA) {
-				ArrayList<Argument> reachOddOfB = getReachOdd(b, NewDist);
+	public static ArrayList<ArrayList<StructuredArgument>> computeNotDefBy(ArrayList<StructuredArgument> reachOddOfA,
+			ArrayList<ArrayList<StructuredArgument>> extensions, ArrayList<Distance> NewDist) {
+		ArrayList<ArrayList<StructuredArgument>> result = new ArrayList<ArrayList<StructuredArgument>>();
+		for (ArrayList<StructuredArgument> ext : extensions) {
+			ArrayList<StructuredArgument> subResult = new ArrayList<>();
+			for (StructuredArgument b : reachOddOfA) {
+				ArrayList<StructuredArgument> reachOddOfB = getReachOdd(b, NewDist);
 				if (isIntersectionEmpty(ext, reachOddOfB) == true) {
 					subResult.add(b);
 				}
@@ -1650,12 +1652,12 @@ public class App1 {
 	}
 
 	/*public static void ExpForScepticalSem(ConjunctiveQuery query, RuleSet positiveRuleSet,
-			InMemoryAtomSet saturatedAtoms, ArrayList<ArrayList<Argument>> extensions, ArrayList<Argument> ListArgument,
+			InMemoryAtomSet saturatedAtoms, ArrayList<ArrayList<StructuredArgument>> extensions, ArrayList<StructuredArgument> ListArgument,
 			ArrayList<Attack> AttPriority) throws IteratorException, HomomorphismException {
 		/*
 		 * ArrayList<Attack> Visited = new ArrayList<Attack>(); ArrayList<Distance>
-		 * NewDist = new ArrayList<Distance>(); ArrayList<Argument>Reach = new
-		 * ArrayList<Argument>(); ArrayList<Distance> Dist;
+		 * NewDist = new ArrayList<Distance>(); ArrayList<StructuredArgument>Reach = new
+		 * ArrayList<StructuredArgument>(); ArrayList<Distance> Dist;
 		 */
 
 		// ConjunctiveQuery query = DlgpParser.parseQuery("? :- professor(ann).");
@@ -1663,13 +1665,13 @@ public class App1 {
 		// check crecuslous
 		// calculate explanation: set of arguments is in each extension
 
-		/*ArrayList<ArrayList<Argument>> supportingArgs = new ArrayList<ArrayList<Argument>>();
+		/*ArrayList<ArrayList<Argument>> supportingArgs = new ArrayList<ArrayList<StructuredArgument>>();
 		supportingArgs = getArgumentsForQuery(query, positiveRuleSet, saturatedAtoms, supportingArgs);
 
 		// Check credulous, skepcitcal, non-accept for argument
 
 		int count = 0;
-		for (Argument arg : supportingArgs) {
+		for (StructuredArgument arg : supportingArgs) {
 			for (int i = 0; i < extensions.size(); i++) {
 				if (extensions.get(i).contains(arg)) {
 					count++;
@@ -1681,30 +1683,30 @@ public class App1 {
 
 			Dist = new ArrayList<Distance>();
 			for (int i = 0; i < ListArgument.size(); i++) {
-				Argument a = ListArgument.get(i);
+				StructuredArgument a = ListArgument.get(i);
 				// Reach.add(a);
 				Dist.add(new Distance(a, a, 0));
 				for (int j = 0; j < ListArgument.size(); j++) {
 					if (j != i) {
-						Argument b = ListArgument.get(j);
+						StructuredArgument b = ListArgument.get(j);
 						Dist.add(new Distance(a, b, 0));
 					}
 				}
 			}
 
 			for (int k = 0; k < supportingArgs.size(); k++) {
-				Argument a = supportingArgs.get(k);
+				StructuredArgument a = supportingArgs.get(k);
 				Visited = new ArrayList<Attack>();
 				NewDist = new ArrayList<Distance>();
-				Reach = new ArrayList<Argument>();
+				Reach = new ArrayList<StructuredArgument>();
 				ReReach(a, a, 0, null, Attacks);
-				ArrayList<Argument> reachEven = new ArrayList<>();
+				ArrayList<StructuredArgument> reachEven = new ArrayList<>();
 				reachEven = getReachEven(a, NewDist);
-				ArrayList<Argument> DefBy = reachEven;
+				ArrayList<StructuredArgument> DefBy = reachEven;
 				// Compute Def for an argument wrt extensions
-				ArrayList<ArrayList<Argument>> DefByExt = new ArrayList<>();
+				ArrayList<ArrayList<StructuredArgument>> DefByExt = new ArrayList<>();
 				for (int i = 0; i < extensions.size(); i++) {
-					ArrayList<Argument> subDef = intersection(DefBy, extensions.get(i));
+					ArrayList<StructuredArgument> subDef = intersection(DefBy, extensions.get(i));
 					DefByExt.add(subDef);
 				}
 				System.out.println("DefBy: " + DefByExt);
@@ -1717,10 +1719,10 @@ public class App1 {
 					graph.addEdge(at.target, at.source);
 				}
 
-				Argument start = a;
-				for (ArrayList<Argument> notdefby : DefByExt) {
-					for (Argument b : notdefby) {
-						Argument end = b;
+				StructuredArgument start = a;
+				for (ArrayList<StructuredArgument> notdefby : DefByExt) {
+					for (StructuredArgument b : notdefby) {
+						StructuredArgument end = b;
 						System.out.println("All paths from " + start + " to " + end + ":");
 						graph.printAllPathsOdd(start, end);
 					}
@@ -1755,7 +1757,7 @@ public class App1 {
 		return preAtoms;
 	}
 
-	public static boolean includesArrayList(ArrayList<Argument> mainList, ArrayList<Argument> subList) {
+	public static boolean includesArrayList(ArrayList<StructuredArgument> mainList, ArrayList<StructuredArgument> subList) {
 		if (mainList.size() < subList.size()) {
 			return false; // If the main list is smaller, it can't include the sub list
 		}
@@ -1827,9 +1829,9 @@ public class App1 {
 		return initialSet;
 	}
 
-	private static void printDialogue(List<Argument> path) {
+	private static void printDialogue(List<StructuredArgument> path) {
 		if (path.size() % 2 == 0) { // even case
-			Argument a0 = path.get(0);
+			StructuredArgument a0 = path.get(0);
 			if (a0.body.isEmpty()) {
 				System.out.println("Explainer: I am certain that " + convertNegAtom(a0.head)); // cannot be an answer
 				int size = path.size();

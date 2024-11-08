@@ -6,62 +6,16 @@ import org.tweetyproject.graphs.Node;
 
 import fr.lirmm.graphik.graal.api.core.Atom;
 
-/*public class ArgumentNode extends Argument implements Node {
 
-	// A global counter for IDs. 
-	private static int counter = 0;
+public class ArgumentNode extends StructuredArgument implements Node {
 
-	// The id of this node.
-	private int nodeId;
-
-
-	/**
-	 * Creates a new argument node with the given support and claim (a unique ID is
-	 * generated)
-	 * 
-	 * @param support a set of formulas.
-	 * @param claim   a formula.
-	 */
-
-/*public ArgumentNode(ArrayList<Argument> body, Atom head, Boolean isPremises) {
-	super(body, head, isPremises);
-	ArgumentNode.counter++;
-	this.nodeId = ArgumentNode.counter;
-}*/
-
-/**
- * Creates a new deductive argument node from the given argument (a unique ID is
- * generated)
- * 
- * @param arg an argument.
- */
-/*
- * public ArgumentNode(Argument argument) { // Pass the argument details to the
- * superclass super(argument.body, argument.head, argument.IsPremise);
- * ArgumentNode.counter++; this.nodeId = ArgumentNode.counter;
- * 
- * }
- * 
- * @Override public int hashCode() { final int prime = 31; int result =
- * super.hashCode(); result = prime * result + nodeId; return result; }
- * 
- * @Override public boolean equals(Object obj) { if (this == obj) return true;
- * if (!super.equals(obj)) return false; if (getClass() != obj.getClass())
- * return false; ArgumentNode other = (ArgumentNode) obj; if (nodeId !=
- * other.nodeId) return false; return true; }
- * 
- * }
- */
-
-public class ArgumentNode extends Argument implements Node {
-
-	private Argument argument; // The argument associated with this node
+	private StructuredArgument argument; // The argument associated with this node
 	private ArrayList<ArgumentNode> children; // List of child nodes
 	private static int idCounter = 0; // Static counter for auto-incremented node IDs
 	private int nodeID; // Unique ID for each ArgumentNode
 
 	// Constructor that accepts an Argument
-	public ArgumentNode(Argument argument) {
+	public ArgumentNode(StructuredArgument argument) {
 		this.argument = argument; // Assign the provided argument to the node
 		this.children = new ArrayList<>(); // Initialize the children list
 		this.nodeID = idCounter++; // Assign a unique ID and increment the counter
@@ -79,7 +33,7 @@ public class ArgumentNode extends Argument implements Node {
     }
 
 	// Getters for the argument properties
-	public ArrayList<Argument> getBody() {
+	public ArrayList<StructuredArgument> getBody() {
 		return argument.body; // Get the body of the argument
 	}
 
@@ -90,7 +44,7 @@ public class ArgumentNode extends Argument implements Node {
 			return result;
 		}
 
-		for (Argument p : this.argument.body) {
+		for (StructuredArgument p : this.argument.body) {
 			result.addAll(p.getPremises());
 		}
 		return result;
@@ -104,19 +58,20 @@ public class ArgumentNode extends Argument implements Node {
 		return argument.IsPremise; // Get the premise status
 	}
 
-	public int getID() {
+	public int getArgID() {
 		return argument.myID; // Get the unique ID of the argument
 	}
 
 	public ArrayList<ArgumentNode> getChildren() {
 		return children; // Return the list of child nodes
 	}
+	
 
 	@Override
 	public String toString() {
 
-		String result = "a" + getID() + " : [";
-		for (Argument a : this.argument.body) {
+		String result = "a" + getArgID() + " : [";
+		for (StructuredArgument a : this.argument.body) {
 			result = result + "a" + a.myID + " ";
 		}
 		result = result + "] -> " + getHead();

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import fr.lirmm.graphik.NAry.ArgumentationFramework.Argument;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.StructuredArgument;
 
 //import cern.colt.list.BooleanArrayList;
 
@@ -16,20 +16,20 @@ import java.util.HashSet;
 
 
 public class Graph {
-	private Map<Argument, ArrayList<Argument>> adjacencyList;
+	private Map<StructuredArgument, ArrayList<StructuredArgument>> adjacencyList;
 
 	public Graph() {
 		adjacencyList = new HashMap<>();
 	}
 
-	public void addEdge(Argument source, ArrayList<Argument> destination) {
+	public void addEdge(StructuredArgument source, ArrayList<StructuredArgument> destination) {
 		adjacencyList.computeIfAbsent(source, k -> new ArrayList<>()).addAll(destination);
 	}
 
-	public List<List<Argument>> printAllPathsEven(Argument start, Argument end) {
-		List<List<Argument>> paths = new ArrayList<>();
-		List<Argument> path = new ArrayList<>();
-		Set<Argument> visited = new HashSet<>();
+	public List<List<StructuredArgument>> printAllPathsEven(StructuredArgument start, StructuredArgument end) {
+		List<List<StructuredArgument>> paths = new ArrayList<>();
+		List<StructuredArgument> path = new ArrayList<>();
+		Set<StructuredArgument> visited = new HashSet<>();
 
 		path.add(start);
 		visited.add(start);
@@ -37,16 +37,16 @@ public class Graph {
 		return paths;
 	}
 
-	private void dfsEven(Argument current, Argument end, List<Argument> path, Set<Argument> visited, List<List<Argument>> paths) {
+	private void dfsEven(StructuredArgument current, StructuredArgument end, List<StructuredArgument> path, Set<StructuredArgument> visited, List<List<StructuredArgument>> paths) {
 		if (current == end) {
 			if ((path.size() % 2 == 0)  & (checkUniqueElements(path) == true)) {
 				paths.add(new ArrayList<>(path));
 			}
 		} else {
-			ArrayList<Argument> neighbors = adjacencyList.getOrDefault(current, new ArrayList<>());
+			ArrayList<StructuredArgument> neighbors = adjacencyList.getOrDefault(current, new ArrayList<>());
 			// remove sub-argument in neighbors
-			ArrayList<Argument> Nneighbors = removeSubArgs(neighbors);
-			for (Argument neighbor : Nneighbors) {
+			ArrayList<StructuredArgument> Nneighbors = removeSubArgs(neighbors);
+			for (StructuredArgument neighbor : Nneighbors) {
 				if (!visited.contains(neighbor)) {
 					visited.add(neighbor);
 					path.add(neighbor);
@@ -60,10 +60,10 @@ public class Graph {
 
 
 
-	public List<List<Argument>> printAllPathsOdd(Argument start, Argument end) {
-		List<List<Argument>> paths = new ArrayList<>();
-		List<Argument> path = new ArrayList<>();
-		Set<Argument> visited = new HashSet<>();
+	public List<List<StructuredArgument>> printAllPathsOdd(StructuredArgument start, StructuredArgument end) {
+		List<List<StructuredArgument>> paths = new ArrayList<>();
+		List<StructuredArgument> path = new ArrayList<>();
+		Set<StructuredArgument> visited = new HashSet<>();
 
 		path.add(start);
 		visited.add(start);
@@ -73,7 +73,7 @@ public class Graph {
 
 	}
 
-	private void dfsOdd(Argument current, Argument end, List<Argument> path, Set<Argument> visited, List<List<Argument>> paths) {
+	private void dfsOdd(StructuredArgument current, StructuredArgument end, List<StructuredArgument> path, Set<StructuredArgument> visited, List<List<StructuredArgument>> paths) {
 		if (current == end) {
 			if ((path.size() % 2 != 0) & (checkUniqueElements(path) == true)) {
 				if (checkUniqueElements(path) == true) {
@@ -81,10 +81,10 @@ public class Graph {
 				}
 			}
 		} else {
-			ArrayList<Argument> neighbors = adjacencyList.getOrDefault(current, new ArrayList<>());
+			ArrayList<StructuredArgument> neighbors = adjacencyList.getOrDefault(current, new ArrayList<>());
 			// remove sub-argument in neighbors
-			ArrayList<Argument> Nneighbors = removeSubArgs(neighbors);
-			for (Argument neighbor : Nneighbors) {
+			ArrayList<StructuredArgument> Nneighbors = removeSubArgs(neighbors);
+			for (StructuredArgument neighbor : Nneighbors) {
 				if (!visited.contains(neighbor)) {
 					visited.add(neighbor);
 					path.add(neighbor);
@@ -100,10 +100,10 @@ public class Graph {
 
 
 
-	public List<List<Argument>> printAllPaths(Argument start, Argument end) {
-		List<List<Argument>> paths = new ArrayList<>();
-		ArrayList<Argument> path = new ArrayList<>();
-		Set<Argument> visited = new HashSet<>();
+	public List<List<StructuredArgument>> printAllPaths(StructuredArgument start, StructuredArgument end) {
+		List<List<StructuredArgument>> paths = new ArrayList<>();
+		ArrayList<StructuredArgument> path = new ArrayList<>();
+		Set<StructuredArgument> visited = new HashSet<>();
 
 		path.add(start);
 		visited.add(start);
@@ -111,14 +111,14 @@ public class Graph {
 		return paths;
 	}
 
-	private void dfs(Argument current, Argument end, List<Argument> path, Set<Argument> visited, List<List<Argument>> paths) {
+	private void dfs(StructuredArgument current, StructuredArgument end, List<StructuredArgument> path, Set<StructuredArgument> visited, List<List<StructuredArgument>> paths) {
 		if ((current == end)  & (checkUniqueElements(path) == true)) {
 			paths.add(new ArrayList<>(path));
 		} else {
-			ArrayList<Argument> neighbors = adjacencyList.getOrDefault(current, new ArrayList<>());
+			ArrayList<StructuredArgument> neighbors = adjacencyList.getOrDefault(current, new ArrayList<>());
 			// remove sub-argument in neighbors
-			ArrayList<Argument> Nneighbors = removeSubArgs(neighbors);
-			for (Argument neighbor : Nneighbors) {
+			ArrayList<StructuredArgument> Nneighbors = removeSubArgs(neighbors);
+			for (StructuredArgument neighbor : Nneighbors) {
 				if (!visited.contains(neighbor)) {// || (checkSubArgInList(visited, neighbor) == false)) {
 					visited.add(neighbor);
 					path.add(neighbor);
@@ -166,7 +166,7 @@ public class Graph {
 		System.out.println("Path: " + path + "size: " + path.size());
 	}*/
 
-	private void printPath(List<Argument> path) {
+	private void printPath(List<StructuredArgument> path) {
 		StringBuilder s = new StringBuilder();
 
 		s.append(path.get(0).toString());
@@ -181,10 +181,10 @@ public class Graph {
 
 
 
-	private static boolean checkSubArg(Argument b, Argument a) {
+	private static boolean checkSubArg(StructuredArgument b, StructuredArgument a) {
 		Boolean result = false;
 
-		for (Argument bBody : b.body) {
+		for (StructuredArgument bBody : b.body) {
 			if (bBody.myID == a.myID) {
 				result = true;
 			}
@@ -211,11 +211,11 @@ public class Graph {
 		return result;
 	}*/
 
-	private static boolean checkSubArgInList(List<Argument> parents, Argument a) {
+	private static boolean checkSubArgInList(List<StructuredArgument> parents, StructuredArgument a) {
 		Boolean result = false;
-		for (Argument b : parents) {
+		for (StructuredArgument b : parents) {
 			//ArrayList<Argument> bodyB = b.body;
-			for (Argument argB : b.body) {
+			for (StructuredArgument argB : b.body) {
 				if (argB.myID == a.myID) {
 					result = true;
 					break;
@@ -226,9 +226,9 @@ public class Graph {
 }
 
 
-private static ArrayList<Argument> computeSubArgs (ArrayList<Argument> inputList, Argument a) {
-	ArrayList<Argument> subArgs = new ArrayList<>();
-	for (Argument b : inputList) {
+private static ArrayList<StructuredArgument> computeSubArgs (ArrayList<StructuredArgument> inputList, StructuredArgument a) {
+	ArrayList<StructuredArgument> subArgs = new ArrayList<>();
+	for (StructuredArgument b : inputList) {
 		if ((a.head.equals(b.head)) & (a.getPremises().containsAll(b.getPremises()))) {
 			//subArgs = null;
 			continue;
@@ -242,21 +242,21 @@ private static ArrayList<Argument> computeSubArgs (ArrayList<Argument> inputList
 }
 
 
-private static ArrayList<Argument> removeSubArgs (ArrayList<Argument> inputList) {
+private static ArrayList<StructuredArgument> removeSubArgs (ArrayList<StructuredArgument> inputList) {
 	// Create a HashSet to store unique elements
-	HashSet<Argument> uniqueElements = new HashSet<>();
+	HashSet<StructuredArgument> uniqueElements = new HashSet<>();
 
 	// Create a new ArrayList to store the result
-	ArrayList<Argument> resultList = new ArrayList<>();
+	ArrayList<StructuredArgument> resultList = new ArrayList<>();
 
-	ArrayList<Argument> subArgs = new ArrayList<>();
+	ArrayList<StructuredArgument> subArgs = new ArrayList<>();
 
 	//compute sub-arguments
-	for (Argument element : inputList) {
+	for (StructuredArgument element : inputList) {
 		subArgs.addAll(computeSubArgs(inputList, element));
 	}
 
-	for (Argument a : inputList) {
+	for (StructuredArgument a : inputList) {
 		if (!subArgs.contains(a)) {
 			resultList.add(a);
 		}
@@ -265,8 +265,8 @@ private static ArrayList<Argument> removeSubArgs (ArrayList<Argument> inputList)
 	return resultList;
 }
 
-private static boolean checkUniqueElements(List<Argument> path) {
-	List<Argument> newPath = new ArrayList<>();
+private static boolean checkUniqueElements(List<StructuredArgument> path) {
+	List<StructuredArgument> newPath = new ArrayList<>();
 	newPath.add(path.get(0));
 	for (int i = 1; i < path.size(); i++) {
 		if (checkSubArgInList(newPath, path.get(i)) == false) {
