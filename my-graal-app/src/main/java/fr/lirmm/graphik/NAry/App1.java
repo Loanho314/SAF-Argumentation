@@ -23,7 +23,7 @@ import fr.lirmm.graphik.DEFT.gad.Derivation;
 import fr.lirmm.graphik.DEFT.core.DefeasibleKB;
 
 import fr.lirmm.graphik.NAry.ArgumentationFramework.StructuredArgument;
-import fr.lirmm.graphik.NAry.ArgumentationFramework.SetAttack;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.Attack;
 import fr.lirmm.graphik.NAry.Query;
 
 import fr.lirmm.graphik.graal.api.backward_chaining.QueryRewriter;
@@ -100,9 +100,9 @@ public class App1 {
 
 	private static ArrayList<ArrayList<StructuredArgument>> extensions;
 	private static ArrayList<StructuredArgument> ext;
-	private static ArrayList<SetAttack> Attacks;
-	private static ArrayList<SetAttack> Visited0;
-	private static ArrayList<SetAttack> Visited;
+	private static ArrayList<Attack> Attacks;
+	private static ArrayList<Attack> Visited0;
+	private static ArrayList<Attack> Visited;
 	private static ArrayList<StructuredArgument> Reach;
 	private static ArrayList<Distance> Dist;
 	private static ArrayList<Distance> NewDist;
@@ -1191,7 +1191,7 @@ public class App1 {
 		}
 
 		while (iter.hasNext()) {
-			SetAttack at = (SetAttack) iter.next();
+			Attack at = (Attack) iter.next();
 			if (at.target.equals(arg)) {
 				AttackersFor.add(at.source);
 			}
@@ -1415,11 +1415,11 @@ public class App1 {
 
 	}
 
-	public static boolean checkAttacks(ArrayList<SetAttack> A, SetAttack b) {
+	public static boolean checkAttacks(ArrayList<Attack> A, Attack b) {
 		boolean result = false;
 
 		for (int i = 0; i < A.size(); i++) {
-			SetAttack a = A.get(i);
+			Attack a = A.get(i);
 			// if (((a.target.equals(b.target)) && (a.source.containsAll(b.source))) ||
 			// ((a.target.equals(b.target) && checkSubArg(a.source, b.source) == true)) {
 			// if (a.target.equals(b.target) && checkSubArg(a.source, b.source) == true) {
@@ -1504,11 +1504,11 @@ public class App1 {
 		return resultList;
 	}
 
-	public static ArrayList<SetAttack> GetAttacksFromArg(StructuredArgument a, ArrayList<SetAttack> S) {
-		ArrayList<SetAttack> result = new ArrayList<SetAttack>();
+	public static ArrayList<Attack> GetAttacksFromArg(StructuredArgument a, ArrayList<Attack> S) {
+		ArrayList<Attack> result = new ArrayList<Attack>();
 		ArrayList<ArrayList<StructuredArgument>> attackersFor = new ArrayList<ArrayList<StructuredArgument>>();
 		for (int i = 0; i < S.size(); i++) {
-			SetAttack att = (SetAttack) S.get(i);
+			Attack att = (Attack) S.get(i);
 			if (att.target.equals(a)) {
 				result.add(att);
 				attackersFor.add(att.source);
@@ -1529,13 +1529,13 @@ public class App1 {
 
 	// public static ArrayList<Attack> ReReach(StructuredArgument a, StructuredArgument b, int n,
 	// ArrayList<Attack> S){
-	public static void ReReach(StructuredArgument a, StructuredArgument b, int n, ArrayList<SetAttack> S, ArrayList<SetAttack> Attacks) {
+	public static void ReReach(StructuredArgument a, StructuredArgument b, int n, ArrayList<Attack> S, ArrayList<Attack> Attacks) {
 		Visited0 = S;
 
 		// get all attacks having the target as b and the source as c
-		ArrayList<SetAttack> Att = GetAttacksFromArg(b, Attacks);
+		ArrayList<Attack> Att = GetAttacksFromArg(b, Attacks);
 		// System.out.println("Att: " + Att);
-		for (SetAttack at : Att) {
+		for (Attack at : Att) {
 
 			for (int i = 0; i < at.source.size(); i++) {
 				StructuredArgument c = at.source.get(i);

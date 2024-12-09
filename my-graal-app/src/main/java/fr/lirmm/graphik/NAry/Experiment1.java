@@ -27,7 +27,7 @@ import fr.lirmm.graphik.DEFT.core.DefeasibleKB;
 import fr.lirmm.graphik.NAry.ArgumentationFramework.StructuredArgument;
 import fr.lirmm.graphik.NAry.ArgumentationFramework.ArgumentNode;
 import fr.lirmm.graphik.NAry.ArgumentationFramework.ArgumentTree;
-import fr.lirmm.graphik.NAry.ArgumentationFramework.SetAttack;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.Attack;
 import fr.lirmm.graphik.graal.api.backward_chaining.QueryRewriter;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.AtomSet;
@@ -45,22 +45,17 @@ import fr.lirmm.graphik.graal.core.ruleset.LinkedListRuleSet;
 import fr.lirmm.graphik.graal.homomorphism.SmartHomomorphism;
 import fr.lirmm.graphik.graal.io.dlp.DlgpParser;
 import fr.lirmm.graphik.util.stream.CloseableIterator;
-import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 import fr.lirmm.graphik.util.stream.IteratorException;
 
 public class Experiment1 {
-
-	// static private String file = "C:/Users/tho310/Data
-	// test/DBpedia/3Classes-1DisjointWith.dlgp";
-	// static private String file = "C:/Users/tho310/Data
-	// test/Ex-two-variables.dlgp";
-	//static private String file = "C:/Users/tho310/Data test/Lum test.dlgp";
-	 static private String file = "C:/Users/tho310/Data test/DBpedia/55Classes-4Conflicts-5997.dlgp";
+	static private String file = "C:/Users/tho310/Data test/test2.dlgp";
+	// static private String file = "C:/Users/tho310/Data test/DBpedia/Dataset
+	// full/DB_500_5.dlgp";
 	public static ArrayList<StructuredArgument> listArguments;
 	//// Initialise an attack set
-	public static Set<SetAttack> attackSet;
+	public static Set<Attack> attackSet;
 
-	private static int count;
+	//private static int count;
 
 	public static <T> void main(String[] args)
 			throws AtomSetException, ChaseException, HomomorphismException, IOException {
@@ -71,17 +66,22 @@ public class Experiment1 {
 		RuleSet negativeRuleSet = new LinkedListRuleSet();
 		RuleSet positiveRuleSet = new LinkedListRuleSet();
 		InMemoryAtomSet saturatedAtoms = new LinkedListAtomSet();
-		attackSet = new HashSet<SetAttack>();
+		attackSet = new HashSet<Attack>();
 
 		kbArgs.saturate();
 		saturatedAtoms.addAll(kbArgs.facts);
-		//System.out.println("Saturated Facts: " + saturatedAtoms);
+		System.out.println("Saturated Facts: " + saturatedAtoms);
 		// kbArgs.unsaturate();
 		// System.out.println("Chase" + saturatedAtoms);
 
 		initialFacts.addAll(kb.facts);
 		negativeRuleSet = kb.negativeConstraintSet;
 		positiveRuleSet = kb.rules;
+
+		for (Rule r : negativeRuleSet) {
+			System.out.println(r);
+			System.out.println(r.getBody().getVariables());
+		}
 
 		long startTime = System.currentTimeMillis(); // Get the start time
 		listArguments = App1.generateArgs(kbArgs);
@@ -103,16 +103,17 @@ public class Experiment1 {
 
 		long endTime = System.currentTimeMillis(); // Get the end time
 		long duration = endTime - startTime; // Calculate the duration
-		/*
-		 * for (StructuredArgument a : listArguments) { System.out.println(a); }
-		 */	
+
+		for (StructuredArgument a : listArguments) {
+			System.out.println(a);
+		}
 
 		Set<ArgumentTree> trees = new HashSet<ArgumentTree>();
 		ArrayList<Integer> heights = new ArrayList<Integer>();
 		ArrayList<Integer> widths = new ArrayList<Integer>();
 
 		// compute all minimal conflicts
-		ArrayList<AtomSet> minInconSets = FindMinIncSets.findMinimalIncSubsets(kb);
+		Set<AtomSet> minInconSets = FindMinIncSets.findMinimalIncSubsets(kb);
 		System.out.println("minimal inconsistent subsets: \n " + minInconSets + " \n size: " + minInconSets.size());
 
 		int number = 0;
@@ -123,14 +124,26 @@ public class Experiment1 {
 				System.out.println("Running so far " + number);
 			}
 
-			ArgumentTree tree = getArgumentTree(argRoot, minInconSets);
+			ArgumentTree tree = getArgumentTree(argRoot, minInconSets, listArguments);
 			trees.add(tree);
 		}
 
 		long endTime1 = System.currentTimeMillis();
 		long duration1 = endTime1 - startTime1;
 
-		
+		/*
+		 * System.out.println("Argument: " + listArguments);
+		 * System.out.println("Attack: " + attackSet);
+		 * 
+		 * SetAf s = new SetAf(); s = convertToSetAf(listArguments, attackSet);
+		 * SimpleGroundedSetAfReasoner gr = new SimpleGroundedSetAfReasoner();
+		 * SimpleAdmissibleSetAfReasoner ad = new SimpleAdmissibleSetAfReasoner();
+		 * SimplePreferredSetAfReasoner pr = new SimplePreferredSetAfReasoner();
+		 * System.out.println("grounded: " + gr.getModel(s));
+		 * System.out.println("admissible: " + ad.getModels(s));
+		 * System.out.println("preferred: " + pr.getModels(s));
+		 */
+
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter("execution_time.txt"))) {
 			for (ArgumentTree t : trees) {
 				writer.write("\n Argument tree for " + t.getRoot() + "\n");
@@ -144,21 +157,33 @@ public class Experiment1 {
 
 			writer.write("\nNumber of trees " + trees.size() + "\n");
 			writer.write("Execution time for computing trees " + duration1 + "\n");
-			//System.out.println("Number of trees " + trees.size());
+			// System.out.println("Number of trees " + trees.size());
 
 			int[] result = findMaxAndMin(heights);
 			writer.write("Max of heights: " + result[0] + "\n");
 			writer.write("Min of heights: " + result[1] + "\n");
 
-			double averageHeight = calculateAverageHeight(heights);
+			double averageHeight = calculateAverage(heights);
 			writer.write("Average Tree Height: " + averageHeight + "\n");
+			
+	        // Print out the frequencies
+			Map<Integer, Integer> frequencyHeight = countFrequencies(heights);	        
+	        for (Map.Entry<Integer, Integer> entry : frequencyHeight.entrySet()) {
+	        	writer.write("Element: " + entry.getKey() + ", Frequency- Height: " + entry.getValue() + ". ");
+	        }
 
 			int[] result1 = findMaxAndMinWidth(widths);
 			writer.write("Max of Widths: " + result1[0] + "\n");
 			writer.write("Min of Widths: " + result1[1] + "\n");
 
-			double averageWidth = calculateAverageHeight(widths);
+			double averageWidth = calculateAverage(widths);
 			writer.write("Average Tree Width: " + averageWidth + "\n");
+			
+			  // Print out the frequencies
+			Map<Integer, Integer> frequencyWidths = countFrequencies(widths);	        
+	        for (Map.Entry<Integer, Integer> entryW : frequencyWidths.entrySet()) {
+	        	writer.write("Element: " + entryW.getKey() + ", Frequency - width: " + entryW.getValue() + ". ");
+	        }
 
 			writer.write("Number of args: " + listArguments.size() + " - Execution time for translating arguments: "
 					+ duration + "\n");
@@ -167,111 +192,99 @@ public class Experiment1 {
 			writer.flush(); // Close the BufferedWriter
 			writer.close();
 		}
+
+		/*
+		 * String queryString = "? :- postdoc(ann)."; ConjunctiveQuery query =
+		 * DlgpParser.parseQuery(queryString); AtomSet qAtom = query.getAtomSet();
+		 * ArrayList<ArrayList<StructuredArgument>> proArgs =
+		 * App1.getArgsForAtomSet(qAtom, listArguments);
+		 * 
+		 * System.out.println("Proponent arguments: " + proArgs); Argument argRoot =
+		 * proArgs.get(0).get(0); System.out.println(argRoot);
+		 * 
+		 */
+
+		/*
+		 * for (StructuredArgument argRoot : listArguments) { // StructuredArgument
+		 * argRoot = listArguments.get(5); // initialise an argument tree for a given
+		 * argument (root). ArgumentNode root = new ArgumentNode(argRoot); ArgumentTree
+		 * argTree = new ArgumentTree(root); argTree.add(root);
+		 * System.out.println("Root: " + argTree.getRoot() + " Id " +
+		 * argTree.getRoot().getNodeID());
+		 * 
+		 * Set<AtomSet> firstLevelSets = new HashSet<AtomSet>(); firstLevelSets =
+		 * firstLevel(argRoot, minInconSets); //
+		 * System.out.println("first level conflict sets: " + firstLevelSets + "\n");
+		 * 
+		 * for (AtomSet set : firstLevelSets) { count = 0; // Construct Atoms of
+		 * Undercut (Counter-Argument) for root. Set<Atom> undercutAtoms = new
+		 * HashSet<Atom>();
+		 * 
+		 * // Convert AtomSet to Set<Atom>
+		 * 
+		 * CloseableIterator<Atom> it = set.iterator(); while (it.hasNext()) {
+		 * undercutAtoms.add(it.next()); }
+		 * 
+		 * // remove all atoms in the root from the current minimal conflicts.
+		 * 
+		 * for (Atom premise : argRoot.getPremises()) { undercutAtoms.remove(premise); }
+		 * 
+		 * // Get arguments that have the atom of "undercut" in their premises
+		 * ArrayList<ArrayList<StructuredArgument>> setOfUndercuts = new
+		 * ArrayList<ArrayList<StructuredArgument>>();
+		 * 
+		 * setOfUndercuts.addAll(findArgumentSets(undercutAtoms, listArguments));
+		 * 
+		 * // System.out.println("Set of undercuts: " + setOfUndercuts);
+		 * 
+		 * // Create and Add the Undercut Node:
+		 * 
+		 * for (ArrayList<StructuredArgument> undercut : setOfUndercuts) {
+		 * 
+		 * count = 1;
+		 * 
+		 * // Initialise a defence set and a culprit Set<StructuredArgument> defenceSet
+		 * = new HashSet<StructuredArgument>(); Set<StructuredArgument> culprit = new
+		 * HashSet<StructuredArgument>(); defenceSet.add(argRoot);
+		 * culprit.addAll(undercut); // add undercut to culprit //
+		 * System.out.println("Culprit: " + culprit + " " + count);
+		 * 
+		 * // Process undercuts and ensure undercutNodes are only added once
+		 * Set<ArgumentNode> undercutNodes = new HashSet<ArgumentNode>(); for
+		 * (StructuredArgument argument : undercut) { ArgumentNode newNode = new
+		 * ArgumentNode(argument); argTree.add(newNode); // Add the new node to the tree
+		 * undercutNodes.add(newNode); // Add node to the set to create hyperedegs }
+		 * 
+		 * // Create hyperedges String label = ".."; argTree.add(new
+		 * HyperDirEdge<ArgumentNode>(undercutNodes, root, label));
+		 * 
+		 * // add to the attack set. Attack attack = new Attack(undercut, argRoot);
+		 * attackSet.add(attack);
+		 * 
+		 * // Work with remaining sets, but avoid modifying the original list
+		 * ArrayList<AtomSet> remainingMins = new ArrayList<>(minInconSets);
+		 * remainingMins.remove(set);
+		 * 
+		 * // System.out.println("remainingMins: " + remainingMins + " size " + //
+		 * remainingMins.size());
+		 * 
+		 * for (ArgumentNode node : undercutNodes) { subcuts(node, remainingMins, set,
+		 * new HashSet<>(root.getPremises()), argTree, defenceSet, culprit); //
+		 * subcuts(node, remainingMins, set, new HashSet<>(node.getPremises()), //
+		 * argTree); } } } }
+		 * 
+		 * System.out.println(" \n Argument tree for " + argTree.getRoot() + " ID " +
+		 * argTree.getRoot().getNodeID()); argTree.printTree(argTree.getRoot());
+		 * System.out.print("Nodes: " + argTree.getNumberOfNodes() + " .Edges: " +
+		 * argTree.getNumberOfEdges() + "\n"); System.out.println("Width: " +
+		 * argTree.getMaxWidth()); System.out.println("Height: " + argTree.getHeight());
+		 * }
+		 */
 	}
-	
-	/*
-	 * String queryString = "? :- postdoc(ann)."; ConjunctiveQuery query =
-	 * DlgpParser.parseQuery(queryString); AtomSet qAtom = query.getAtomSet();
-	 * ArrayList<ArrayList<StructuredArgument>> proArgs =
-	 * App1.getArgsForAtomSet(qAtom, listArguments);
-	 * 
-	 * System.out.println("Proponent arguments: " + proArgs); Argument argRoot =
-	 * proArgs.get(0).get(0); System.out.println(argRoot);
-	 * 
-	 */
-	
-
-		/*for (StructuredArgument argRoot : listArguments) {
-		StructuredArgument argRoot = listArguments.get(5);
-		// initialise an argument tree for a given argument (root).
-		ArgumentNode root = new ArgumentNode(argRoot);
-		ArgumentTree argTree = new ArgumentTree(root);
-		argTree.add(root);
-		System.out.println("Root: " + argTree.getRoot() + " Id " + argTree.getRoot().getNodeID());
-
-		Set<AtomSet> firstLevelSets = new HashSet<AtomSet>();
-		firstLevelSets = firstLevel(argRoot, minInconSets);
-		// System.out.println("first level conflict sets: " + firstLevelSets + "\n");
-
-		for (AtomSet set : firstLevelSets) {
-			count = 0;
-			// Construct Atoms of Undercut (Counter-Argument) for root.
-			Set<Atom> undercutAtoms = new HashSet<Atom>();
-
-			// Convert AtomSet to Set<Atom>
-
-			CloseableIterator<Atom> it = set.iterator();
-			while (it.hasNext()) {
-				undercutAtoms.add(it.next());
-			}
-
-			// remove all atoms in the root from the current minimal conflicts.
-
-			for (Atom premise : argRoot.getPremises()) {
-				undercutAtoms.remove(premise);
-			}
-
-			// Get arguments that have the atom of "undercut" in their premises
-			ArrayList<ArrayList<StructuredArgument>> setOfUndercuts = new ArrayList<ArrayList<StructuredArgument>>();
-
-			setOfUndercuts.addAll(findArgumentSets(undercutAtoms, listArguments));
-
-			// System.out.println("Set of undercuts: " + setOfUndercuts);
-
-			// Create and Add the Undercut Node:
-
-			for (ArrayList<StructuredArgument> undercut : setOfUndercuts) {
-
-				count = 1;
-
-				// Initialise a defence set and a culprit
-				Set<StructuredArgument> defenceSet = new HashSet<StructuredArgument>();
-				Set<StructuredArgument> culprit = new HashSet<StructuredArgument>();
-				defenceSet.add(argRoot);
-				culprit.addAll(undercut); // add undercut to culprit
-				// System.out.println("Culprit: " + culprit + " " + count);
-
-				// Process undercuts and ensure undercutNodes are only added once
-				Set<ArgumentNode> undercutNodes = new HashSet<ArgumentNode>();
-				for (StructuredArgument argument : undercut) {
-					ArgumentNode newNode = new ArgumentNode(argument);
-					argTree.add(newNode); // Add the new node to the tree
-					undercutNodes.add(newNode); // Add node to the set to create hyperedegs
-				}
-
-				// Create hyperedges
-				String label = "..";
-				argTree.add(new HyperDirEdge<ArgumentNode>(undercutNodes, root, label));
-
-				// add to the attack set.
-				SetAttack attack = new SetAttack(undercut, argRoot);
-				attackSet.add(attack);
-
-				// Work with remaining sets, but avoid modifying the original list
-				ArrayList<AtomSet> remainingMins = new ArrayList<>(minInconSets);
-				remainingMins.remove(set);
-
-				// System.out.println("remainingMins: " + remainingMins + " size " +
-				// remainingMins.size());
-
-				for (ArgumentNode node : undercutNodes) {
-					subcuts(node, remainingMins, set, new HashSet<>(root.getPremises()), argTree, defenceSet, culprit);
-					// subcuts(node, remainingMins, set, new HashSet<>(node.getPremises()),
-					// argTree); }
-				}
-			}
-		}
-
-		System.out.println(" \n Argument tree for " + argTree.getRoot() + " ID " + argTree.getRoot().getNodeID());
-		argTree.printTree(argTree.getRoot());
-		System.out.print("Nodes: " + argTree.getNumberOfNodes() + " .Edges: " + argTree.getNumberOfEdges() + "\n");
-		System.out.println("Width: " + argTree.getMaxWidth());
-		System.out.println("Height: " + argTree.getHeight());
-	}*/
 
 	// function finds an average height of argumentation trees
 
-	public static double calculateAverageHeight(ArrayList<Integer> heights) {
+	public static double calculateAverage(ArrayList<Integer> heights) {
 		if (heights == null || heights.isEmpty()) {
 			throw new IllegalArgumentException("List cannot be null or empty");
 		}
@@ -337,52 +350,53 @@ public class Experiment1 {
 	 * @throws IteratorException
 	 */
 
-	public static ArgumentTree getArgumentTree(StructuredArgument argRoot, ArrayList<AtomSet> minInconSets)
-			throws IteratorException {
+	public static ArgumentTree getArgumentTree(StructuredArgument argRoot, Set<AtomSet> minInconSets,
+			ArrayList<StructuredArgument> listArguments) throws IteratorException {
 
 		// initialise an argument tree for a given argument (root).
 		ArgumentNode root = new ArgumentNode(argRoot);
 		ArgumentTree argTree = new ArgumentTree(root);
 		argTree.add(root);
+		
+	
 
-		// 1) collect all possible atom sets that include argRoot
+		// 1) collect all possible MISs that include argRoot
 		Set<AtomSet> firstLevelSets = new HashSet<AtomSet>();
 		firstLevelSets = firstLevel(argRoot, minInconSets);
 
 		// 2) create argument tree recursively
 
 		for (AtomSet set : firstLevelSets) {
-			count = 0;
 
 			// Collect all possible undercuts (Counter-Argument) for root.
-			Set<Atom> undercutAtoms = new HashSet<Atom>();
-
+			Set<Atom> undercutAtoms = new HashSet<>();	
+			
 			// Convert AtomSet to Set<Atom>
 			CloseableIterator<Atom> it = set.iterator();
 			while (it.hasNext()) {
-				undercutAtoms.add(it.next());
+				Atom atom = it.next();
+				undercutAtoms.add(atom);
 			}
-
-			// remove all atoms in the root from the current minimal conflicts.
-			for (Atom premise : argRoot.getPremises()) {
-				undercutAtoms.remove(premise);
-			}
+			
+			// remove all atoms in the root's premises from the current MICs.
+			undercutAtoms.removeAll(argRoot.getPremises());
 
 			// Get arguments that have the atom of "undercut" in their premises
 			ArrayList<ArrayList<StructuredArgument>> setOfUndercuts = new ArrayList<ArrayList<StructuredArgument>>();
 			setOfUndercuts.addAll(findArgumentSets(undercutAtoms, listArguments));
 
-			if (!setOfUndercuts.isEmpty()) {
-
+			if (!setOfUndercuts.isEmpty()) {	
+			
 				// Create and Add the Undercut Node:
 				for (ArrayList<StructuredArgument> undercut : setOfUndercuts) {
-					count = 1;
-
+					//count = 1;
+					
 					// Initialise a defence set and a culprit
 					Set<StructuredArgument> defenceSet = new HashSet<StructuredArgument>();
 					Set<StructuredArgument> culprit = new HashSet<StructuredArgument>();
 					defenceSet.add(argRoot);
-					culprit.addAll(undercut); // add undercut to culprit
+					culprit.addAll(undercut); 
+
 
 					// Process undercuts and ensure undercutNodes are only added once
 					Set<ArgumentNode> undercutNodes = new HashSet<ArgumentNode>();
@@ -390,6 +404,7 @@ public class Experiment1 {
 						ArgumentNode newNode = new ArgumentNode(argument);
 						argTree.add(newNode); // Add the new node to the tree
 						undercutNodes.add(newNode); // Add node to the set to create hyperedegs
+
 					}
 
 					// Create hyperedges
@@ -397,7 +412,7 @@ public class Experiment1 {
 					argTree.add(new HyperDirEdge<ArgumentNode>(undercutNodes, root, label));
 
 					// add to the attack set.
-					SetAttack attack = new SetAttack(undercut, argRoot);
+					Attack attack = new Attack(undercut, argRoot);
 					attackSet.add(attack);
 
 					// Work with remaining sets, but avoid modifying the original list
@@ -406,7 +421,7 @@ public class Experiment1 {
 
 					for (ArgumentNode node : undercutNodes) {
 						subcuts(node, remainingMins, set, new HashSet<>(node.getPremises()), argTree, defenceSet,
-								culprit);
+								culprit, listArguments, 2);
 					}
 				}
 			}
@@ -432,8 +447,7 @@ public class Experiment1 {
 	 * @return a set of minimal conflicts.
 	 * @throws IteratorException
 	 */
-	private static Set<AtomSet> firstLevel(StructuredArgument arg, ArrayList<AtomSet> allMins)
-			throws IteratorException {
+	private static Set<AtomSet> firstLevel(StructuredArgument arg, Set<AtomSet> allMins) throws IteratorException {
 		Stack<AtomSet> candidates = new Stack<AtomSet>();
 		for (AtomSet min : allMins) {
 			ArrayList<Atom> set = new ArrayList<Atom>();
@@ -572,26 +586,24 @@ public class Experiment1 {
 	 */
 	private static void subcuts(ArgumentNode currentNode, ArrayList<AtomSet> remainingMins, AtomSet current,
 			Set<Atom> supportOfCurrentNode, ArgumentTree argTree, Set<StructuredArgument> defenceSet,
-			Set<StructuredArgument> culprit) throws IteratorException {
+			Set<StructuredArgument> culprit, ArrayList<StructuredArgument> listArguments, int level) throws IteratorException {
 
 		for (AtomSet min : remainingMins) {
-		
+
 			// Convert Atomset to a Set to optimize intersection check
-			Set<Atom> minSet = new HashSet<Atom>();
+			Set<Atom> convertMin = new HashSet<Atom>();
 			CloseableIterator<Atom> it = min.iterator();
 			while (it.hasNext()) {
-				minSet.add(it.next());
+				convertMin.add(it.next());
 			}
 
 			// check current and node have a non-empty intersection
-			if (hasNonEmptyIntersection(current, minSet)) {
+			if (hasNonEmptyIntersection(current, convertMin)) {
 
 				// Check whether the support of the current node is present in the MinSets.
-				if (!supportOfCurrentNode.containsAll(minSet)) {
+				if (!supportOfCurrentNode.containsAll(convertMin)) {
 					Set<Atom> set = new HashSet<Atom>(currentNode.getPremises());
-					//System.out.println("SET: " + set);
-					set.retainAll(minSet);
-					//System.out.println("SET after retain " + set);
+					set.retainAll(convertMin);
 
 					if (!set.isEmpty()) {
 						boolean properUndercut = true;
@@ -603,6 +615,7 @@ public class Experiment1 {
 
 						for (AtomSet min2 : remainingMins) {
 							if (!min2.equals(min) && current.equals(min2)) {
+								
 								// convert AtomSet to a Set to optimize intersection check
 								Set<Atom> minSet2 = new HashSet<Atom>();
 								CloseableIterator<Atom> it2 = min2.iterator();
@@ -610,39 +623,59 @@ public class Experiment1 {
 									minSet2.add(it2.next());
 								}
 
-								Set<Atom> set1 = new HashSet<Atom>(minSet);
+								Set<Atom> set1 = new HashSet<Atom>(convertMin);
 								Set<Atom> set2 = new HashSet<Atom>(minSet2);
 								set1.retainAll(currentNode.getPremises());
 								set2.retainAll(currentNode.getPremises());
 								if (set1.containsAll(set2)) {
 									properUndercut = false;
-									//System.out.println("BREAK");
 									break;
 								}
 							}
 						}
 
 						if (properUndercut) {
-							count++;
-							Set<Atom> atomsUndercut = new HashSet<Atom>(minSet);
+							Set<Atom> atomsUndercut = new HashSet<Atom>(convertMin);
 							atomsUndercut.removeAll(currentNode.getPremises());
-							// System.out.println("SUPPORT of undercutNode of " + currentNode + " " +
-							// atomsUndercut);
 
 							// get a set of arguments that collectively attacks argNode
 							ArrayList<ArrayList<StructuredArgument>> undercuts = new ArrayList<ArrayList<StructuredArgument>>();
 							undercuts = findArgumentSets(atomsUndercut, listArguments);
-							//System.out.println("UNDERCUTS: " + undercuts);
 
 							// create argumentNodes and hyperdeges of the argTree.
 							for (ArrayList<StructuredArgument> undercut : undercuts) {
-								//System.out.println("\n FOR EACH UNDERCUT: " + undercut);
-
 								Set<ArgumentNode> undercutNodes = new HashSet<ArgumentNode>();
 
-								// System.out.println("Count" + count);
-								if (count % 2 != 0 && defenceSet.containsAll(undercut)) {
-									//System.out.println("These arguments exist in the defence set.");
+								// get body in the support of arg in the defence set
+								Set<StructuredArgument> supDefSet = new HashSet<StructuredArgument>();
+								for (StructuredArgument arg : defenceSet) {
+									List<StructuredArgument> allArgs = findAllArgsBody(arg);
+									supDefSet.addAll(allArgs);
+								}
+								
+								//get body in the support of arg in the culprit
+								Set<StructuredArgument> supCulprit = new HashSet<StructuredArgument>();
+								for (StructuredArgument arg2 : culprit) {
+									List<StructuredArgument> allArgs2 = findAllArgsBody(arg2);
+									supDefSet.addAll(allArgs2);
+								}
+
+								// get body in the support of arg in the undercut
+								ArrayList<StructuredArgument> supUndercut = new ArrayList<StructuredArgument>();
+								for (StructuredArgument arg1 : undercut) {
+									List<StructuredArgument> allArgs1 = findAllArgsBody(arg1);
+									supUndercut.addAll(allArgs1);
+								}
+								
+								// this ensures that  (1) opponent's move can not repeat proponent's move
+								// 					  (2) opponent's move can not repeat the previous opponent's move
+								
+								if (level % 2 != 0 && (compareSets(defenceSet, undercut) == true
+										|| compareSets(supDefSet, undercut) == true
+										|| compareSets(defenceSet, supUndercut) == true
+										|| compareSets(culprit, undercut) == true
+										//|| compareSets(culprit, supUndercut)  == true
+										|| compareSets(supCulprit, undercut) == true)) {
 									break;
 								}
 
@@ -655,39 +688,29 @@ public class Experiment1 {
 								// add hyperedges
 								String label2 = "...";
 								argTree.add(new HyperDirEdge<ArgumentNode>(undercutNodes, currentNode, label2));
-								// System.out.println("NODES:" + argTree.getNodes());
-								//System.out.println("HYPEREDGES:" + argTree.getEdges());
-
-								//System.out.println("UDERCUT NODE " + undercutNodes);
 
 								// add to the culprit or the defence set
-								int currentHeight = argTree.getHeight();
 								for (ArgumentNode node : undercutNodes) {
-
-									if (currentHeight % 2 == 0) {
+									if (level % 2 == 0) {
 										defenceSet.add(returnArgForNode(node, listArguments));
-										// System.out.println("New DEFECE SET: " + defenceSet + " " + currentHeight);
-										// System.out.println("Culprit" + culprit);
 									} else {
 										culprit.add(returnArgForNode(node, listArguments));
-										// System.out.println("New CULPRIT: " + culprit + " " + currentHeight);
-										// System.out.println("defence set" + defenceSet);
 									}
 								}
 
 								// add to the attack set.
 								StructuredArgument currentArg = returnArgForNode(currentNode, listArguments);
-								SetAttack attack = new SetAttack(undercut, currentArg);
+								Attack attack = new Attack(undercut, currentArg);
 								attackSet.add(attack);
 
 								ArrayList<AtomSet> newRemainingMins = new ArrayList<AtomSet>(remainingMins);
 								newRemainingMins.remove(min);
-								//System.out.println("NEW REMAININGMINS: " + newRemainingMins + " SIZE: " + newRemainingMins.size());
 
 								for (ArgumentNode node : undercutNodes) {
 									Set<Atom> newSupport = new HashSet<Atom>(atomsUndercut); // Create the new support
 									newSupport.addAll(node.getPremises());
-									subcuts(node, newRemainingMins, min, newSupport, argTree, defenceSet, culprit);
+									subcuts(node, newRemainingMins, min, newSupport, argTree, defenceSet, culprit,
+											listArguments, level + 1);
 								}
 							}
 						} // End For
@@ -698,6 +721,7 @@ public class Experiment1 {
 
 			} // End If
 		} // End For
+
 	}
 
 	public static boolean hasNonEmptyIntersection(AtomSet set1, Set<Atom> set2) throws IteratorException {
@@ -727,6 +751,50 @@ public class Experiment1 {
 		}
 		return result;
 	}
+
+	private static boolean compareSets(Set<StructuredArgument> A, ArrayList<StructuredArgument> B) {
+
+		for (StructuredArgument argB : B) {
+			if (A.contains(argB)) {
+				return true;
+			}
+		}
+		return false;
+
+	}
+	
+	public static List<StructuredArgument> findAllArgsBody(StructuredArgument argument) {
+        List<StructuredArgument> arguments = new ArrayList<>();
+        findArgumentsRecursively(argument, arguments);
+        return arguments;
+    }
+
+	private static void findArgumentsRecursively(StructuredArgument argument, List<StructuredArgument> argBody) {
+		if (argument.body.isEmpty()) {
+			return; // Base case: Stop if the argument is null (empty body)
+		}
+		argBody.addAll(argument.body); // Add the current argument to the list
+		for (StructuredArgument arg : argument.body) {
+			findArgumentsRecursively(arg, argBody); // Recursively process the body
+		}
+	}
+	private  static Map<Integer, Integer> countFrequencies(ArrayList<Integer> list) {
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        
+        // Loop through the list and count the occurrences of each element
+        for (Integer num : list) {
+            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+        }
+        
+        return frequencyMap;
+    }
+
+	/*
+	 * private static boolean compareSets(Set<StructuredArgument> A,
+	 * ArrayList<StructuredArgument> B) { for (StructuredArgument argA : A) { for
+	 * (StructuredArgument argB : B) { if (argA.myID == argB.myID) { return true; }
+	 * } } return false; }
+	 */
 
 	/*
 	 * for (Argument arg : undercut) { boolean nodeExists = false; // Reset

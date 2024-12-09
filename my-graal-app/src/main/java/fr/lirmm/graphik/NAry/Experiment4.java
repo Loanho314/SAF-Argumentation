@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import fr.lirmm.graphik.DEFT.core.DefeasibleKB;
-import fr.lirmm.graphik.NAry.ArgumentationFramework.SetAttack;
 import fr.lirmm.graphik.graal.api.core.AtomSet;
 import fr.lirmm.graphik.graal.api.core.AtomSetException;
 import fr.lirmm.graphik.graal.api.core.InMemoryAtomSet;

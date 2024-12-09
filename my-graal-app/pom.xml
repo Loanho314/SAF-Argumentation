@@ -14,6 +14,8 @@
 		<maven.compiler.source>14</maven.compiler.source>
 		<maven.compiler.target>14</maven.compiler.target>
 		<project.java.version>1.8</project.java.version>
+		<PATH_TO_FX>
+			C:\Users\tho310\openjfx-23.0.1_windows-x64_bin-sdk\javafx-sdk-23.0.1\lib</PATH_TO_FX>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
@@ -125,6 +127,12 @@
 			<version>1.27</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.tweetyproject.arg</groupId>
+			<artifactId>setaf</artifactId>
+			<version>1.27</version>
+		</dependency>
+
 
 	</dependencies>
 	<build>
@@ -136,4 +144,6 @@
 			</plugin>
 		</plugins>
 	</build>
+
+
 </project>

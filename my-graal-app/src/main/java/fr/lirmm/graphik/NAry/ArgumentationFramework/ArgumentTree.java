@@ -10,10 +10,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-import org.tweetyproject.graphs.Graph;
 import org.tweetyproject.graphs.HyperDirEdge;
 import org.tweetyproject.graphs.HyperGraph;
-import org.tweetyproject.graphs.Node;
 import org.tweetyproject.math.matrix.Matrix;
 import org.tweetyproject.graphs.DirHyperGraph;
 import org.tweetyproject.graphs.GeneralEdge;
@@ -118,6 +116,7 @@ public class ArgumentTree extends HyperGraph<ArgumentNode> {
 	 * 
 	 * @return a string representation of this argument tree.
 	 */
+
 	/*
 	 * public String prettyPrint(){ return this.prettyPrint(this.rootNode, new
 	 * HashSet<ArgumentNode>(), 0); }
@@ -132,9 +131,6 @@ public class ArgumentTree extends HyperGraph<ArgumentNode> {
 	 * @return a string.
 	 */
 	// Method to print tree from hypergraph
-	
-	
-
 
 	// Print the tree from a hypergraph starting from the specified root node
 
@@ -165,12 +161,12 @@ public class ArgumentTree extends HyperGraph<ArgumentNode> {
 	 * visitedEdges); } } } currentPath.remove(node); // Backtrack for new branches
 	 * }
 	 */
-	 
-	
-	
+
+	// print in a text file
+
 	public void printTree(ArgumentNode root, BufferedWriter writer) throws IOException {
 		printTreeHelper(root, new HashSet<>(), "", new HashSet<>(), writer);
-		// writer.close(); // Close the writer after the tree is printed
+		//writer.close(); // Close the writer after the tree is printed
 	}
 
 	private void printTreeHelper(ArgumentNode node, Set<ArgumentNode> currentPath, String indent,
@@ -181,7 +177,7 @@ public class ArgumentTree extends HyperGraph<ArgumentNode> {
 			return;
 		}
 
-		// Write the node itself 		
+		// Write the node itself 
 		writer.write(indent + node + "\n");
 		currentPath.add(node);
 
@@ -198,6 +194,40 @@ public class ArgumentTree extends HyperGraph<ArgumentNode> {
 			}
 		}
 		currentPath.remove(node); // Backtrack for new branches
+	}
+
+	public String printTreeGUI(ArgumentNode root) {
+		StringBuilder result = new StringBuilder();
+		printTreeHelperGUI(root, new HashSet<>(), "", new HashSet<>(), result);
+		return result.toString();
+	}
+
+	private void printTreeHelperGUI(ArgumentNode node, Set<ArgumentNode> currentPath, String indent,
+			Set<HyperDirEdge> visitedEdges, StringBuilder result) {
+		// Check for cycles in the path
+		if (currentPath.contains(node)) {
+			result.append(indent).append(node).append(" (cycle detected)\n");
+			return;
+		}
+
+		// Print the current node
+		result.append(indent).append(node).append("\n");
+		currentPath.add(node);
+
+		// Process all hyperedges where this node is the target
+		for (HyperDirEdge edge : this.getEdges()) {
+			if (edge.getNodeB().equals(node) && !visitedEdges.contains(edge)) {
+				visitedEdges.add(edge); // Mark this edge as visited
+
+				// Print attackers in the hyperedge as children
+				for (Object ob : edge.getNodeA()) {
+					ArgumentNode attacker = (ArgumentNode) ob;
+					printTreeHelperGUI(attacker, new HashSet<>(currentPath), indent + "   ", visitedEdges, result);
+				}
+			}
+		}
+
+		currentPath.remove(node); // Backtrack to allow new paths
 	}
 
 }

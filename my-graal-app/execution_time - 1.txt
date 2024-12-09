@@ -1,0 +1,162 @@
+All inconsistent subsets:
+
+[http://dbpedia.org/ontology/Place\1(http://dbpedia.org/resource/Adam_Schreiber), http://dbpedia.org/ontology/Agent\1(http://dbpedia.org/resource/Adam_Schreiber)], [http://dbpedia.org/ontology/Place\1(http://dbpedia.org/resource/Adam_Schreiber), http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)], [http://dbpedia.org/ontology/Place\1(http://dbpedia.org/resource/Adam_Schreiber), http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)], 
+
+ [[http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber), http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)], 
+[http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber), http://dbpedia.org/ontology/Agent\1(http://dbpedia.org/resource/Adam_Schreiber)], [http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber), http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)], 
+
+
+[http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber), http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)], 
+[http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber), http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)],
+[http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber), http://dbpedia.org/ontology/Agent\1(http://dbpedia.org/resource/Adam_Schreiber)],  [http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber), http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)], [http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber), http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)]]
+Size 11
+
+
+ Argument tree for a2 : [a1 ] -> http://dbpedia.org/ontology/Place\1(http://dbpedia.org/resource/Adam_Schreiber)
+Nodes: 19 Edges: 18
+Height: 4 Width: 7
+a2 : [a1 ] -> http://dbpedia.org/ontology/Place\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a5 : [a4 ] -> http://dbpedia.org/ontology/Agent\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a5 : [a4 ] -> http://dbpedia.org/ontology/Agent\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a5 : [a4 ] -> http://dbpedia.org/ontology/Agent\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+
+ Argument tree for a5 : [a4 ] -> http://dbpedia.org/ontology/Agent\1(http://dbpedia.org/resource/Adam_Schreiber)
+Nodes: 19 Edges: 18
+Height: 4 Width: 6
+a5 : [a4 ] -> http://dbpedia.org/ontology/Agent\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a2 : [a1 ] -> http://dbpedia.org/ontology/Place\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a2 : [a1 ] -> http://dbpedia.org/ontology/Place\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a2 : [a1 ] -> http://dbpedia.org/ontology/Place\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+
+ Argument tree for a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+Nodes: 19 Edges: 18
+Height: 4 Width: 6
+a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a2 : [a1 ] -> http://dbpedia.org/ontology/Place\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a2 : [a1 ] -> http://dbpedia.org/ontology/Place\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a2 : [a1 ] -> http://dbpedia.org/ontology/Place\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+
+ Argument tree for a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+Nodes: 19 Edges: 18
+Height: 4 Width: 6
+a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a2 : [a1 ] -> http://dbpedia.org/ontology/Place\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a2 : [a1 ] -> http://dbpedia.org/ontology/Place\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a2 : [a1 ] -> http://dbpedia.org/ontology/Place\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+
+ Argument tree for a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+Nodes: 19 Edges: 18
+Height: 4 Width: 7
+a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a5 : [a4 ] -> http://dbpedia.org/ontology/Agent\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a5 : [a4 ] -> http://dbpedia.org/ontology/Agent\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a5 : [a4 ] -> http://dbpedia.org/ontology/Agent\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+
+ Argument tree for a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+Nodes: 19 Edges: 18
+Height: 4 Width: 7
+a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a5 : [a4 ] -> http://dbpedia.org/ontology/Agent\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+            a1 : [a0 ] -> http://dbpedia.org/ontology/ArchitecturalStructure\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a5 : [a4 ] -> http://dbpedia.org/ontology/Agent\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+   a3 : [] -> http://dbpedia.org/ontology/Athlete\1(http://dbpedia.org/resource/Adam_Schreiber)
+      a0 : [] -> http://dbpedia.org/ontology/Building\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a4 : [a3 ] -> http://dbpedia.org/ontology/Person\1(http://dbpedia.org/resource/Adam_Schreiber)
+         a5 : [a4 ] -> http://dbpedia.org/ontology/Agent\1(http://dbpedia.org/resource/Adam_Schreiber)
+
+Number of trees 6
+Execution time for computing trees 75
+Max of heights: 4
+Min of heights: 4
+Average Tree Height: 4.0
+Max of Widths: 7
+Min of Widths: 6
+Average Tree Width: 6.5
+Number of args: 6 - Execution time for translating arguments: 8
+Number of attacks: 18

@@ -13,6 +13,7 @@ public class ArgumentNode extends StructuredArgument implements Node {
 	private ArrayList<ArgumentNode> children; // List of child nodes
 	private static int idCounter = 0; // Static counter for auto-incremented node IDs
 	private int nodeID; // Unique ID for each ArgumentNode
+	//private int level;
 
 	// Constructor that accepts an Argument
 	public ArgumentNode(StructuredArgument argument) {
@@ -25,6 +26,11 @@ public class ArgumentNode extends StructuredArgument implements Node {
 	public void addChild(ArgumentNode childNode) {
 		children.add(childNode); // Add the child node to the list
 	}
+	
+	// Set the level of node
+	//public void setLevel(int l) {
+	//	this.level = l;
+	//}
 	
 
     // Getter for the unique node ID
