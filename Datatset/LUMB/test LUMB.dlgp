@@ -1,3 +1,4 @@
+<<<<<<< HEAD
  ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#affiliatedOrganizationOf>(X0, X1), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor>(X0, X1).
  ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#researchProject>(X0, X1), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor>(X0, X1).
  ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor>(X0, X1), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#tenured>(X0, X1).
@@ -51,4 +52,59 @@
 <http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse>(<http://www.Department12.University0.edu/GraduateStudent9>,<http://www.Department12.University0.edu/GraduateCourse8>).
 
 <http://swat.cse.lehigh.edu/onto/univ-bench.owl#emailAddress>(<http://www.Department12.University0.edu/GraduateStudent9>,"GraduateStudent9@Department12.University0.edu").
+=======
+ ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#affiliatedOrganizationOf>(X0, X1), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor>(X0, X1).
+ ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#researchProject>(X0, X1), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor>(X0, X1).
+ ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor>(X0, X1), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#tenured>(X0, X1).
+ ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor>(X0, X1), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#hasFaculty>(X0, X1).
+ ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor>(X0, X1), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf>(X0, X1).
+ ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#member>(X0, X1), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor>(X0, X1).
+ ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Professor>(X0), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#PostDoc>(X0).
+ ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Lecturer>(X0), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Professor>(X0).
+ ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent>(X0), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Director>(X0).
+ ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent>(X0), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#chair>(X0).
+ ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#chair>(X0), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student>(X0).
+ ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#chair>(X0), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#ResearchAssistant>(X0).
+ ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Director>(X0), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#TeachingAssistant>(X0).
+ ! :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Employee>(X0), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#TeachingAssistant>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#Faculty>(X0) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Professor>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse>(X0, X3), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateCourse>(X3) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse>(X0, X3) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course>(X0) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse>(X3, X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf>(X0, X3) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Professor>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf>(X0, X3) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Lecturer>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#Professor>(X0) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor>(X3, X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor>(X0, X3) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person>(X0) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course>(X0) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf>(X3, X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom>(X0, X3), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#University>(X3) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person>(X0) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Director>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#headOf>(X0, X3), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Program>(X3) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Director>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#headOf>(X0, X3), <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Department>(X3) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#chair>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person>(X0) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#chair>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student>(X0) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#Subj1Student>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#Employee>(X0) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#AdministrativeStaff>(X0).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#Employee>(X0) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#worksFor>(X0, X3).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person>(X0) :- <http://swat.cse.lehigh.edu/onto/univ-bench.owl#ResearchAssistant>(X0).
+
+
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#Employee>(<http://www.Department5.University0.edu/GraduateStudent76>).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#TeachingAssistant>(<http://www.Department5.University0.edu/GraduateStudent76>).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#name>(<http://www.Department12.University0.edu/GraduateStudent9>,"GraduateStudent9").
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent>(<http://www.Department12.University0.edu/GraduateStudent9>).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#ResearchAssistant>(<http://www.Department12.University0.edu/GraduateStudent9>).
+
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#TeachingAssistant>(<http://www.Department6.University0.edu/AssistantProfessor4>).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#worksFor>(<http://www.Department6.University0.edu/AssistantProfessor4>,<http://www.Department6.University0.edu>).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf>(<http://www.Department6.University0.edu/AssistantProfessor4>,<http://www.Department6.University0.edu/Course39>).
+
+
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom>(<http://www.Department12.University0.edu/GraduateStudent9>,<http://www.University821.edu>).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#telephone>(<http://www.Department12.University0.edu/GraduateStudent9>,"xxx-xxx-xxxx").
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf>(<http://www.Department12.University0.edu/GraduateStudent9>,<http://www.Department12.University0.edu>).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#Subj14Student>(<http://www.Department12.University0.edu/GraduateStudent9>).
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse>(<http://www.Department12.University0.edu/GraduateStudent9>,<http://www.Department12.University0.edu/GraduateCourse8>).
+
+<http://swat.cse.lehigh.edu/onto/univ-bench.owl#emailAddress>(<http://www.Department12.University0.edu/GraduateStudent9>,"GraduateStudent9@Department12.University0.edu").
+>>>>>>> d393c0b45a79c994148d53fbfd1a0faa411186d9
 <http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor>(<http://www.Department12.University0.edu/GraduateStudent9>,<http://www.Department12.University0.edu/AssociateProfessor4>).
