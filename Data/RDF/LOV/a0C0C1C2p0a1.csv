@@ -1,0 +1,13 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+SELECT * WHERE {
+ ?a0 rdf:type ?C0.
+ ?C1 rdfs:subClassOf ?C2.
+ ?C0 owl:disjointWith ?C2.
+ ?p0 rdfs:domain ?C1.
+ ?a0 ?p0 ?a1.
+}
+a0,C0,C1,C2,p0,a1
+http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten,http://www.w3.org/2004/02/skos/core#Collection,http://purl.org/spar/fabio/SubjectDiscipline,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#inScheme,http://betalinkeddata.cbs.nl/cbs/id/concept-scheme/cbs
+http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten,http://www.w3.org/2004/02/skos/core#Collection,http://purl.org/spar/fabio/SubjectDiscipline,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#topConceptOf,http://betalinkeddata.cbs.nl/cbs/id/concept-scheme/cbs

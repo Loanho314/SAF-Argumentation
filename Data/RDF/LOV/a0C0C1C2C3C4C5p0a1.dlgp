@@ -1,0 +1,58 @@
+! :- <http://xmlns.com/foaf/0.1/Organization>(X0), <http://xmlns.com/foaf/0.1/Document>(X0).
+! :- <http://xmlns.com/foaf/0.1/Person>(X0), <http://xmlns.com/foaf/0.1/Organization>(X0).
+<http://schema.org/CreativeWork>(X0) :- <http://xmlns.com/foaf/0.1/Document>(X0).
+<http://xmlns.com/foaf/0.1/Document>(X0) :- <http://rdfs.org/ns/void#inDataset>(X0, X1).
+<http://schema.org/Person>(X0) :- <http://xmlns.com/foaf/0.1/Person>(X0).
+<http://purl.org/goodrelations/v1#BusinessEntity>(X0) :- <http://schema.org/Person>(X0).
+<http://www.w3.org/ns/org#FormalOrganization>(X0) :- <http://purl.org/goodrelations/v1#BusinessEntity>(X0).
+<http://xmlns.com/foaf/0.1/Person>(X0) :- <http://xmlns.com/foaf/0.1/familyName>(X0, X1).
+<http://xmlns.com/foaf/0.1/Organization>(X0) :- <http://www.w3.org/ns/org#FormalOrganization>(X0).
+<http://schema.org/Person>(X0) :- <http://www.w3.org/2000/10/swap/pim/contact#Person>(X0).
+<http://www.w3.org/2000/10/swap/pim/contact#Person>(X0) :- <http://xmlns.com/foaf/0.1/familyName>(X0, X1).
+<http://xmlns.com/foaf/0.1/Person>(X0) :- <http://xmlns.com/foaf/0.1/workplaceHomepage>(X0, X1).
+<http://www.w3.org/2000/10/swap/pim/contact#Person>(X0) :- <http://xmlns.com/foaf/0.1/workplaceHomepage>(X0, X1).
+<http://xmlns.com/foaf/0.1/Person>(X0) :- <http://xmlns.com/foaf/0.1/surname>(X0, X1).
+<http://xmlns.com/foaf/0.1/Person>(X0) :- <http://xmlns.com/foaf/0.1/lastName>(X0, X1).
+<http://www.w3.org/2000/10/swap/pim/contact#Person>(X0) :- <http://xmlns.com/foaf/0.1/surname>(X0, X1).
+<http://www.w3.org/2000/10/swap/pim/contact#Person>(X0) :- <http://xmlns.com/foaf/0.1/workInfoHomepage>(X0, X1).
+<http://xmlns.com/foaf/0.1/Person>(X0) :- <http://xmlns.com/foaf/0.1/workInfoHomepage>(X0, X1).
+<http://www.w3.org/2000/10/swap/pim/contact#Person>(X0) :- <http://xmlns.com/foaf/0.1/lastName>(X0, X1).
+<http://xmlns.com/foaf/0.1/Organization>(<http://sparql.cwrc.ca/ontologies/cwrc#anglicanism>).
+<http://rdfs.org/ns/void#inDataset>(<http://sparql.cwrc.ca/ontologies/cwrc#anglicanism>, <http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition>).
+<http://xmlns.com/foaf/0.1/Organization>(<http://sparql.cwrc.ca/ontologies/cwrc#churchOfEngland>).
+<http://rdfs.org/ns/void#inDataset>(<http://sparql.cwrc.ca/ontologies/cwrc#churchOfEngland>, <http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition>).
+<http://xmlns.com/foaf/0.1/Organization>(<http://sparql.cwrc.ca/ontologies/cwrc#churchOfIreland>).
+<http://rdfs.org/ns/void#inDataset>(<http://sparql.cwrc.ca/ontologies/cwrc#churchOfIreland>, <http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition>).
+<http://xmlns.com/foaf/0.1/Organization>(<http://sparql.cwrc.ca/ontologies/cwrc#fifthMonarchists>).
+<http://rdfs.org/ns/void#inDataset>(<http://sparql.cwrc.ca/ontologies/cwrc#fifthMonarchists>, <http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition>).
+<http://xmlns.com/foaf/0.1/Organization>(<http://sparql.cwrc.ca/ontologies/cwrc#millenarianism>).
+<http://rdfs.org/ns/void#inDataset>(<http://sparql.cwrc.ca/ontologies/cwrc#millenarianism>, <http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition>).
+<http://xmlns.com/foaf/0.1/Person>(<http://mex.aksw.org/mex-core#esteves>).
+<http://xmlns.com/foaf/0.1/familyName>(<http://mex.aksw.org/mex-core#esteves>, "Esteves").
+<http://xmlns.com/foaf/0.1/Person>(<http://mex.aksw.org/mex-core#moussallem>).
+<http://xmlns.com/foaf/0.1/familyName>(<http://mex.aksw.org/mex-core#moussallem>, "Moussallem").
+<http://xmlns.com/foaf/0.1/Person>(<http://mex.aksw.org/mex-core#hellmann>).
+<http://xmlns.com/foaf/0.1/familyName>(<http://mex.aksw.org/mex-core#hellmann>, "Hellmann").
+<http://xmlns.com/foaf/0.1/Person>(<http://mex.aksw.org/mex-core#ackermann>).
+<http://xmlns.com/foaf/0.1/familyName>(<http://mex.aksw.org/mex-core#ackermann>, "Ackermann").
+<http://xmlns.com/foaf/0.1/Person>(<http://mex.aksw.org/mex-core#usbeck>).
+<http://xmlns.com/foaf/0.1/familyName>(<http://mex.aksw.org/mex-core#usbeck>, "Usbeck").
+<http://xmlns.com/foaf/0.1/Person>(<http://mex.aksw.org/mex-core#duarte>).
+<http://xmlns.com/foaf/0.1/familyName>(<http://mex.aksw.org/mex-core#duarte>, "Duarte").
+<http://xmlns.com/foaf/0.1/Person>(<http://mex.aksw.org/mex-core#lehmann>).
+<http://xmlns.com/foaf/0.1/familyName>(<http://mex.aksw.org/mex-core#lehmann>, "Lehmann").
+<http://xmlns.com/foaf/0.1/Person>(<http://mex.aksw.org/mex-core#yoko>).
+<http://xmlns.com/foaf/0.1/familyName>(<http://mex.aksw.org/mex-core#yoko>, "Cavalcanti Reis").
+<http://xmlns.com/foaf/0.1/Person>(<http://data.semanticweb.org/person/bernard-vatant>).
+<http://xmlns.com/foaf/0.1/workplaceHomepage>(<http://data.semanticweb.org/person/bernard-vatant>, <http://www.mondeca.com>).
+<http://xmlns.com/foaf/0.1/Person>(<http://www.ivan-herman.net/foaf#me>).
+<http://xmlns.com/foaf/0.1/workplaceHomepage>(<http://www.ivan-herman.net/foaf#me>, <http://www.w3.org>).
+<http://xmlns.com/foaf/0.1/Person>(<http://data.semanticweb.org/person/sean-bechhofer>).
+<http://xmlns.com/foaf/0.1/surname>(<http://data.semanticweb.org/person/sean-bechhofer>, "Bechhofer").
+<http://xmlns.com/foaf/0.1/Person>(<http://tomheath.com/id/me>).
+<http://xmlns.com/foaf/0.1/surname>(<http://tomheath.com/id/me>, "Heath").
+<http://xmlns.com/foaf/0.1/Person>(<https://w3id.org/cocoon/v1.0#mirandazhangqian>).
+<http://xmlns.com/foaf/0.1/lastName>(<https://w3id.org/cocoon/v1.0#mirandazhangqian>, "Zhang").
+<http://xmlns.com/foaf/0.1/Person>(<http://kantenwerk.org/metadata/foaf.rdf#me>).
+<http://xmlns.com/foaf/0.1/surname>(<http://kantenwerk.org/metadata/foaf.rdf#me>, "Möller").
+<http://xmlns.com/foaf/0.1/workInfoHomepage>(<https://w3id.org/cocoon/v1.0#mirandazhangqian>, <https://www.linkedin.com/in/mirandazhangq/>).

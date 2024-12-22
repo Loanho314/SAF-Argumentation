@@ -1,0 +1,422 @@
+! :- <http://dbpedia.org/ontology/Agent>(X0), <http://dbpedia.org/ontology/Place>(X0).
+! :- <http://dbpedia.org/ontology/Event>(X0), <http://dbpedia.org/ontology/Person>(X0).
+<http://dbpedia.org/ontology/Organisation>(X0) :- <http://dbpedia.org/ontology/MilitaryUnit>(X0).
+<http://dbpedia.org/ontology/Agent>(X0) :- <http://dbpedia.org/ontology/Organisation>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/areaCode>(X0, X1).
+<http://dbpedia.org/ontology/Organisation>(X0) :- <http://dbpedia.org/ontology/Company>(X0).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Writer>(X0).
+<http://dbpedia.org/ontology/Agent>(X0) :- <http://dbpedia.org/ontology/Person>(X0).
+<http://dbpedia.org/ontology/Organisation>(X0) :- <http://dbpedia.org/ontology/PoliticalParty>(X0).
+<http://dbpedia.org/ontology/Organisation>(X0) :- <http://dbpedia.org/ontology/Non-ProfitOrganisation>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/governingBody>(X0, X1).
+<http://dbpedia.org/ontology/Organisation>(X0) :- <http://dbpedia.org/ontology/PublicTransitSystem>(X0).
+<http://dbpedia.org/ontology/Organisation>(X0) :- <http://dbpedia.org/ontology/GovernmentAgency>(X0).
+<http://dbpedia.org/ontology/SocietalEvent>(X0) :- <http://dbpedia.org/ontology/SportsEvent>(X0).
+<http://dbpedia.org/ontology/Event>(X0) :- <http://dbpedia.org/ontology/SocietalEvent>(X0).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Person/height>(X0, X1).
+<http://dbpedia.org/ontology/SocietalEvent>(X0) :- <http://dbpedia.org/ontology/Election>(X0).
+<http://dbpedia.org/ontology/SocietalEvent>(X0) :- <http://dbpedia.org/ontology/Convention>(X0).
+<http://dbpedia.org/ontology/SocietalEvent>(X0) :- <http://dbpedia.org/ontology/MilitaryConflict>(X0).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Person/weight>(X0, X1).
+<http://dbpedia.org/ontology/Organisation>(X0) :- <http://dbpedia.org/ontology/EducationalInstitution>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/address>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/OfficeHolder>(X0).
+<http://dbpedia.org/ontology/Organisation>(X0) :- <http://dbpedia.org/ontology/Broadcaster>(X0).
+
+! :- <http://dbpedia.org/ontology/Agent>(X0), <http://dbpedia.org/ontology/Place>(X0).
+! :- <http://dbpedia.org/ontology/MeanOfTransportation>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/Building>(X0), <http://dbpedia.org/ontology/Person>(X0).
+<http://dbpedia.org/ontology/Agent>(X0) :- <http://dbpedia.org/ontology/Person>(X0).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/birthPlace>(X0, X1).
+<http://dbpedia.org/ontology/Agent>(X0) :- <http://dbpedia.org/ontology/Organisation>(X0).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/deathPlace>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/location>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/regionServed>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/residence>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/locatedInArea>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/restingPlace>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/ground>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/homeport>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/bodyDiscovered>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/region>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/part>(X0, X1).
+<http://dbpedia.org/ontology/MeanOfTransportation>(X0) :- <http://dbpedia.org/ontology/Automobile>(X0).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/firstDriver>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/thirdDriver>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/narrator>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/presenter>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/spouse>(X0, X1).
+<http://dbpedia.org/ontology/Building>(X0) :- <http://dbpedia.org/ontology/HistoricBuilding>(X0).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/commander>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/notableCommander>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/secondCommander>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/poleDriver>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/fastestDriver>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/secondDriver>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/child>(X0, X1).
+<http://dbpedia.org/ontology/Building>(X0) :- <http://dbpedia.org/ontology/Museum>(X0).
+
+! :- <http://dbpedia.org/ontology/Agent>(X0), <http://dbpedia.org/ontology/Place>(X0).
+! :- <http://dbpedia.org/ontology/Event>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/MeanOfTransportation>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/Building>(X0), <http://dbpedia.org/ontology/Person>(X0).
+<http://dbpedia.org/ontology/Agent>(X0) :- <http://dbpedia.org/ontology/Organisation>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/areaCode>(X0, X1).
+<http://dbpedia.org/ontology/Agent>(X0) :- <http://dbpedia.org/ontology/Person>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/governingBody>(X0, X1).
+<http://dbpedia.org/ontology/Event>(X0) :- <http://dbpedia.org/ontology/SocietalEvent>(X0).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Person/height>(X0, X1).
+<http://dbpedia.org/ontology/MeanOfTransportation>(X0) :- <http://dbpedia.org/ontology/Motorcycle>(X0).
+<http://dbpedia.org/ontology/Building>(X0) :- <http://dbpedia.org/ontology/Hospital>(X0).
+<http://dbpedia.org/ontology/MeanOfTransportation>(X0) :- <http://dbpedia.org/ontology/Ship>(X0).
+<http://dbpedia.org/ontology/MeanOfTransportation>(X0) :- <http://dbpedia.org/ontology/Automobile>(X0).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Person/weight>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/address>(X0, X1).
+
+! :- <http://dbpedia.org/ontology/Agent>(X0), <http://dbpedia.org/ontology/Place>(X0).
+! :- <http://dbpedia.org/ontology/Building>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/Event>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/MeanOfTransportation>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/Mountain>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/Person>(X0), <http://dbpedia.org/ontology/TimePeriod>(X0).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/birthPlace>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/deathPlace>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/location>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/restingPlace>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/region>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/regionServed>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/part>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/ground>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/locatedInArea>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/placeOfBurial>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/residence>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/homeport>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/sourceConfluencePlace>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X1) :- <http://dbpedia.org/ontology/subregion>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/discoverer>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/composer>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/leaderName>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/writer>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/author>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/keyPerson>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/trainer>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/coach>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/deputy>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/flagBearer>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/director>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/commander>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/currentMember>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/parent>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/breeder>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/beatifiedBy>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/canonizedBy>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/child>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/fastestDriver>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/firstDriver>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/secondDriver>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/thirdDriver>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/head>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/president>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/chairperson>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/chaplain>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/relation>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/person>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/nominee>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/designer>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/notableCommander>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/pastor>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/dean>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/relative>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/chancellor>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/rector>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/viceChancellor>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/principal>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/vicePrincipal>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/bandMember>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/editing>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/spouse>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/coverArtist>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/translator>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/leader>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/narrator>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/doctoralAdvisor>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/presenter>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/showJudge>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/founder>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/guest>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/superintendent>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/compiler>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/alumni>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/executiveProducer>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/associate>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/doctoralStudent>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/trustee>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/manager>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/formerBandMember>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/creatorOfDish>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/silverMedalist>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X1) :- <http://dbpedia.org/ontology/governor>(X0, X1).
+<http://dbpedia.org/ontology/TimePeriod>(X1) :- <http://dbpedia.org/ontology/termPeriod>(X0, X1).
+
+! :- <http://dbpedia.org/ontology/Agent>(X0), <http://dbpedia.org/ontology/Place>(X0).
+! :- <http://dbpedia.org/ontology/Building>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/MeanOfTransportation>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/Event>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/Mountain>(X0), <http://dbpedia.org/ontology/Person>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/areaCode>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/governingBody>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Person/height>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Person/weight>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/address>(X0, X1).
+<http://dbpedia.org/ontology/Agent>(<http://dbpedia.org/resource/Trbovlje>).
+
+! :- <http://dbpedia.org/ontology/Agent>(X0), <http://dbpedia.org/ontology/Place>(X0).
+! :- <http://dbpedia.org/ontology/Building>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/Person>(X0), <http://dbpedia.org/ontology/TimePeriod>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/PopulatedPlace>(X0).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/place>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/headquarter>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/recordedIn>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Architect>(X0).
+<http://dbpedia.org/ontology/Architect>(X1) :- <http://dbpedia.org/ontology/architect>(X0, X1).
+<http://dbpedia.org/ontology/TimePeriod>(X0) :- <http://dbpedia.org/ontology/CareerStation>(X0).
+<http://dbpedia.org/ontology/CareerStation>(X1) :- <http://dbpedia.org/ontology/careerStation>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/nearestCity>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/billed>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/broadcastArea>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/spokenIn>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/origin>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/destination>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/populationPlace>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/garrison>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/district>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/councilArea>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/county>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/lieutenancyArea>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/territory>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/state>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/mouthPlace>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/WineRegion>(X0).
+<http://dbpedia.org/ontology/WineRegion>(X1) :- <http://dbpedia.org/ontology/wineRegion>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/sourcePlace>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/canonizedPlace>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X1) :- <http://dbpedia.org/ontology/highestPlace>(X0, X1).
+
+! :- <http://dbpedia.org/ontology/Agent>(X0), <http://dbpedia.org/ontology/Place>(X0).
+! :- <http://dbpedia.org/ontology/Building>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/Event>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/Mountain>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/MeanOfTransportation>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/Person>(X0), <http://dbpedia.org/ontology/TimePeriod>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/PopulatedPlace>(X0).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/leaderParty>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/ArchitecturalStructure>(X0).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/visitorStatisticsAsOf>(X0, X1).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/visitorsPercentageChange>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Artist>(X0).
+<http://dbpedia.org/ontology/Artist>(X0) :- <http://dbpedia.org/ontology/field>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/PopulatedPlace/areaTotal>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/PopulatedPlace/populationDensity>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/HistoricPlace>(X0).
+<http://dbpedia.org/ontology/HistoricPlace>(X0) :- <http://dbpedia.org/ontology/added>(X0, X1).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/architecturalStyle>(X0, X1).
+<http://dbpedia.org/ontology/Artist>(X0) :- <http://dbpedia.org/ontology/instrument>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/leaderName>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/leaderTitle>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/MilitaryPerson>(X0).
+<http://dbpedia.org/ontology/MilitaryPerson>(X0) :- <http://dbpedia.org/ontology/militaryBranch>(X0, X1).
+<http://dbpedia.org/ontology/MilitaryPerson>(X0) :- <http://dbpedia.org/ontology/militaryCommand>(X0, X1).
+<http://dbpedia.org/ontology/MilitaryPerson>(X0) :- <http://dbpedia.org/ontology/militaryRank>(X0, X1).
+<http://dbpedia.org/ontology/HistoricPlace>(X0) :- <http://dbpedia.org/ontology/nrhpReferenceNumber>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/populationDensity>(X0, X1).
+<http://dbpedia.org/ontology/MilitaryPerson>(X0) :- <http://dbpedia.org/ontology/serviceEndYear>(X0, X1).
+<http://dbpedia.org/ontology/MilitaryPerson>(X0) :- <http://dbpedia.org/ontology/serviceStartYear>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Athlete>(X0).
+<http://dbpedia.org/ontology/Athlete>(X0) :- <http://dbpedia.org/ontology/trainer>(X0, X1).
+<http://dbpedia.org/ontology/TimePeriod>(X0) :- <http://dbpedia.org/ontology/CareerStation>(X0).
+<http://dbpedia.org/ontology/CareerStation>(X0) :- <http://dbpedia.org/ontology/numberOfGoals>(X0, X1).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/architect>(X0, X1).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/maintainedBy>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/populationUrban>(X0, X1).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/rebuildingYear>(X0, X1).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/tenant>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/otherName>(X0, X1).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/reopeningYear>(X0, X1).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/buildingStartYear>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/PopulatedPlace/area>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/populationMetro>(X0, X1).
+<http://dbpedia.org/ontology/MilitaryPerson>(X0) :- <http://dbpedia.org/ontology/militaryUnit>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/capital>(X0, X1).
+<http://dbpedia.org/ontology/Athlete>(X0) :- <http://dbpedia.org/ontology/draftTeam>(X0, X1).
+<http://dbpedia.org/ontology/Athlete>(X0) :- <http://dbpedia.org/ontology/formerTeam>(X0, X1).
+<http://dbpedia.org/ontology/CareerStation>(X0) :- <http://dbpedia.org/ontology/numberOfMatches>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Architect>(X0).
+<http://dbpedia.org/ontology/Architect>(X0) :- <http://dbpedia.org/ontology/significantBuilding>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/FictionalCharacter>(X0).
+<http://dbpedia.org/ontology/FictionalCharacter>(X0) :- <http://dbpedia.org/ontology/firstAppearance>(X0, X1).
+<http://dbpedia.org/ontology/HistoricPlace>(X0) :- <http://dbpedia.org/ontology/nrhpType>(X0, X1).
+<http://dbpedia.org/ontology/Athlete>(X0) :- <http://dbpedia.org/ontology/debutTeam>(X0, X1).
+<http://dbpedia.org/ontology/Athlete>(X0) :- <http://dbpedia.org/ontology/espnId>(X0, X1).
+<http://dbpedia.org/ontology/Athlete>(X0) :- <http://dbpedia.org/ontology/managerClub>(X0, X1).
+<http://dbpedia.org/ontology/FictionalCharacter>(X0) :- <http://dbpedia.org/ontology/portrayer>(X0, X1).
+<http://dbpedia.org/ontology/MilitaryPerson>(X0) :- <http://dbpedia.org/ontology/serviceNumber>(X0, X1).
+<http://dbpedia.org/ontology/Artist>(X0) :- <http://dbpedia.org/ontology/training>(X0, X1).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/currentlyUsedFor>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/ProtectedArea>(X0).
+<http://dbpedia.org/ontology/ProtectedArea>(X0) :- <http://dbpedia.org/ontology/iucnCategory>(X0, X1).
+<http://dbpedia.org/ontology/Athlete>(X0) :- <http://dbpedia.org/ontology/wins>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/WineRegion>(X0).
+<http://dbpedia.org/ontology/WineRegion>(X0) :- <http://dbpedia.org/ontology/numberOfWineries>(X0, X1).
+<http://dbpedia.org/ontology/WineRegion>(X0) :- <http://dbpedia.org/ontology/isPartOfWineRegion>(X0, X1).
+<http://dbpedia.org/ontology/WineRegion>(X0) :- <http://dbpedia.org/ontology/varietals>(X0, X1).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/WorldHeritageSite>(X0).
+<http://dbpedia.org/ontology/WorldHeritageSite>(X0) :- <http://dbpedia.org/ontology/id>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/ethnicGroup>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/largestCity>(X0, X1).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Astronaut>(X0).
+<http://dbpedia.org/ontology/Astronaut>(X0) :- <http://dbpedia.org/ontology/selection>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/populationTotalRanking>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/officialLanguage>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/dissolutionDate>(X0, X1).
+<http://dbpedia.org/ontology/WineRegion>(X0) :- <http://dbpedia.org/ontology/numberOfVineyards>(X0, X1).
+
+! :- <http://dbpedia.org/ontology/Building>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/Agent>(X0), <http://dbpedia.org/ontology/Place>(X0).
+! :- <http://dbpedia.org/ontology/Event>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/Mountain>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/MeanOfTransportation>(X0), <http://dbpedia.org/ontology/Person>(X0).
+<http://dbpedia.org/ontology/Artist>(X0) :- <http://dbpedia.org/ontology/MusicalArtist>(X0).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Artist>(X0).
+<http://dbpedia.org/ontology/MusicalArtist>(X1) :- <http://dbpedia.org/ontology/musicComposer>(X0, X1).
+<http://dbpedia.org/ontology/Artist>(X0) :- <http://dbpedia.org/ontology/Actor>(X0).
+<http://dbpedia.org/ontology/Actor>(X1) :- <http://dbpedia.org/ontology/starring>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/Country>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/PopulatedPlace>(X0).
+<http://dbpedia.org/ontology/Country>(X1) :- <http://dbpedia.org/ontology/country>(X0, X1).
+<http://dbpedia.org/ontology/Cleric>(X0) :- <http://dbpedia.org/ontology/Saint>(X0).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Cleric>(X0).
+<http://dbpedia.org/ontology/Saint>(X1) :- <http://dbpedia.org/ontology/saint>(X0, X1).
+<http://dbpedia.org/ontology/NaturalPlace>(X0) :- <http://dbpedia.org/ontology/BodyOfWater>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/NaturalPlace>(X0).
+<http://dbpedia.org/ontology/BodyOfWater>(X1) :- <http://dbpedia.org/ontology/riverMouth>(X0, X1).
+<http://dbpedia.org/ontology/MusicalArtist>(X1) :- <http://dbpedia.org/ontology/associatedMusicalArtist>(X0, X1).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/Building>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/ArchitecturalStructure>(X0).
+<http://dbpedia.org/ontology/Building>(X1) :- <http://dbpedia.org/ontology/significantBuilding>(X0, X1).
+<http://dbpedia.org/ontology/Country>(X1) :- <http://dbpedia.org/ontology/nationality>(X0, X1).
+<http://dbpedia.org/ontology/MusicalArtist>(X1) :- <http://dbpedia.org/ontology/musicalArtist>(X0, X1).
+<http://dbpedia.org/ontology/Country>(X1) :- <http://dbpedia.org/ontology/stateOfOrigin>(X0, X1).
+<http://dbpedia.org/ontology/Country>(X1) :- <http://dbpedia.org/ontology/locationCountry>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/Settlement>(X0).
+<http://dbpedia.org/ontology/Settlement>(X1) :- <http://dbpedia.org/ontology/hometown>(X0, X1).
+<http://dbpedia.org/ontology/Country>(X1) :- <http://dbpedia.org/ontology/mouthCountry>(X0, X1).
+<http://dbpedia.org/ontology/NaturalPlace>(X0) :- <http://dbpedia.org/ontology/Mountain>(X0).
+<http://dbpedia.org/ontology/Mountain>(X1) :- <http://dbpedia.org/ontology/mouthMountain>(X0, X1).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/Island>(X0).
+<http://dbpedia.org/ontology/Island>(X1) :- <http://dbpedia.org/ontology/island>(X0, X1).
+<http://dbpedia.org/ontology/NaturalPlace>(X0) :- <http://dbpedia.org/ontology/MountainRange>(X0).
+<http://dbpedia.org/ontology/MountainRange>(X1) :- <http://dbpedia.org/ontology/mountainRange>(X0, X1).
+<http://dbpedia.org/ontology/Building>(X1) :- <http://dbpedia.org/ontology/launchSite>(X0, X1).
+
+! :- <http://dbpedia.org/ontology/Agent>(X0), <http://dbpedia.org/ontology/Place>(X0).
+<http://dbpedia.org/ontology/Infrastructure>(X0) :- <http://dbpedia.org/ontology/Airport>(X0).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/Infrastructure>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/ArchitecturalStructure>(X0).
+<http://dbpedia.org/ontology/Airport>(X1) :- <http://dbpedia.org/ontology/hubAirport>(X0, X1).
+<http://dbpedia.org/ontology/Airport>(X1) :- <http://dbpedia.org/ontology/targetAirport>(X0, X1).
+<http://dbpedia.org/ontology/Settlement>(X0) :- <http://dbpedia.org/ontology/City>(X0).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/Settlement>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/PopulatedPlace>(X0).
+<http://dbpedia.org/ontology/City>(X1) :- <http://dbpedia.org/ontology/city>(X0, X1).
+<http://dbpedia.org/ontology/Building>(X0) :- <http://dbpedia.org/ontology/Museum>(X0).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/Building>(X0).
+<http://dbpedia.org/ontology/Museum>(X1) :- <http://dbpedia.org/ontology/museum>(X0, X1).
+<http://dbpedia.org/ontology/City>(X1) :- <http://dbpedia.org/ontology/locationCity>(X0, X1).
+<http://dbpedia.org/ontology/City>(X1) :- <http://dbpedia.org/ontology/foundationPlace>(X0, X1).
+<http://dbpedia.org/ontology/Infrastructure>(X0) :- <http://dbpedia.org/ontology/RouteOfTransportation>(X0).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X1) :- <http://dbpedia.org/ontology/routeEnd>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X1) :- <http://dbpedia.org/ontology/routeJunction>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X1) :- <http://dbpedia.org/ontology/routeStart>(X0, X1).
+<http://dbpedia.org/ontology/SportFacility>(X0) :- <http://dbpedia.org/ontology/Stadium>(X0).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/SportFacility>(X0).
+<http://dbpedia.org/ontology/Stadium>(X1) :- <http://dbpedia.org/ontology/homeStadium>(X0, X1).
+<http://dbpedia.org/ontology/City>(X1) :- <http://dbpedia.org/ontology/capital>(X0, X1).
+<http://dbpedia.org/ontology/Stadium>(X1) :- <http://dbpedia.org/ontology/stadium>(X0, X1).
+
+! :- <http://dbpedia.org/ontology/Agent>(X0), <http://dbpedia.org/ontology/Place>(X0).
+! :- <http://dbpedia.org/ontology/Building>(X0), <http://dbpedia.org/ontology/Person>(X0).
+! :- <http://dbpedia.org/ontology/Mountain>(X0), <http://dbpedia.org/ontology/Person>(X0).
+<http://dbpedia.org/ontology/Infrastructure>(X0) :- <http://dbpedia.org/ontology/Station>(X0).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/Infrastructure>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/ArchitecturalStructure>(X0).
+<http://dbpedia.org/ontology/Station>(X0) :- <http://dbpedia.org/ontology/agencyStationCode>(X0, X1).
+<http://dbpedia.org/ontology/Building>(X0) :- <http://dbpedia.org/ontology/Hospital>(X0).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/Building>(X0).
+<http://dbpedia.org/ontology/Hospital>(X0) :- <http://dbpedia.org/ontology/bedCount>(X0, X1).
+<http://dbpedia.org/ontology/Station>(X0) :- <http://dbpedia.org/ontology/isHandicappedAccessible>(X0, X1).
+<http://dbpedia.org/ontology/Station>(X0) :- <http://dbpedia.org/ontology/railwayPlatforms>(X0, X1).
+<http://dbpedia.org/ontology/Station>(X0) :- <http://dbpedia.org/ontology/servingRailwayLine>(X0, X1).
+<http://dbpedia.org/ontology/Infrastructure>(X0) :- <http://dbpedia.org/ontology/RouteOfTransportation>(X0).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/numberOfStations>(X0, X1).
+<http://dbpedia.org/ontology/Station>(X0) :- <http://dbpedia.org/ontology/stationStructure>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/typeOfElectrification>(X0, X1).
+<http://dbpedia.org/ontology/Infrastructure>(X0) :- <http://dbpedia.org/ontology/Airport>(X0).
+<http://dbpedia.org/ontology/Airport>(X0) :- <http://dbpedia.org/ontology/icaoLocationIdentifier>(X0, X1).
+<http://dbpedia.org/ontology/Airport>(X0) :- <http://dbpedia.org/ontology/runwayDesignation>(X0, X1).
+<http://dbpedia.org/ontology/Airport>(X0) :- <http://dbpedia.org/ontology/runwayLength>(X0, X1).
+<http://dbpedia.org/ontology/Airport>(X0) :- <http://dbpedia.org/ontology/runwaySurface>(X0, X1).
+<http://dbpedia.org/ontology/WinterSportPlayer>(X0) :- <http://dbpedia.org/ontology/IceHockeyPlayer>(X0).
+<http://dbpedia.org/ontology/Athlete>(X0) :- <http://dbpedia.org/ontology/WinterSportPlayer>(X0).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Athlete>(X0).
+<http://dbpedia.org/ontology/IceHockeyPlayer>(X0) :- <http://dbpedia.org/ontology/hallOfFame>(X0, X1).
+<http://dbpedia.org/ontology/Station>(X0) :- <http://dbpedia.org/ontology/bicycleInformation>(X0, X1).
+<http://dbpedia.org/ontology/Station>(X0) :- <http://dbpedia.org/ontology/fareZone>(X0, X1).
+<http://dbpedia.org/ontology/Station>(X0) :- <http://dbpedia.org/ontology/otherServingLines>(X0, X1).
+<http://dbpedia.org/ontology/Station>(X0) :- <http://dbpedia.org/ontology/parkingInformation>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/routeEnd>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/routeEndDirection>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/routeJunction>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/routeStart>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/routeStartDirection>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/vehiclesPerDay>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/toll>(X0, X1).
+<http://dbpedia.org/ontology/Building>(X0) :- <http://dbpedia.org/ontology/Museum>(X0).
+<http://dbpedia.org/ontology/Museum>(X0) :- <http://dbpedia.org/ontology/collection>(X0, X1).
+<http://dbpedia.org/ontology/Building>(X0) :- <http://dbpedia.org/ontology/Hotel>(X0).
+<http://dbpedia.org/ontology/Hotel>(X0) :- <http://dbpedia.org/ontology/numberOfRestaurants>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/trackLength>(X0, X1).
+<http://dbpedia.org/ontology/Infrastructure>(X0) :- <http://dbpedia.org/ontology/PowerStation>(X0).
+<http://dbpedia.org/ontology/PowerStation>(X0) :- <http://dbpedia.org/ontology/averageAnnualGeneration>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/routeNumber>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/routeTypeAbbreviation>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/numberOfLanes>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/speedLimit>(X0, X1).
+<http://dbpedia.org/ontology/Building>(X0) :- <http://dbpedia.org/ontology/Restaurant>(X0).
+<http://dbpedia.org/ontology/Restaurant>(X0) :- <http://dbpedia.org/ontology/dressCode>(X0, X1).
+<http://dbpedia.org/ontology/Hotel>(X0) :- <http://dbpedia.org/ontology/chain>(X0, X1).
+<http://dbpedia.org/ontology/Hotel>(X0) :- <http://dbpedia.org/ontology/numberOfRooms>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/voltageOfElectrification>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/railGauge>(X0, X1).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/lineLength>(X0, X1).
+<http://dbpedia.org/ontology/PowerStation>(X0) :- <http://dbpedia.org/ontology/installedCapacity>(X0, X1).
+<http://dbpedia.org/ontology/IceHockeyPlayer>(X0) :- <http://dbpedia.org/ontology/shoots>(X0, X1).
+<http://dbpedia.org/ontology/BodyOfWater>(X0) :- <http://dbpedia.org/ontology/Lake>(X0).
+<http://dbpedia.org/ontology/NaturalPlace>(X0) :- <http://dbpedia.org/ontology/BodyOfWater>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/NaturalPlace>(X0).
+<http://dbpedia.org/ontology/Lake>(X0) :- <http://dbpedia.org/ontology/Lake/volume>(X0, X1).
+<http://dbpedia.org/ontology/WinterSportPlayer>(X0) :- <http://dbpedia.org/ontology/FigureSkater>(X0).
+<http://dbpedia.org/ontology/FigureSkater>(X0) :- <http://dbpedia.org/ontology/formerCoach>(X0, X1).
+<http://dbpedia.org/ontology/Restaurant>(X0) :- <http://dbpedia.org/ontology/reservations>(X0, X1).
+<http://dbpedia.org/ontology/Hotel>(X0) :- <http://dbpedia.org/ontology/numberOfSuites>(X0, X1).
+<http://dbpedia.org/ontology/PowerStation>(X0) :- <http://dbpedia.org/ontology/capacityFactor>(X0, X1).
+<http://dbpedia.org/ontology/IceHockeyPlayer>(X0) :- <http://dbpedia.org/ontology/prospectLeague>(X0, X1).
+<http://dbpedia.org/ontology/BodyOfWater>(X0) :- <http://dbpedia.org/ontology/Stream>(X0).
+<http://dbpedia.org/ontology/Stream>(X0) :- <http://dbpedia.org/ontology/sourceCountry>(X0, X1).
+<http://dbpedia.org/ontology/Stream>(X0) :- <http://dbpedia.org/ontology/Stream/discharge>(X0, X1).
+<http://dbpedia.org/ontology/Stream>(X0) :- <http://dbpedia.org/ontology/discharge>(X0, X1).
+<http://dbpedia.org/ontology/Lake>(X0) :- <http://dbpedia.org/ontology/Lake/areaOfCatchment>(X0, X1).
+<http://dbpedia.org/ontology/Lake>(X0) :- <http://dbpedia.org/ontology/Lake/shoreLength>(X0, X1).
+<http://dbpedia.org/ontology/Lake>(X0) :- <http://dbpedia.org/ontology/areaOfCatchment>(X0, X1).
+<http://dbpedia.org/ontology/IceHockeyPlayer>(X0) :- <http://dbpedia.org/ontology/prospectTeam>(X0, X1).
+<http://dbpedia.org/ontology/IceHockeyPlayer>(X0) :- <http://dbpedia.org/ontology/whaDraftTeam>(X0, X1).
+<http://dbpedia.org/ontology/IceHockeyPlayer>(X0) :- <http://dbpedia.org/ontology/whaDraft>(X0, X1).

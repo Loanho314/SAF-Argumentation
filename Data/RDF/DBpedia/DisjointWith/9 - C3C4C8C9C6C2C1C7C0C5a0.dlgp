@@ -1,0 +1,67 @@
+! :- <http://dbpedia.org/ontology/Agent>(X0), <http://dbpedia.org/ontology/Place>(X0).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Athlete>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/ArchitecturalStructure>(X0).
+<http://dbpedia.org/ontology/MotorsportRacer>(X0) :- <http://dbpedia.org/ontology/MotorcycleRider>(X0).
+<http://dbpedia.org/ontology/Infrastructure>(X0) :- <http://dbpedia.org/ontology/RouteOfTransportation>(X0).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/Road>(X0).
+<http://dbpedia.org/ontology/Athlete>(X0) :- <http://dbpedia.org/ontology/MotorsportRacer>(X0).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/Infrastructure>(X0).
+<http://dbpedia.org/ontology/Agent>(X0) :- <http://dbpedia.org/ontology/Person>(X0).
+<http://dbpedia.org/ontology/WinterSportPlayer>(X0) :- <http://dbpedia.org/ontology/IceHockeyPlayer>(X0).
+<http://dbpedia.org/ontology/Athlete>(X0) :- <http://dbpedia.org/ontology/WinterSportPlayer>(X0).
+<http://dbpedia.org/ontology/MotorsportRacer>(X0) :- <http://dbpedia.org/ontology/RacingDriver>(X0).
+<http://dbpedia.org/ontology/SportFacility>(X0) :- <http://dbpedia.org/ontology/RaceTrack>(X0).
+<http://dbpedia.org/ontology/RaceTrack>(X0) :- <http://dbpedia.org/ontology/Racecourse>(X0).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/SportFacility>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/NaturalPlace>(X0).
+<http://dbpedia.org/ontology/GridironFootballPlayer>(X0) :- <http://dbpedia.org/ontology/AmericanFootballPlayer>(X0).
+<http://dbpedia.org/ontology/BodyOfWater>(X0) :- <http://dbpedia.org/ontology/Stream>(X0).
+<http://dbpedia.org/ontology/Stream>(X0) :- <http://dbpedia.org/ontology/River>(X0).
+<http://dbpedia.org/ontology/Athlete>(X0) :- <http://dbpedia.org/ontology/GridironFootballPlayer>(X0).
+<http://dbpedia.org/ontology/NaturalPlace>(X0) :- <http://dbpedia.org/ontology/BodyOfWater>(X0).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Eugenio_Lazzarini>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Eugenio_Lazzarini>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Franco_Uncini>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Franco_Uncini>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Kork_Ballington>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Kork_Ballington>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Paolo_Pileri>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Paolo_Pileri>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Takazumi_Katayama>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Takazumi_Katayama>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Walter_Villa>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Walter_Villa>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Pier_Paolo_Bianchi>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Pier_Paolo_Bianchi>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Fausto_Gresini>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Fausto_Gresini>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Max_Biaggi>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Max_Biaggi>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Corporation_Street>).
+<http://dbpedia.org/ontology/IceHockeyPlayer>(<http://dbpedia.org/resource/Corporation_Street>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Geoff_Duke>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Geoff_Duke>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Freddie_Frith>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Freddie_Frith>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Hans_Georg_Anscheidt>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Hans_Georg_Anscheidt>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Hugh_Anderson_(motorcyclist)>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Hugh_Anderson_(motorcyclist)>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Luca_Cadalora>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Luca_Cadalora>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Manuel_Poggiali>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Manuel_Poggiali>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Mick_Doohan>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Mick_Doohan>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Elliott_Forbes-Robinson>).
+<http://dbpedia.org/ontology/RacingDriver>(<http://dbpedia.org/resource/Elliott_Forbes-Robinson>).
+<http://dbpedia.org/ontology/Racecourse>(<http://dbpedia.org/resource/Ffos_Las_racecourse>).
+<http://dbpedia.org/ontology/RacingDriver>(<http://dbpedia.org/resource/Ffos_Las_racecourse>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Gord_Lane>).
+<http://dbpedia.org/ontology/IceHockeyPlayer>(<http://dbpedia.org/resource/Gord_Lane>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Foundation_for_Art_and_Creative_Technology>).
+<http://dbpedia.org/ontology/IceHockeyPlayer>(<http://dbpedia.org/resource/Foundation_for_Art_and_Creative_Technology>).
+<http://dbpedia.org/ontology/River>(<http://dbpedia.org/resource/Incomappleux_River>).
+<http://dbpedia.org/ontology/AmericanFootballPlayer>(<http://dbpedia.org/resource/Incomappleux_River>).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Reg_Pridmore>).
+<http://dbpedia.org/ontology/MotorcycleRider>(<http://dbpedia.org/resource/Reg_Pridmore>).

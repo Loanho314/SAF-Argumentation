@@ -1,0 +1,12 @@
+! :- <http://dbpedia.org/ontology/Agent>(X0), <http://dbpedia.org/ontology/Place>(X0).
+<http://dbpedia.org/ontology/ArchitecturalStructure>(X0) :- <http://dbpedia.org/ontology/Infrastructure>(X0).
+<http://dbpedia.org/ontology/Agent>(X0) :- <http://dbpedia.org/ontology/Person>(X0).
+<http://dbpedia.org/ontology/RacingDriver>(X0) :- <http://dbpedia.org/ontology/NascarDriver>(X0).
+<http://dbpedia.org/ontology/Infrastructure>(X0) :- <http://dbpedia.org/ontology/RouteOfTransportation>(X0).
+<http://dbpedia.org/ontology/RouteOfTransportation>(X0) :- <http://dbpedia.org/ontology/Road>(X0).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Athlete>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/ArchitecturalStructure>(X0).
+<http://dbpedia.org/ontology/MotorsportRacer>(X0) :- <http://dbpedia.org/ontology/RacingDriver>(X0).
+<http://dbpedia.org/ontology/Athlete>(X0) :- <http://dbpedia.org/ontology/MotorsportRacer>(X0).
+<http://dbpedia.org/ontology/Road>(<http://dbpedia.org/resource/Elliott_Forbes-Robinson>).
+<http://dbpedia.org/ontology/NascarDriver>(<http://dbpedia.org/resource/Elliott_Forbes-Robinson>).

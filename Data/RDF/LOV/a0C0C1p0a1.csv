@@ -1,0 +1,29 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+SELECT * WHERE {
+?a0 rdf:type ?C0.
+ ?C0 owl:disjointWith ?C1.
+ ?p0 rdfs:domain ?C1.
+ ?a0 ?p0 ?a1.
+}
+a0,C0,C1,p0,a1
+http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten,http://www.w3.org/2004/02/skos/core#Collection,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#inScheme,http://betalinkeddata.cbs.nl/cbs/id/concept-scheme/cbs
+http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten,http://www.w3.org/2004/02/skos/core#Collection,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#narrower,http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten_CoderingEnAfbakeningOngewijzigd
+http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten,http://www.w3.org/2004/02/skos/core#Collection,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#narrower,http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten_AfbakeningGewijzigd
+http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten,http://www.w3.org/2004/02/skos/core#Collection,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#narrower,http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten_AfbakeningGewijzigd
+http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten,http://www.w3.org/2004/02/skos/core#Collection,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#narrower,http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten_CoderingEnAfbakeningOngewijzigd
+http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten,http://www.w3.org/2004/02/skos/core#Collection,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#narrower,http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten_CoderingGewijzigd
+http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten,http://www.w3.org/2004/02/skos/core#Collection,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#narrower,http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten_CoderingGewijzigd
+http://sparql.cwrc.ca/ontologies/cwrc#TextLabels,http://www.w3.org/2004/02/skos/core#ConceptScheme,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#related,http://www.w3.org/2008/05/skos-xl#Label
+http://sparql.cwrc.ca/ontologies/cwrc#TextLabels,http://www.w3.org/2004/02/skos/core#ConceptScheme,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#related,http://www.w3.org/2008/05/skos-xl#Label
+http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten,http://www.w3.org/2004/02/skos/core#Collection,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#related,http://betalinkeddata.cbs.nl/cbs/id/concept/Wijk
+http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten,http://www.w3.org/2004/02/skos/core#Collection,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#related,http://betalinkeddata.cbs.nl/cbs/id/concept/Buurt
+http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten,http://www.w3.org/2004/02/skos/core#Collection,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#related,http://betalinkeddata.cbs.nl/cbs/id/concept/Wijk
+http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten,http://www.w3.org/2004/02/skos/core#Collection,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#related,http://betalinkeddata.cbs.nl/cbs/id/concept/Buurt
+http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten,http://www.w3.org/2004/02/skos/core#Collection,http://www.w3.org/2004/02/skos/core#Concept,http://www.w3.org/2004/02/skos/core#topConceptOf,http://betalinkeddata.cbs.nl/cbs/id/concept-scheme/cbs
+http://sparql.cwrc.ca/ontologies/cwrc#churchOfEngland,http://xmlns.com/foaf/0.1/Organization,http://xmlns.com/foaf/0.1/Document,http://rdfs.org/ns/void#inDataset,http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition
+http://sparql.cwrc.ca/ontologies/cwrc#fifthMonarchists,http://xmlns.com/foaf/0.1/Organization,http://xmlns.com/foaf/0.1/Document,http://rdfs.org/ns/void#inDataset,http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition
+http://sparql.cwrc.ca/ontologies/cwrc#millenarianism,http://xmlns.com/foaf/0.1/Organization,http://xmlns.com/foaf/0.1/Document,http://rdfs.org/ns/void#inDataset,http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition
+http://sparql.cwrc.ca/ontologies/cwrc#churchOfIreland,http://xmlns.com/foaf/0.1/Organization,http://xmlns.com/foaf/0.1/Document,http://rdfs.org/ns/void#inDataset,http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition
+http://sparql.cwrc.ca/ontologies/cwrc#anglicanism,http://xmlns.com/foaf/0.1/Organization,http://xmlns.com/foaf/0.1/Document,http://rdfs.org/ns/void#inDataset,http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition

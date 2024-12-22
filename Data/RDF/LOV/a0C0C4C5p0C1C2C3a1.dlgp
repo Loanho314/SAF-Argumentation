@@ -1,0 +1,67 @@
+! :- <http://xmlns.com/foaf/0.1/Organization>(X0), <http://xmlns.com/foaf/0.1/Document>(X0).
+! :- <http://xmlns.com/foaf/0.1/Organization>(X0), <http://xmlns.com/foaf/0.1/Person>(X0).
+<http://purl.org/goodrelations/v1#BusinessEntity>(X0) :- <http://schema.org/Person>(X0).
+<http://www.w3.org/ns/org#FormalOrganization>(X0) :- <http://purl.org/goodrelations/v1#BusinessEntity>(X0).
+<http://xmlns.com/foaf/0.1/Document>(X0) :- <http://schema.org/CreativeWork>(X0).
+<http://schema.org/CreativeWork>(X0) :- <http://xmlns.com/foaf/0.1/homepage>(X0, X1).
+<http://xmlns.com/foaf/0.1/Organization>(X0) :- <http://www.w3.org/ns/org#FormalOrganization>(X0).
+<http://xmlns.com/foaf/0.1/Person>(X0) :- <http://schema.org/Person>(X0).
+<http://schema.org/Person>(X0) :- <http://purl.org/dc/elements/1.1/creator>(X0, X1).
+<http://xmlns.com/foaf/0.1/Person>(X0) :- <http://www.w3.org/2000/10/swap/pim/contact#Person>(X0).
+<http://www.w3.org/2000/10/swap/pim/contact#Person>(X0) :- <http://purl.org/dc/elements/1.1/creator>(X0, X1).
+<http://purl.org/goodrelations/v1#BusinessEntity>(X0) :- <http://schema.org/Organization>(X0).
+<http://schema.org/CreativeWork>(X0) :- <http://schema.org/url>(X0, X1).
+<http://www.w3.org/ns/regorg#RegisteredOrganization>(X0) :- <http://purl.org/holy/ns#ManufacturingOrganization>(X0).
+<http://www.w3.org/ns/org#FormalOrganization>(X0) :- <http://www.w3.org/ns/regorg#RegisteredOrganization>(X0).
+<http://xmlns.com/foaf/0.1/Document>(X0) :- <https://w3id.org/mod#SemanticArtefact>(X0).
+<https://w3id.org/mod#SemanticArtefact>(X0) :- <http://www.w3.org/2004/02/skos/core#altLabel>(X0, X1).
+<http://www.w3.org/ns/regorg#RegisteredOrganization>(X0) :- <http://purl.org/holy/ns#EnergySectorOrganization>(X0).
+<http://www.w3.org/ns/regorg#RegisteredOrganization>(X0) :- <http://purl.org/holy/ns#PublicAdministrationAndDefenseOrganization>(X0).
+<http://schema.org/Person>(<http://taxref.mnhn.fr/lod/johanmontagnat>).
+<http://xmlns.com/foaf/0.1/homepage>(<http://taxref.mnhn.fr/lod/johanmontagnat>, <http://www.i3s.unice.fr/~johan/>).
+<http://schema.org/Person>(<http://purl.org/semsur/Maribel_Acosta>).
+<http://purl.org/dc/elements/1.1/creator>(<http://purl.org/semsur/Maribel_Acosta>, <http://purl.org/semsur/Julio_Castillo>).
+<http://schema.org/Organization>(<b0>).
+<http://schema.org/url>(<b0>, <https://www.w3.org/WoT/WG/>).
+<http://purl.org/holy/ns#ManufacturingOrganization>(<http://dbpedia.org/resource/Alstom>).
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Alstom>, "AOMD").
+<http://purl.org/holy/ns#ManufacturingOrganization>(<http://purl.org/holy/ns#Ceres_Power_Holding>).
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://purl.org/holy/ns#Ceres_Power_Holding>, "OTCMKTS:CPWHF").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://purl.org/holy/ns#Ceres_Power_Holding>, "Ceres").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://purl.org/holy/ns#Ceres_Power_Holding>, "Ceres Power Holding Inc.").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://purl.org/holy/ns#Ceres_Power_Holding>, "Ceres Power Holding plc").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://purl.org/holy/ns#Ceres_Power_Holding>, "LSE:CWR.L").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://purl.org/holy/ns#Ceres_Power_Holding>, "LON:CWR").
+<http://purl.org/holy/ns#ManufacturingOrganization>(<http://dbpedia.org/resource/Ford_Motor_Company>).
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Ford_Motor_Company>, "Ford").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Ford_Motor_Company>, "FMC1").
+<http://purl.org/holy/ns#ManufacturingOrganization>(<http://dbpedia.org/resource/Hyzon_Motors>).
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Hyzon_Motors>, "Hyzon").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Hyzon_Motors>, "Hyzon Inc").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Hyzon_Motors>, "Hyzon Motors Inc").
+<http://purl.org/holy/ns#ManufacturingOrganization>(<http://dbpedia.org/resource/Van_Hool>).
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Van_Hool>, "Vanhool").
+<http://purl.org/holy/ns#ManufacturingOrganization>(<http://dbpedia.org/resource/Plug_Power>).
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Plug_Power>, "PLUG").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Plug_Power>, "Plug Power").
+<http://purl.org/holy/ns#ManufacturingOrganization>(<http://dbpedia.org/resource/EvoBus>).
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/EvoBus>, "EvoBus GmbH").
+<http://purl.org/holy/ns#ManufacturingOrganization>(<http://dbpedia.org/resource/Ballard_Power_Systems>).
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Ballard_Power_Systems>, "Ballard_Power").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Ballard_Power_Systems>, "Ballard_Power_Systems_Inc.").
+<http://purl.org/holy/ns#ManufacturingOrganization>(<http://dbpedia.org/resource/FuelCell_Energy>).
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/FuelCell_Energy>, "FuelCell Energy Inc.").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/FuelCell_Energy>, "FCEL").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/FuelCell_Energy>, "Fuelcell Energy Inc").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/FuelCell_Energy>, "FuelCell_Energy").
+<http://purl.org/holy/ns#ManufacturingOrganization>(<http://dbpedia.org/resource/Linde_plc>).
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Linde_plc>, "Linde Engineering").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Linde_plc>, "(NYSE:LIN)").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Linde_plc>, "(LIN)").
+<http://purl.org/holy/ns#EnergySectorOrganization>(<http://fraunhofer.de/dataKoreaWesternPowerCompanyLimited>).
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://fraunhofer.de/dataKoreaWesternPowerCompanyLimited>, "KOWEPO").
+<http://purl.org/holy/ns#PublicAdministrationAndDefenseOrganization>(<http://dbpedia.org/resource/Federal_Ministry_of_Transport_and_Digital_Infrastructure>).
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Federal_Ministry_of_Transport_and_Digital_Infrastructure>, "BMVI").
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Federal_Ministry_of_Transport_and_Digital_Infrastructure>, "Federal Ministry of Transport and Digital Infrastructure Bundesministerium für Verkehr und digitale Infrastruktur (BMVI)").
+<http://purl.org/holy/ns#PublicAdministrationAndDefenseOrganization>(<http://dbpedia.org/resource/Federal_Railway_Authority>).
+<http://www.w3.org/2004/02/skos/core#altLabel>(<http://dbpedia.org/resource/Federal_Railway_Authority>, "Eisenbahn-Bundesamt Federal Railway Authority").

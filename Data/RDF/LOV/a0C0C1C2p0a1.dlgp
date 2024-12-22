@@ -1,0 +1,7 @@
+! :- <http://www.w3.org/2004/02/skos/core#Collection>(X0), <http://www.w3.org/2004/02/skos/core#Concept>(X0).
+<http://www.w3.org/2004/02/skos/core#Concept>(X0) :- <http://purl.org/spar/fabio/SubjectDiscipline>(X0).
+<http://purl.org/spar/fabio/SubjectDiscipline>(X0) :- <http://www.w3.org/2004/02/skos/core#inScheme>(X0, X1).
+<http://purl.org/spar/fabio/SubjectDiscipline>(X0) :- <http://www.w3.org/2004/02/skos/core#topConceptOf>(X0, X1).
+<http://www.w3.org/2004/02/skos/core#Collection>(<http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten>).
+<http://www.w3.org/2004/02/skos/core#inScheme>(<http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten>, <http://betalinkeddata.cbs.nl/cbs/id/concept-scheme/cbs>).
+<http://www.w3.org/2004/02/skos/core#topConceptOf>(<http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten>, <http://betalinkeddata.cbs.nl/cbs/id/concept-scheme/cbs>).

@@ -1,0 +1,71 @@
+! :- <http://dbpedia.org/ontology/Agent>(X0), <http://dbpedia.org/ontology/Place>(X0).
+<http://dbpedia.org/ontology/AdministrativeRegion>(X0) :- <http://dbpedia.org/ontology/ClericalAdministrativeRegion>(X0).
+<http://dbpedia.org/ontology/Person>(X0) :- <http://dbpedia.org/ontology/Cleric>(X0).
+<http://dbpedia.org/ontology/Cleric>(X0) :- <http://dbpedia.org/ontology/ChristianBishop>(X0).
+<http://dbpedia.org/ontology/ClericalAdministrativeRegion>(X0) :- <http://dbpedia.org/ontology/Diocese>(X0).
+<http://dbpedia.org/ontology/Region>(X0) :- <http://dbpedia.org/ontology/AdministrativeRegion>(X0).
+<http://dbpedia.org/ontology/Place>(X0) :- <http://dbpedia.org/ontology/PopulatedPlace>(X0).
+<http://dbpedia.org/ontology/PopulatedPlace>(X0) :- <http://dbpedia.org/ontology/Region>(X0).
+<http://dbpedia.org/ontology/Agent>(X0) :- <http://dbpedia.org/ontology/Person>(X0).
+<http://dbpedia.org/ontology/Organisation>(X0) :- <http://dbpedia.org/ontology/EducationalInstitution>(X0).
+<http://dbpedia.org/ontology/EducationalInstitution>(X0) :- <http://dbpedia.org/ontology/School>(X0).
+<http://dbpedia.org/ontology/Agent>(X0) :- <http://dbpedia.org/ontology/Organisation>(X0).
+<http://dbpedia.org/ontology/EducationalInstitution>(X0) :- <http://dbpedia.org/ontology/University>(X0).
+<http://dbpedia.org/ontology/Organisation>(X0) :- <http://dbpedia.org/ontology/SportsTeam>(X0).
+<http://dbpedia.org/ontology/SportsTeam>(X0) :- <http://dbpedia.org/ontology/SoccerClub>(X0).
+<http://dbpedia.org/ontology/ChristianBishop>(<http://dbpedia.org/resource/Roman_Catholic_Archdiocese_of_Cotabato>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Roman_Catholic_Archdiocese_of_Cotabato>).
+<http://dbpedia.org/ontology/School>(<http://dbpedia.org/resource/Roman_Catholic_Archdiocese_of_Bologna>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Roman_Catholic_Archdiocese_of_Bologna>).
+<http://dbpedia.org/ontology/ChristianBishop>(<http://dbpedia.org/resource/Roman_Catholic_Archdiocese_of_Burgos>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Roman_Catholic_Archdiocese_of_Burgos>).
+<http://dbpedia.org/ontology/School>(<http://dbpedia.org/resource/Apostolic_Vicariate_of_Northern_Arabia>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Apostolic_Vicariate_of_Northern_Arabia>).
+<http://dbpedia.org/ontology/University>(<http://dbpedia.org/resource/Ruthenian_Catholic_Apostolic_Exarchate_of_Czech_Republic>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Ruthenian_Catholic_Apostolic_Exarchate_of_Czech_Republic>).
+<http://dbpedia.org/ontology/School>(<http://dbpedia.org/resource/Albanian_Catholic_Apostolic_Administration_of_Southern_Albania>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Albanian_Catholic_Apostolic_Administration_of_Southern_Albania>).
+<http://dbpedia.org/ontology/School>(<http://dbpedia.org/resource/Diocese_of_Llandaff>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Diocese_of_Llandaff>).
+<http://dbpedia.org/ontology/School>(<http://dbpedia.org/resource/Diocese_of_Lund>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Diocese_of_Lund>).
+<http://dbpedia.org/ontology/School>(<http://dbpedia.org/resource/Roman_Catholic_Archdiocese_of_New_York>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Roman_Catholic_Archdiocese_of_New_York>).
+<http://dbpedia.org/ontology/School>(<http://dbpedia.org/resource/Roman_Catholic_Archdiocese_of_Amalfi-Cava_de'_Tirreni>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Roman_Catholic_Archdiocese_of_Amalfi-Cava_de'_Tirreni>).
+<http://dbpedia.org/ontology/School>(<http://dbpedia.org/resource/Eparchy_of_Marča>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Eparchy_of_Marča>).
+<http://dbpedia.org/ontology/ChristianBishop>(<http://dbpedia.org/resource/P._Surya_Prakash>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/P._Surya_Prakash>).
+<http://dbpedia.org/ontology/School>(<http://dbpedia.org/resource/Roman_Catholic_Diocese_of_Lugo>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Roman_Catholic_Diocese_of_Lugo>).
+<http://dbpedia.org/ontology/School>(<http://dbpedia.org/resource/Roman_Catholic_Diocese_of_Lucera–Troia>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Roman_Catholic_Diocese_of_Lucera–Troia>).
+<http://dbpedia.org/ontology/SoccerClub>(<http://dbpedia.org/resource/Roman_Catholic_Diocese_of_Nitra>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Roman_Catholic_Diocese_of_Nitra>).
+<http://dbpedia.org/ontology/School>(<http://dbpedia.org/resource/Roman_Catholic_Diocese_of_Pozzuoli>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Roman_Catholic_Diocese_of_Pozzuoli>).
+<http://dbpedia.org/ontology/School>(<http://dbpedia.org/resource/Roman_Catholic_Diocese_of_Tarazona>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Roman_Catholic_Diocese_of_Tarazona>).
+<http://dbpedia.org/ontology/ChristianBishop>(<http://dbpedia.org/resource/Metropolis_of_Bessarabia>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Metropolis_of_Bessarabia>).
+<http://dbpedia.org/ontology/School>(<http://dbpedia.org/resource/Roman_Catholic_Diocese_of_Ozieri>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Roman_Catholic_Diocese_of_Ozieri>).
+<http://dbpedia.org/ontology/ChristianBishop>(<http://dbpedia.org/resource/Henry_Mackenzie_(bishop)>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Henry_Mackenzie_(bishop)>).
+<http://dbpedia.org/ontology/ChristianBishop>(<http://dbpedia.org/resource/Dimitrije_Mladenović>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Dimitrije_Mladenović>).
+<http://dbpedia.org/ontology/ChristianBishop>(<http://dbpedia.org/resource/Stephen_Keeler>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Stephen_Keeler>).
+<http://dbpedia.org/ontology/ChristianBishop>(<http://dbpedia.org/resource/Gone_Benjamin_Devasahayam>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Gone_Benjamin_Devasahayam>).
+<http://dbpedia.org/ontology/ChristianBishop>(<http://dbpedia.org/resource/Solomon_Doraiswamy>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Solomon_Doraiswamy>).
+<http://dbpedia.org/ontology/ChristianBishop>(<http://dbpedia.org/resource/Sanki_John_Theodore>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Sanki_John_Theodore>).
+<http://dbpedia.org/ontology/ChristianBishop>(<http://dbpedia.org/resource/Isaiah_Jesudason>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Isaiah_Jesudason>).
+<http://dbpedia.org/ontology/ChristianBishop>(<http://dbpedia.org/resource/Richard_Inwood>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Richard_Inwood>).
+<http://dbpedia.org/ontology/ChristianBishop>(<http://dbpedia.org/resource/Ogé_Beauvoir>).
+<http://dbpedia.org/ontology/Diocese>(<http://dbpedia.org/resource/Ogé_Beauvoir>).

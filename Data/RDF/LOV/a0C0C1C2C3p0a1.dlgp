@@ -1,0 +1,14 @@
+! :- <http://xmlns.com/foaf/0.1/Organization>(X0), <http://xmlns.com/foaf/0.1/Document>(X0).
+<http://schema.org/CreativeWork>(X0) :- <http://xmlns.com/foaf/0.1/Document>(X0).
+<http://xmlns.com/foaf/0.1/Document>(X0) :- <http://schema.org/CreativeWork>(X0).
+<http://xmlns.com/foaf/0.1/Document>(X0) :- <http://rdfs.org/ns/void#inDataset>(X0, X1).
+<http://xmlns.com/foaf/0.1/Organization>(<http://sparql.cwrc.ca/ontologies/cwrc#anglicanism>).
+<http://rdfs.org/ns/void#inDataset>(<http://sparql.cwrc.ca/ontologies/cwrc#anglicanism>, <http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition>).
+<http://xmlns.com/foaf/0.1/Organization>(<http://sparql.cwrc.ca/ontologies/cwrc#churchOfIreland>).
+<http://rdfs.org/ns/void#inDataset>(<http://sparql.cwrc.ca/ontologies/cwrc#churchOfIreland>, <http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition>).
+<http://xmlns.com/foaf/0.1/Organization>(<http://sparql.cwrc.ca/ontologies/cwrc#churchOfEngland>).
+<http://rdfs.org/ns/void#inDataset>(<http://sparql.cwrc.ca/ontologies/cwrc#churchOfEngland>, <http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition>).
+<http://xmlns.com/foaf/0.1/Organization>(<http://sparql.cwrc.ca/ontologies/cwrc#fifthMonarchists>).
+<http://rdfs.org/ns/void#inDataset>(<http://sparql.cwrc.ca/ontologies/cwrc#fifthMonarchists>, <http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition>).
+<http://xmlns.com/foaf/0.1/Organization>(<http://sparql.cwrc.ca/ontologies/cwrc#millenarianism>).
+<http://rdfs.org/ns/void#inDataset>(<http://sparql.cwrc.ca/ontologies/cwrc#millenarianism>, <http://sparql.cwrc.ca/ontologies/cwrc#datasetdefinition>).

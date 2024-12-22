@@ -1,0 +1,27 @@
+! :- <http://xmlns.com/foaf/0.1/Organization>(X0), <http://xmlns.com/foaf/0.1/Person>(X0).
+! :- <http://www.w3.org/2004/02/skos/core#ConceptScheme>(X0), <http://www.w3.org/2004/02/skos/core#Concept>(X0).
+! :- <http://www.w3.org/2004/02/skos/core#Concept>(X0), <http://www.w3.org/2004/02/skos/core#ConceptScheme>(X0).
+! :- <http://xmlns.com/foaf/0.1/Person>(X0), <http://xmlns.com/foaf/0.1/Organization>(X0).
+! :- <http://www.w3.org/2004/02/skos/core#Collection>(X0), <http://www.w3.org/2004/02/skos/core#Concept>(X0).
+! :- <http://purl.org/innovation/ns#DevelopmentStage>(X0), <http://purl.org/innovation/ns#DevelopmentStage>(X0).
+<http://xmlns.com/foaf/0.1/Organization>(<http://d-nb.info/standards/elementset/gnd#listMembers>).
+<http://xmlns.com/foaf/0.1/Person>(<http://d-nb.info/standards/elementset/gnd#listMembers>).
+<http://www.w3.org/2004/02/skos/core#ConceptScheme>(<http://rdf.muninn-project.org/ontologies/military#NavyServiceBranch>).
+<http://www.w3.org/2004/02/skos/core#Concept>(<http://rdf.muninn-project.org/ontologies/military#NavyServiceBranch>).
+<http://www.w3.org/2004/02/skos/core#ConceptScheme>(<http://rdf.muninn-project.org/ontologies/military#AirForceServiceBranch>).
+<http://www.w3.org/2004/02/skos/core#Concept>(<http://rdf.muninn-project.org/ontologies/military#AirForceServiceBranch>).
+<http://www.w3.org/2004/02/skos/core#ConceptScheme>(<http://rdf.muninn-project.org/ontologies/military#ProtoAirForce>).
+<http://www.w3.org/2004/02/skos/core#Concept>(<http://rdf.muninn-project.org/ontologies/military#ProtoAirForce>).
+<http://www.w3.org/2004/02/skos/core#ConceptScheme>(<http://rdf.muninn-project.org/ontologies/military#ArmyServiceBranch>).
+<http://www.w3.org/2004/02/skos/core#Concept>(<http://rdf.muninn-project.org/ontologies/military#ArmyServiceBranch>).
+<http://xmlns.com/foaf/0.1/Person>(<http://vocab.data.gov/hosp#www.cms.gov>).
+<http://xmlns.com/foaf/0.1/Organization>(<http://vocab.data.gov/hosp#www.cms.gov>).
+<http://www.w3.org/2004/02/skos/core#Collection>(<http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten>).
+<http://www.w3.org/2004/02/skos/core#Concept>(<http://betalinkeddata.cbs.nl/cbs/id/concept/IndelingswijzigingWijkenEnBuurten>).
+<http://xmlns.com/foaf/0.1/Person>(<https://triplydb.com/wouter/lov/>).
+<http://xmlns.com/foaf/0.1/Organization>(<https://triplydb.com/wouter/lov/>).
+<http://purl.org/innovation/ns#DevelopmentStage>(<http://purl.org/innovation/ns#d4-demonstrating-the-benefits>).
+<http://purl.org/innovation/ns#DevelopmentStage>(<http://purl.org/innovation/ns#d2-designing-the-solution>).
+<http://purl.org/innovation/ns#DevelopmentStage>(<http://purl.org/innovation/ns#d1-defining-the-need>).
+<http://purl.org/innovation/ns#DevelopmentStage>(<http://purl.org/innovation/ns#d3-developing-the-opportunity>).
+<http://purl.org/innovation/ns#DevelopmentStage>(<http://purl.org/innovation/ns#d5-distributing-the-product>).
