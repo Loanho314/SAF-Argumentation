@@ -14,7 +14,8 @@ Logic-based argumentation framework with collective attacks. We are building a n
 Link: https://graphik-team.github.io/graal/downloads/owl2dlgp
 
 # Useage
-Since this application is still under development, the system currently supports the step of creating "dialogue trees" from datasets.
+The code has been made available for reproducing the results we show in our paper. To make sure that it is possible we would refer to the CODE folder.
+Though the code is still in active development, it is possible that the software will improve over time.
 Perform the following steps:
 - To use, create a location where you store the DLGP. You can store datasets in the created folder.
 - Clone a repository to your local computer using a Github link.
