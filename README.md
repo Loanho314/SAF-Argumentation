@@ -6,7 +6,7 @@ Logic-based argumentation framework with collective attacks. We are building a n
 - Install OWL API
 - Download and install Eclipse
 - It currently supports: DLGP input that supports Datalog+-, logic programming facts.
-- For OWL2 and RDF/XML in Turtle format, you need to run the following command to convert into DLGP format:
+- For OWL2 and RDF/XML, you need to run the following command to convert into DLGP format:
   
   java -jar owl2dlgp-*.jar -f ./example-owl.ttl -o ./example.dlp
 
