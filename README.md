@@ -14,11 +14,13 @@ Logic-based argumentation framework with collective attacks. We are building a n
 Link: https://graphik-team.github.io/graal/downloads/owl2dlgp
 
 # Useage
-Since this application is still under development, the following steps allow us to calculate "dialogue trees" from a given input, i.e, dataset.
+Since this application is still under development, the system currently supports the step of creating "dialogue trees" from datasets.
+Perform the following steps:
 - To use, create a location where you store the DLGP. You can store datasets in the created folder.
 - Clone a repository to your local computer using a Github link.
 - Go to the directory where your source code is, i.e., .\SAF-Argumentation\code
-- Use the command to run: javac Experiment1.java
+- Use the command to run:
+   javac Experiment1.java
 
 # Status
 This application is still under development. We will update a new version to support OWL2, RDF and DLGP input without performing the translation steps. 
