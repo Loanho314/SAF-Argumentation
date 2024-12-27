@@ -20,7 +20,7 @@ Since this application is still under development, the following steps allow us 
 - Use the command to run: javac Experiment1.java
 
 # Status
-This application is still under development. We will update a new version to support OWL2, RDF and DLGP input without perform 
+This application is still under development. We will update a new version to support OWL2, RDF and DLGP input without performing the translation steps. 
 
 # Support
 If you are having issues, please let us know via github.
