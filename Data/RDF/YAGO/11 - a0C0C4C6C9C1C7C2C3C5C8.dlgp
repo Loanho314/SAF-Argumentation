@@ -1,0 +1,29 @@
+! :- <http://yago-knowledge.org/resource/wordnet_artifact_100021939>(X0), <http://yago-knowledge.org/resource/wordnet_organization_108008335>(X0).
+! :- <http://yago-knowledge.org/resource/wordnet_organization_108008335>(X0), <http://yago-knowledge.org/resource/wordnet_artifact_100021939>(X0).
+! :- <http://yago-knowledge.org/resource/wordnet_organization_108008335>(X0), <http://yago-knowledge.org/resource/yagoGeoEntity>(X0).
+! :- <http://yago-knowledge.org/resource/yagoGeoEntity>(X0), <http://yago-knowledge.org/resource/wordnet_organization_108008335>(X0).
+<http://yago-knowledge.org/resource/wordnet_organization_108008335>(X0) :- <http://yago-knowledge.org/resource/wordnet_musical_organization_108246613>(X0).
+<http://yago-knowledge.org/resource/wordnet_artifact_100021939>(X0) :- <http://yago-knowledge.org/resource/wordnet_album_106591815>(X0).
+<http://yago-knowledge.org/resource/wordnet_organization_108008335>(X0) :- <http://yago-knowledge.org/resource/wordnet_rock_group_108250501>(X0).
+<http://yago-knowledge.org/resource/yagoGeoEntity>(X0) :- <http://yago-knowledge.org/resource/wordnet_city_108524735>(X0).
+<http://yago-knowledge.org/resource/yagoGeoEntity>(X0) :- <http://yago-knowledge.org/resource/yagoGeoEntity>(X0).
+<http://yago-knowledge.org/resource/wordnet_organization_108008335>(X0) :- <http://yago-knowledge.org/resource/wordnet_company_108058098>(X0).
+<http://yago-knowledge.org/resource/yagoGeoEntity>(X0) :- <http://yago-knowledge.org/resource/wordnet_county_seat_108547143>(X0).
+<http://yago-knowledge.org/resource/yagoGeoEntity>(X0) :- <http://yago-knowledge.org/resource/wordnet_site_108651247>(X0).
+<http://yago-knowledge.org/resource/yagoGeoEntity>(X0) :- <http://yago-knowledge.org/resource/wordnet_capital_108518505>(X0).
+<http://yago-knowledge.org/resource/yagoGeoEntity>(X0) :- <http://yago-knowledge.org/resource/wordnet_district_108552138>(X0).
+<http://yago-knowledge.org/resource/yagoGeoEntity>(X0) :- <http://yago-knowledge.org/resource/wordnet_market_town_108672073>(X0).
+<http://yago-knowledge.org/resource/wordnet_musical_organization_108246613>(<http://yago-knowledge.org/resource/The_Sound>).
+<http://yago-knowledge.org/resource/wordnet_album_106591815>(<http://yago-knowledge.org/resource/The_Sound>).
+<http://yago-knowledge.org/resource/wordnet_rock_group_108250501>(<http://yago-knowledge.org/resource/The_Sound>).
+<http://yago-knowledge.org/resource/wordnet_city_108524735>(<http://yago-knowledge.org/resource/Atlanta>).
+<http://yago-knowledge.org/resource/wordnet_company_108058098>(<http://yago-knowledge.org/resource/Atlanta>).
+<http://yago-knowledge.org/resource/wordnet_county_seat_108547143>(<http://yago-knowledge.org/resource/Atlanta>).
+<http://yago-knowledge.org/resource/wordnet_site_108651247>(<http://yago-knowledge.org/resource/Atlanta>).
+<http://yago-knowledge.org/resource/wordnet_capital_108518505>(<http://yago-knowledge.org/resource/Bratislava>).
+<http://yago-knowledge.org/resource/wordnet_company_108058098>(<http://yago-knowledge.org/resource/Bratislava>).
+<http://yago-knowledge.org/resource/wordnet_city_108524735>(<http://yago-knowledge.org/resource/Bratislava>).
+<http://yago-knowledge.org/resource/wordnet_site_108651247>(<http://yago-knowledge.org/resource/Bratislava>).
+<http://yago-knowledge.org/resource/wordnet_district_108552138>(<http://yago-knowledge.org/resource/Croydon>).
+<http://yago-knowledge.org/resource/wordnet_company_108058098>(<http://yago-knowledge.org/resource/Croydon>).
+<http://yago-knowledge.org/resource/wordnet_market_town_108672073>(<http://yago-knowledge.org/resource/Croydon>).

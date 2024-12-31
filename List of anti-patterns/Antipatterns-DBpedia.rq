@@ -48,6 +48,18 @@ prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix owl: <http://www.w3.org/2002/07/owl#>
 SELECT * WHERE {
+ ?a0 rdf:type ?C0.
+ ?C1 rdfs:subClassOf ?C2.
+ ?C2 rdfs:subClassOf ?C3.
+ ?C0 owl:disjointWith ?C3.
+ ?p0 rdfs:domain ?C1.
+ ?a0 ?p0 ?a1.
+}
+
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+SELECT * WHERE {
  ?a1 rdf:type ?C0.
  ?C1 rdfs:subClassOf ?C2.
  ?C2 rdfs:subClassOf ?C3.

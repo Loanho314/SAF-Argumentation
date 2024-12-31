@@ -1,0 +1,9 @@
+a0,C1,C2,C0
+<http://yago-knowledge.org/resource/Africa>,<http://yago-knowledge.org/resource/yagoGeoEntity>,<http://yago-knowledge.org/resource/wordnet_economy_108366753>,<http://yago-knowledge.org/resource/wordnet_abstraction_100002137>
+<http://yago-knowledge.org/resource/Asia>,<http://yago-knowledge.org/resource/yagoGeoEntity>,<http://yago-knowledge.org/resource/wordnet_economy_108366753>,<http://yago-knowledge.org/resource/wordnet_abstraction_100002137>
+<http://yago-knowledge.org/resource/Europe>,<http://yago-knowledge.org/resource/yagoGeoEntity>,<http://yago-knowledge.org/resource/wordnet_economy_108366753>,<http://yago-knowledge.org/resource/wordnet_abstraction_100002137>
+<http://yago-knowledge.org/resource/North_America>,<http://yago-knowledge.org/resource/yagoGeoEntity>,<http://yago-knowledge.org/resource/wordnet_economy_108366753>,<http://yago-knowledge.org/resource/wordnet_abstraction_100002137>
+<http://yago-knowledge.org/resource/Oceania>,<http://yago-knowledge.org/resource/yagoGeoEntity>,<http://yago-knowledge.org/resource/wordnet_economy_108366753>,<http://yago-knowledge.org/resource/wordnet_abstraction_100002137>
+<http://yago-knowledge.org/resource/South_America>,<http://yago-knowledge.org/resource/yagoGeoEntity>,<http://yago-knowledge.org/resource/wordnet_economy_108366753>,<http://yago-knowledge.org/resource/wordnet_abstraction_100002137>
+<http://yago-knowledge.org/resource/Earth>,<http://yago-knowledge.org/resource/yagoGeoEntity>,<http://yago-knowledge.org/resource/wordnet_planet_109394007>,<http://yago-knowledge.org/resource/wordnet_physical_entity_100001930>
+<http://yago-knowledge.org/resource/Earth>,<http://yago-knowledge.org/resource/yagoGeoEntity>,<http://yago-knowledge.org/resource/wordnet_terrestrial_planet_109456369>,<http://yago-knowledge.org/resource/wordnet_physical_entity_100001930>
