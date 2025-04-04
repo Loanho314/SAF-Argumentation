@@ -8,7 +8,7 @@ public class removeDepulicate {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		 String filePath = "C:/Users/tho310/Data test/LOV/input.txt"; // Replace with your file path
+		 String filePath = "C:/Users/tho310/Data test/input.txt"; // Replace with your file path
 	    //  String retainedLinesFile = "C:/Users/tho310/Data test/DBpedia/retained_lines1.txt";
 	    //    String removedLinesFile = "C:/Users/tho310/Data test/DBpedia/removed_lines1.txt";
 

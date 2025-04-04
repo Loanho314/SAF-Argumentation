@@ -10,7 +10,8 @@ public class StructuredArgument {
 	public Atom head;
 	public Boolean IsPremise;
 	private static int numberArgs = 0;
-	public final int myID;
+	//public final int myID;
+	public int myID;
 
 	public StructuredArgument() {
 		this.body = null;

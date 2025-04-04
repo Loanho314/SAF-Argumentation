@@ -14,9 +14,9 @@ public class CSVtoDLGP {
 
 	public static void main(String[] args) {
 
-		String csvFile = "C:/Users/tho310/Data test/LOV/a0C0C3C5p0C1C2a1.csv"; // Path to your CSV
+		String csvFile = "C:/Users/tho310/Data test/RDF/YAGO/16 - a0C5C6C1C2C0C3C4.csv"; // Path to your CSV
 																								// file
-		String outputFile = "C:/Users/tho310/Data test/LOV/output.dlgp"; // Output file where RDF
+		String outputFile = "C:/Users/tho310/Data test/RDF/YAGO/16 - a0C5C6C1C2C0C3C4.dlgp"; // Output file where RDF
 																							// triples will be
 		// written
 		String line;
@@ -45,40 +45,44 @@ public class CSVtoDLGP {
 
 				// Assuming the CSV columns are in the order C0, C1, C2, a0
 
-				//a0,C0,C3,C5,p0,C1,C2,a1
+				//a0C5C6C1C2C0C3C4
 
 				String a0 = row[0].replace("\"", "");
-				String C0 = row[1].replace("\"", "");
-				String C3 = row[2].replace("\"", "");
-				String C5 = row[3].replace("\"", "");
-				String p0 = row[4].replace("\"", "");
-				String C1 = row[5].replace("\"", "");
-				String C2 = row[6].replace("\"", "");
-				String a1 = row[7].replace("\"", "");
-				//String a1 = row[8].replace("\"", "");
-				//String p0 = row[9].replace("\"", "");
-				//String C1 = row[10].replace("\"", "");
+				String C5 = row[1].replace("\"", "");
+				String C6 = row[2].replace("\"", "");
+				String C1 = row[3].replace("\"", "");
+				String C2 = row[4].replace("\"", "");
+				String C0 = row[5].replace("\"", "");
+				String C3 = row[6].replace("\"", "");
+				String C4 = row[7].replace("\"", "");
+			//	String C4 = row[8].replace("\"", "");
+				//String C5 = row[9].replace("\"", "");
+				//String C8 = row[10].replace("\"", "");
 				// String a0 = row[11].replace("\"", "");
 
 				// Format the RDF triples
-				/*
 
 
-					*/
-
-				String triple1 = "<" + C2 + ">(X0) :- <" + C0 + ">(X0).\n";
-				String triple2 = "<" + C3 + ">(X0) :- <" + C2 + ">(X0).\n";
-				String triple3 = "<" + C5 + ">(X0) :- <" + C1 + ">(X0).\n";
+				String triple10 = C5 + "(" + a0 + ").\n";
+				String triple11 = C6 + "(" + a0 + ").\n";
+				String triple9 = "! :- " + C1 + "(X0), " + C2 + "(X0).\n";
+				String triple1 = C1 + "(X0) :- " + C0 + "(X0).\n";
+				String triple2 = C4 + "(X0) :- " + C3 + "(X0).\n";
+				String triple3 = C0 + "(X0) :- " + C4 + "(X0).\n";
+				String triple4 = C3 + "(X0) :- " + C5 + "(X0).\n";
+				String triple5 = C2 + "(X0) :- " + C6 + "(X0).\n";
+				
+						//String triple1 = "<" + C2 + ">(X0) :- <" + C0 + ">(X0).\n";
+				//String triple2 = "<" + C3 + ">(X0) :- <" + C2 + ">(X0).\n";
+				//String triple3 = "<" + C5 + ">(X0) :- <" + C1 + ">(X0).\n";
 				//String triple4 = "<" + C4 + ">(X0) :- <" + C3 + ">(X0).\n";
 				//String triple5 = "<" + C3 + ">(X0) :- <" + C1 + ">(X0).\n";
 				//String triple6 = "<" + C1 + ">(X0) :- <" + C0 + ">(X0).\n";
 				//String triple7 = "<" + C2 + ">(X0) :- <" + C2 + ">(X0).\n";
 				//String triple8 = "<" + C3 + ">(X0) :- <" + C2 + ">(X0).\n";
 				//String triple12 = "<" + C1 + ">(X0) :- <" + C0 + ">(X0).\n";
-
-				String triple9 = "! :- " + "<" + C3 + ">(X0), <" + C5 + ">(X0).\n";
-
-				 String triple10 = "<" + C0 + ">(<" + a0 + ">).\n";
+				//String triple9 = "! :- " + "<" + C3 + ">(X0), <" + C5 + ">(X0).\n";
+				// String triple10 = "<" + C0 + ">(<" + a0 + ">).\n";
 				 //String triple11 = "<" + C1 + ">(<" + a0 + ">).\n";
 
 			/*	String tripleRa = "<" + C1 + ">(X1) :- <" + p0 + ">(X0, X1).\n";
@@ -88,20 +92,25 @@ public class CSVtoDLGP {
 				} else
 					tripleRange = "<" + p0 + ">(<" + a0 + ">, \"" + a1 + "\").\n"; */
 
-				String tripleDo = "<" + C1 + ">(X0) :- <" + p0 + ">(X0, X1).\n";			
+				/*String tripleDo = "<" + C1 + ">(X0) :- <" + p0 + ">(X0, X1).\n";			
 				String tripleDomain; 
 				if (a1.substring(0, Math.min(a1.length(), 4)).equals("http")) { 
 					  tripleDomain = "<" + p0 + ">(<" + a0 + ">, <" + a1 + ">).\n"; 
 				}  else	
-					  tripleDomain = "<" + p0 + ">(<" + a0 + ">, \"" + a1 + "\").\n";
+					  tripleDomain = "<" + p0 + ">(<" + a0 + ">, \"" + a1 + "\").\n";*/
 				 
 
 				// Add the first two types of triples to the first set
 				ruleTriples.add(triple1);
 				ruleTriples.add(triple2);
 				ruleTriples.add(triple3);
+				ruleTriples.add(triple4);
+				ruleTriples.add(triple5);
+				//ruleTriples.add(triple6);
+				//ruleTriples.add(triple7);
+				//ruleTriples.add(triple8);
 				//ruleTriples.add(tripleRa);
-				ruleTriples.add(tripleDo);
+				//ruleTriples.add(tripleDo);
 
 				//ruleTriples.add(triple4);
 				//ruleTriples.add(triple5);
@@ -114,9 +123,9 @@ public class CSVtoDLGP {
 
 				// Add the other triples to the second set
 				instanceTriples.add(triple10);
-				//instanceTriples.add(triple11);
+				instanceTriples.add(triple11);
 				//instanceTriples.add(tripleRange);
-				instanceTriples.add(tripleDomain);
+				//instanceTriples.add(tripleDomain);
 			}
 
 			// Write the ordered RDF triples to the output file

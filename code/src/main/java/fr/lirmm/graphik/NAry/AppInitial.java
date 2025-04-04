@@ -18,8 +18,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
-import fr.lirmm.graphik.NAry.DungAF;
-import fr.lirmm.graphik.NAry.ArgumentationFramework.Argument;
+//import fr.lirmm.graphik.NAry.DungAF;
+import fr.lirmm.graphik.NAry.ArgumentationFramework.StructuredArgument;
 import fr.lirmm.graphik.NAry.ArgumentationFramework.Attack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -93,7 +93,7 @@ public class AppInitial {
 	public static final int BLOCKING_DEFEAT = 1;
 	public static final int PROPER_DEFEAT = 2;
 	public static AtomSet defeasibleFacts = new LinkedListAtomSet();
-	public static DungAF af;
+	//public static DungAF af;
 
 
 	//private static String file1 = "Tree.txt";
@@ -185,12 +185,12 @@ public class AppInitial {
 
 
 			// Compute a set of arguments.
-			ArrayList<Argument> ListArgument = generateArgs(kb2);
+			ArrayList<StructuredArgument> ListArgument = generateArgs(kb2);
 			AtomSet Test;
 			for (int i = ListArgument.size() - 1; i >= 0; i--)
 			{
 				Test = new LinkedListAtomSet();
-				for (Atom p : ((Argument)ListArgument.get(i)).getPremises()) {
+				for (Atom p : ((StructuredArgument)ListArgument.get(i)).getPremises()) {
 					Test.add(p);
 				}
 				kb2.strictAtomSet = Test;
@@ -207,7 +207,7 @@ public class AppInitial {
 
 
 			for (Object A1 : ListArgument) {
-				Argument A = (Argument)A1;
+				StructuredArgument A = (StructuredArgument)A1;
 				System.out.println(A);// + " get Premises: "+ A.getPremises());
 				// check whether the argument is defeasible
 				//boolean is = isDefeasible(A);	
@@ -222,13 +222,13 @@ public class AppInitial {
 			/*compute attacks under equality rule*/
 			if (!functionalruleset.isEmpty()) {
 
-				for(Argument a: ListArgument) {
+				for(StructuredArgument a: ListArgument) {
 					ArrayList<Atom> supportsA = a.getPremises();
-					for (Argument b : ListArgument){
+					for (StructuredArgument b : ListArgument){
 						Atom conB = b.head;
 
 						// compare conB to supportsA
-						ArrayList<Argument> temp = new ArrayList<Argument>();
+						ArrayList<StructuredArgument> temp = new ArrayList<StructuredArgument>();
 						if (checkInequality(supportsA,conB,functionalruleset) == true) {
 							temp.add(b);						
 						}
@@ -297,14 +297,14 @@ public class AppInitial {
 
 				// Step2: Compute a set of arguments apprearing in the repairs.
 
-				HashMap<AtomSet,ArrayList<Argument>> Arg = new HashMap<AtomSet, ArrayList<Argument>>();		
+				HashMap<AtomSet,ArrayList<StructuredArgument>> Arg = new HashMap<AtomSet, ArrayList<StructuredArgument>>();		
 				Iterator<AtomSet> localIterator4 = repairs.iterator();				 
 				while(localIterator4.hasNext()) {				
 					AtomSet r = localIterator4.next();					
-					Arg.put(r, new ArrayList<Argument>());
-					Iterator<Argument> T1 = ListArgument.iterator();
+					Arg.put(r, new ArrayList<StructuredArgument>());
+					Iterator<StructuredArgument> T1 = ListArgument.iterator();
 					while (T1.hasNext()) {
-						Argument Ar = (Argument)T1.next();
+						StructuredArgument Ar = (StructuredArgument)T1.next();
 						ArrayList<Atom> atom1 = Ar.getPremises();
 						Boolean checkAtom = true;
 						for (int k=0; k<atom1.size(); k++) {										
@@ -322,18 +322,18 @@ public class AppInitial {
 
 				//ArrayList Attacks = new ArrayList();
 				for (AtomSet As: repairs) {
-					ArrayList<Argument> NotInArg = new ArrayList<Argument>();
+					ArrayList<StructuredArgument> NotInArg = new ArrayList<StructuredArgument>();
 					// Step 4: compute a set of arguments that are not in Arg, and them to NotInArg.
-					ArrayList<Argument> arrayArg = Arg.get(As);
-					for (Argument a : ListArgument) {
+					ArrayList<StructuredArgument> arrayArg = Arg.get(As);
+					for (StructuredArgument a : ListArgument) {
 						if (!arrayArg.contains(a)) {						
 							NotInArg.add(a);
 						}
 					}
 
 					// Step 5: For each argument that is NotInArg, compute attack relation of arguments
-					for (Argument temp : NotInArg) {					
-						Argument aInTemp = temp;
+					for (StructuredArgument temp : NotInArg) {					
+						StructuredArgument aInTemp = temp;
 						ArrayList newS = new ArrayList();
 						newS.add(new ArrayList());
 						AllSubset(newS, arrayArg); //get(r)
@@ -341,7 +341,7 @@ public class AppInitial {
 						for (int i = newS.size() - 1; i >= 0; i--) {					
 							ArrayList Concs = new ArrayList();
 							for (Object b1 : (ArrayList)newS.get(i)) {
-								Argument b = (Argument)b1;
+								StructuredArgument b = (StructuredArgument)b1;
 								Concs.add(b.head);
 							}
 							// check whether two arguments are conflict (inconsistent)
@@ -434,14 +434,14 @@ public class AppInitial {
 			 * 
 			 */
 			HashSet<String> argString = new HashSet<String>();
-			af = new DungAF();
-			/* read arguments from ListArgument (ArrayList<Argument>) to HashSet<String> */
-			for (Argument a : ListArgument) {				
+		//	af = new DungAF();
+			/* read arguments from ListArgument (ArrayList<StructuredArgument>) to HashSet<String> */
+			for (StructuredArgument a : ListArgument) {				
 				String aString = "A" + a.myID;
 				System.out.println("arg(" + aString + ").");								
-				af.addArgs(aString);
+				//af.addArgs(aString);
 			}
-			argString = af.getArgs();
+			//argString = af.getArgs();
 			//System.out.println("string of args: " + argString);
 
 			/* read attacks from Attacks (ArrayList<Attack>) to HashSet<String>[] []*/
@@ -450,23 +450,23 @@ public class AppInitial {
 				Attack at = (Attack) Attacks.get(i);				
 				String target = "A" + at.target.myID;			
 				String source = new String();
-				for (Argument argS : at.source) {
+				for (StructuredArgument argS : at.source) {
 					source = "A" + argS.myID;
 				}
 				System.out.println("att(" + source + "," + target + ").");
-				af.addAtts(new String[][] {{source, target}});
+				//af.addAtts(new String[][] {{source, target}});
 			}
 			/*Compute preferred sematics*/
 			HashSet<HashSet<String>> preferredExts = new HashSet<HashSet<String>>();
-			preferredExts = af.getPreferredExts();
+			//preferredExts = af.getPreferredExts();
 			System.out.println("preferred extensions: " + preferredExts);
 
-			/*convert extensions from HashSet<HashSet<String>> to ArrayList<ArrayList<Argument>>*/
+			/*convert extensions from HashSet<HashSet<String>> to ArrayList<ArrayList<StructuredArgument>>*/
 
-			ArrayList<ArrayList<Argument>> extensions = new ArrayList<ArrayList<Argument>>();
+			ArrayList<ArrayList<StructuredArgument>> extensions = new ArrayList<ArrayList<StructuredArgument>>();
 			for(HashSet<String> extString : preferredExts) {
-				ArrayList<Argument> ext = new ArrayList<Argument>();
-				for (Argument arg : ListArgument) {
+				ArrayList<StructuredArgument> ext = new ArrayList<StructuredArgument>();
+				for (StructuredArgument arg : ListArgument) {
 					String argID = "A" + arg.myID;
 					if (extString.contains(argID)) {
 						ext.add(arg);
@@ -478,21 +478,21 @@ public class AppInitial {
 
 			System.out.println("Extension after convert: " );
 
-			for (ArrayList<Argument> print : extensions) {			
+			for (ArrayList<StructuredArgument> print : extensions) {			
 				System.out.println(print);
 			}
 
 			/*Get union of extensions for skeptical semantics*/
 
-			ArrayList<Argument> preferredScepticalExt = new ArrayList<Argument>();
+			ArrayList<StructuredArgument> preferredScepticalExt = new ArrayList<StructuredArgument>();
 			preferredScepticalExt = getPreferredScepticalExt(extensions);
 
 
 			/* if (preferredScepticalExt.isEmpty()) {
 
-		            preferredScepticalExt = new ArrayList<Argument>(extensions.iterator().next()); // initialize preferredScepticalExt to a random preferredExt;
+		            preferredScepticalExt = new ArrayList<StructuredArgument>(extensions.iterator().next()); // initialize preferredScepticalExt to a random preferredExt;
 
-		            for (ArrayList<Argument> nextExt : extensions) {
+		            for (ArrayList<StructuredArgument> nextExt : extensions) {
 		                preferredScepticalExt.retainAll(nextExt);
 		            } // remove everything which isn't in every preferred extension;
 		        }*/
@@ -568,14 +568,14 @@ public class AppInitial {
 			if (result == 2)			
 				System.out.println("Creduluous");*/
 
-			ArrayList<Argument> argumentForQuery = new ArrayList<Argument>();
+			ArrayList<StructuredArgument> argumentForQuery = new ArrayList<StructuredArgument>();
 			argumentForQuery = GetArgumentForQuery(query, ListArgument, saturatedAtom);
 			System.out.println("Set of Arguments for Query: " + argumentForQuery);
 
 			/* Check credulous, skepcitcal, non-accept for argument*/
 
 			int count = 0;
-			for (Argument arg: argumentForQuery) {
+			for (StructuredArgument arg: argumentForQuery) {
 				for (int i=0; i<extensions.size(); i++) {
 					if (extensions.get(i).contains(arg)){
 						count++;
@@ -599,11 +599,11 @@ public class AppInitial {
 			/* print a set of causes for query*/
 
 			/*	System.out.println(".....set of causes of the query.....");
-			for (Argument argQ : argumentForQuery) {
+			for (StructuredArgument argQ : argumentForQuery) {
 				if (argQ.body.isEmpty()) {
 					System.out.println ("causes: " + argQ.head);
 				} else {
-					Iterator<Argument> itArg = argQ.body.listIterator();
+					Iterator<StructuredArgument> itArg = argQ.body.listIterator();
 					System.out.println("causes of  " + argQ + " : " + itArg.next().head);
 				}
 			}*/
@@ -623,14 +623,14 @@ public class AppInitial {
 						 */
 
 						/*	for (int i=0; i< ListArgument.size(); i++) {
-							Argument arg = ListArgument.get(i);*/
+							StructuredArgument arg = ListArgument.get(i);*/
 
 
 						/*
 						 * Compute a dialectical tree for a given query
 						 */
-						ArrayList<ArrayList<Argument>> extForAcc = new ArrayList<ArrayList<Argument>>();
-						ArrayList<ArrayList<Argument>> extForNotAcc = new ArrayList<ArrayList<Argument>>();
+						ArrayList<ArrayList<StructuredArgument>> extForAcc = new ArrayList<ArrayList<StructuredArgument>>();
+						ArrayList<ArrayList<StructuredArgument>> extForNotAcc = new ArrayList<ArrayList<StructuredArgument>>();
 
 
 
@@ -671,7 +671,7 @@ public class AppInitial {
 
 
 
-				public static void AllSubset(ArrayList<ArrayList<Argument>> S, ArrayList<Argument> F)
+				public static void AllSubset(ArrayList<ArrayList<StructuredArgument>> S, ArrayList<StructuredArgument> F)
 						throws AtomSetException, ChaseException, HomomorphismException
 				{
 					ArrayList F2 = new ArrayList();
@@ -679,7 +679,7 @@ public class AppInitial {
 
 					if (!F2.isEmpty())
 					{
-						Argument a = (Argument)F2.get(0);
+						StructuredArgument a = (StructuredArgument)F2.get(0);
 
 						ArrayList Temp = new ArrayList();
 						for (ArrayList s : S)
@@ -704,7 +704,7 @@ public class AppInitial {
 
 
 
-				public static void recurSiveArgs(Atom a, HashMap<Atom, ArrayList<Argument>> dico, DefeasibleKB kb)
+				public static void recurSiveArgs(Atom a, HashMap<Atom, ArrayList<StructuredArgument>> dico, DefeasibleKB kb)
 				{
 					try
 					{
@@ -730,13 +730,13 @@ public class AppInitial {
 									}
 									boolean contain = false;
 									for (Object p1 : (ArrayList)dico.get(a)) {						
-										Argument p = (Argument)p1;
+										StructuredArgument p = (StructuredArgument)p1;
 										if (((p.IsPremise = Boolean.valueOf(true)).booleanValue()) && (p.head.equals(a))) {
 											contain = true;
 										}
 									}
 									if (!contain)
-										((ArrayList)dico.get(a)).add(new Argument(new ArrayList(), a, Boolean.valueOf(true)));
+										((ArrayList)dico.get(a)).add(new StructuredArgument(new ArrayList(), a, Boolean.valueOf(true)));
 								}
 								else if (ge.getTarget().equals(a)) {
 									ArrayList Source = new ArrayList();
@@ -768,9 +768,9 @@ public class AppInitial {
 										copy.addAll(p);
 
 										boolean contain = false;
-										//for (Argument z : (ArrayList)dico.get(a)) {
+										//for (StructuredArgument z : (ArrayList)dico.get(a)) {
 										for (Object z1 : (ArrayList)dico.get(a)) {
-											Argument z = (Argument)z1;
+											StructuredArgument z = (StructuredArgument)z1;
 
 											if ((z.body.containsAll(copy)) && (copy.containsAll(z.body)))
 											{
@@ -779,7 +779,7 @@ public class AppInitial {
 										}
 
 										if (!contain) {
-											((ArrayList)dico.get(a)).add(new Argument(copy, a, Boolean.valueOf(false)));
+											((ArrayList)dico.get(a)).add(new StructuredArgument(copy, a, Boolean.valueOf(false)));
 										}
 									}
 								}
@@ -792,7 +792,7 @@ public class AppInitial {
 					}
 				}
 
-				public static ArrayList<Argument> generateArgs(DefeasibleKB kb)
+				public static ArrayList<StructuredArgument> generateArgs(DefeasibleKB kb)
 				{
 					ArrayList result = new ArrayList();
 					HashMap dictionnary = new HashMap();
@@ -1150,18 +1150,18 @@ public class AppInitial {
 				}
 				/*Get union of extensions for sceptical semantics*/
 
-				public static ArrayList<Argument> getPreferredScepticalExt(ArrayList<ArrayList<Argument>> preferredExts) {
-					ArrayList<Argument> preferredScepticalExt = new ArrayList<Argument>();
+				public static ArrayList<StructuredArgument> getPreferredScepticalExt(ArrayList<ArrayList<StructuredArgument>> preferredExts) {
+					ArrayList<StructuredArgument> preferredScepticalExt = new ArrayList<StructuredArgument>();
 
 					if (preferredScepticalExt.isEmpty()) {            
-						preferredScepticalExt = new ArrayList<Argument>(preferredExts.iterator().next()); // initialize preferredScepticalExt to a random preferredExt;
+						preferredScepticalExt = new ArrayList<StructuredArgument>(preferredExts.iterator().next()); // initialize preferredScepticalExt to a random preferredExt;
 
-						for (ArrayList<Argument> nextExt : preferredExts) {
+						for (ArrayList<StructuredArgument> nextExt : preferredExts) {
 							preferredScepticalExt.retainAll(nextExt);
 						} // remove everything which isn't in every preferred extension;
 					}
 
-					return new ArrayList<Argument>(preferredScepticalExt);
+					return new ArrayList<StructuredArgument>(preferredScepticalExt);
 				}   
 
 
@@ -1169,9 +1169,9 @@ public class AppInitial {
 
 				/* check whether an argument is created from assertion without applying rules*/
 
-				public static boolean checkAtomArg(ArrayList<Argument> A) {
+				public static boolean checkAtomArg(ArrayList<StructuredArgument> A) {
 					for (int i=0; i<A.size(); i++) {
-						Argument a = A.get(i);
+						StructuredArgument a = A.get(i);
 						if (a.getPremises().equals(a.head)) {
 							return true;
 						}
@@ -1183,22 +1183,22 @@ public class AppInitial {
 				public static LinkedList getRemoves(LinkedList setOfAttackers) {
 					LinkedList removes = new LinkedList();
 					for (int i=0; i<setOfAttackers.size(); i++) {
-						ArrayList<Argument> A =  (ArrayList<Argument>) setOfAttackers.get(i);
+						ArrayList<StructuredArgument> A =  (ArrayList<StructuredArgument>) setOfAttackers.get(i);
 						ArrayList<Atom> atomA = new ArrayList<Atom>();
-						ArrayList<Argument> bodyA = new ArrayList<Argument>();
+						ArrayList<StructuredArgument> bodyA = new ArrayList<StructuredArgument>();
 						for (int m =0; m < A.size(); m++) {
-							Argument a = A.get(m);
+							StructuredArgument a = A.get(m);
 							atomA.addAll(A.get(m).getPremises());
 							bodyA.addAll(a.body);
 						}
 
 						for (int j = i+1; j<setOfAttackers.size(); j++) {
-							ArrayList<Argument> B = (ArrayList<Argument>)setOfAttackers.get(j);
+							ArrayList<StructuredArgument> B = (ArrayList<StructuredArgument>)setOfAttackers.get(j);
 							if(!A.equals(B)) {
 								ArrayList<Atom> atomB = new ArrayList<Atom>();
-								ArrayList<Argument> bodyB = new ArrayList<Argument>();
+								ArrayList<StructuredArgument> bodyB = new ArrayList<StructuredArgument>();
 								for (int m = 0; m < B.size(); m++) {
-									Argument b = B.get(m);						
+									StructuredArgument b = B.get(m);						
 									atomB.addAll(B.get(m).getPremises());
 									bodyB.addAll(b.body);
 								}
@@ -1218,7 +1218,7 @@ public class AppInitial {
 
 
 
-				public static LinkedList<Argument> getAttackersFor(Argument arg, ArrayList SetOfAttacks, ArrayList<Argument>ListOfArguments) {	
+				public static LinkedList<StructuredArgument> getAttackersFor(StructuredArgument arg, ArrayList SetOfAttacks, ArrayList<StructuredArgument>ListOfArguments) {	
 
 					Iterator iter = SetOfAttacks.iterator();
 					LinkedList AttackersFor = new LinkedList();	
@@ -1247,12 +1247,12 @@ public class AppInitial {
 				}
 
 
-				/*public LinkedList<Defeater> getDefeatersFor(Argument arg) throws AtomSetException, HomomorphismException, HomomorphismFactoryException, RuleApplicationException, ChaseException, IteratorException {
+				/*public LinkedList<Defeater> getDefeatersFor(StructuredArgument arg) throws AtomSetException, HomomorphismException, HomomorphismFactoryException, RuleApplicationException, ChaseException, IteratorException {
 					LinkedList<Defeater> defeaters = new LinkedList<Defeater>();
 
-					LinkedList<Argument> attackers = this.getAttackersFor(arg);
+					LinkedList<StructuredArgument> attackers = this.getAttackersFor(arg);
 
-					for(Argument attacker : attackers) {
+					for(StructuredArgument attacker : attackers) {
 						int attackStatus = this.preferenceFunction.compare(attacker, arg);
 						if(attackStatus != ArgumentPreference.NOT_DEFEAT) { // NOT_DEFEAT = 0
 							defeaters.add(new Defeater(attacker, attackStatus));
@@ -1263,16 +1263,16 @@ public class AppInitial {
 				}*/
 
 
-				public static LinkedList<Defeater> getDefeatersFor(Argument arg, ArrayList SetOfAttacks, ArrayList<Argument>ListOfArguments) throws AtomSetException, HomomorphismException, HomomorphismFactoryException, RuleApplicationException, ChaseException, IteratorException {
+				public static LinkedList<Defeater> getDefeatersFor(StructuredArgument arg, ArrayList SetOfAttacks, ArrayList<StructuredArgument>ListOfArguments) throws AtomSetException, HomomorphismException, HomomorphismFactoryException, RuleApplicationException, ChaseException, IteratorException {
 					LinkedList<Defeater> defeaters = new LinkedList<Defeater>();
-					LinkedList<Argument> attackers = getAttackersFor(arg, SetOfAttacks, ListOfArguments);
+					LinkedList<StructuredArgument> attackers = getAttackersFor(arg, SetOfAttacks, ListOfArguments);
 
 					Iterator it = attackers.iterator();
 					while (it.hasNext()) {
 						ArrayList tempAttackers = new ArrayList();
 						tempAttackers = (ArrayList) it.next();
 						for (int i=0; i<tempAttackers.size(); i++) {
-							Argument attacker = (Argument) tempAttackers.get(i);
+							StructuredArgument attacker = (StructuredArgument) tempAttackers.get(i);
 							int attackStatus = compare(attacker,arg);				
 							if(attackStatus != 0) {
 								defeaters.add(new Defeater(attacker, attackStatus));
@@ -1285,9 +1285,9 @@ public class AppInitial {
 
 			
 
-			public static boolean isDefeasible(Argument arg) throws IteratorException {
+			public static boolean isDefeasible(StructuredArgument arg) throws IteratorException {
 				boolean isDefeasible = false;
-				ArrayList<Argument> body = arg.body; // body is array list of arguments
+				ArrayList<StructuredArgument> body = arg.body; // body is array list of arguments
 				CloseableIterator<Atom> def = (CloseableIterator<Atom>) defeasibleFacts.iterator();
 				while (def.hasNext()) {
 					Atom at = def.next();
@@ -1301,7 +1301,7 @@ public class AppInitial {
 
 			}
 
-			public static int compare(Argument attacker, Argument attackee) throws IteratorException {
+			public static int compare(StructuredArgument attacker, StructuredArgument attackee) throws IteratorException {
 
 				if (isDefeasible(attackee) == false && isDefeasible(attacker) == false) {
 					return 2;
@@ -1429,8 +1429,8 @@ public class AppInitial {
 
 			}
 
-			public static ArrayList<Argument> GetArgumentForQuery(ConjunctiveQuery query, ArrayList<Argument> ListArgument, InMemoryAtomSet saturatedAtom) throws IteratorException {
-				ArrayList<Argument> argumentsFor = new ArrayList<Argument>();
+			public static ArrayList<StructuredArgument> GetArgumentForQuery(ConjunctiveQuery query, ArrayList<StructuredArgument> ListArgument, InMemoryAtomSet saturatedAtom) throws IteratorException {
+				ArrayList<StructuredArgument> argumentsFor = new ArrayList<StructuredArgument>();
 				ArrayList<Atom> answers = new ArrayList<Atom>();
 				answers = getAnswersForQuery(query, saturatedAtom);
 				//InMemoryAtomSet atomQuery = query.getAtomSet();
@@ -1439,7 +1439,7 @@ public class AppInitial {
 				while (ck.hasNext()) {
 					Atom at = (Atom) ck.next();
 					for (int i=0; i<ListArgument.size(); i++) {
-						Argument arg = ListArgument.get(i);
+						StructuredArgument arg = ListArgument.get(i);
 						if (arg.head.equals(at)) {
 							argumentsFor.add(arg);
 						}			

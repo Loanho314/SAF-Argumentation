@@ -212,9 +212,8 @@ public class FindMinIncSets {
 		Iterator<Set<Atom>> iterator = sets.iterator();
 
 		// Start with the Cartesian product of the first set
-		Set<Set<Atom>> result = iterator.next().stream().map(Collections::singleton) // Convert each element into a
-																						// singleton set
-				.collect(Collectors.toSet());
+		Set<Set<Atom>> result = iterator.next().stream().map(Collections::singleton)
+				.collect(Collectors.toSet()); // Convert each element into a singleton set
 
 		// Iteratively combine with the rest of the sets
 		while (iterator.hasNext()) {
