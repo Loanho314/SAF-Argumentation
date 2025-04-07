@@ -18,11 +18,11 @@ The code has been made available for reproducing the results we show in our pape
 Though the code is still in active development, it is possible that the system will improve.
 
 Perform the following steps:
-- To use, create a location where you store the DLGP. You can store datasets in the created folder.
+- To use, create a location where you store the DLGP. You can store datasets in the created folder, i.e., the "data" folder.
 - Clone a repository to your local computer using a Github link.
 - Go to the directory where your source code is, i.e., .\SAF-Argumentation\code
 - Use the command to run:
-   javac Experiment1.java
+   mvn exec:java -Dexec.mainClass="fr.lirmm.graphik.NAry.Experiment1"
 
 # Status
 This application is still under development. We will update a new version to support OWL2, RDF and DLGP input without performing the translation steps. 
