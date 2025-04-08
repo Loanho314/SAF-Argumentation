@@ -2,7 +2,8 @@
 Logic-based argumentation framework with collective attacks. We are building a new Darg system to allow human-AI interactions, in which it allows users to query and receive explanatory dialogue about why the query is (not) accepted under certain/ credulous/ grounded semantics. The Darg system is built based on the SAF framework. At the first step of building the Darg system, we provide a graphical representation of explanatory dialogues, i.e., dialogue trees.
 
 # Requirements
-- This is a Java implementation: Full java 11 support, java 11 is a requirement.  
+- This is a Java implementation: Full java 11 support, java 11 is a requirement.
+- Maven
 - Install OWL API
 - Download and install Eclipse
 - It currently supports: DLGP input that supports Datalog+-, logic programming facts.
