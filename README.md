@@ -37,9 +37,8 @@ Perform the following steps:
   
    java -jar -Xmx4G target/my-graal-app-1.0-jar-with-dependencies.jar arg0 arg1
   
-  where arg0 is an input, for example, arg0 = "yago.dlgp"
-  
-        arg1 is an output, for example, arg1 = "output/excutiontime.txt"
+  where - arg0 is an input, for example, arg0 = "yago.dlgp"  
+       - arg1 is an output, for example, arg1 = "output/excutiontime.txt"
   
 - An alternative way is to run a command directly without compiling the project:
   
