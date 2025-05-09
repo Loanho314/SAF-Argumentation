@@ -5,8 +5,9 @@ Logic-based argumentation framework with collective attacks. We are building a n
 - This is a Java implementation: Full java 19 support, java 19 is a requirement.
 - Maven
 - It currently supports: DLGP input that supports Datalog+-, logic programming facts.
-- For OWL2 and RDF/XML in Turtle format, you need to run the following command to convert into DLGP format:  
-  java -jar owl2dlgp-*.jar -f ./example-owl.ttl -o ./example.dlgp
+- For OWL2 and RDF/XML in Turtle format, you need to run the following command to convert into DLGP format:
+  
+    java -jar owl2dlgp-*.jar -f ./example-owl.ttl -o ./example.dlgp
 
 - Or download the owl2dlgp tool to use:
 Link: https://graphik-team.github.io/graal/downloads/owl2dlgp
