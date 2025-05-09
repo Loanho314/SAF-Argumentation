@@ -35,7 +35,7 @@ Perform the following steps:
   mvn clean install
 - After compiling, the jar file is in the target folder, and it contains all the dependencies. Next, use the command to run:
   
-   java -jar -Xmx4G target/my-graal-app-1.0-jar-with-dependencies.jar arg0 arg1
+      java -jar -Xmx4G target/my-graal-app-1.0-jar-with-dependencies.jar arg0 arg1
   
   where - arg0 is an input, for example, arg0 = "yago.dlgp"  
        - arg1 is an output, for example, arg1 = "output/excutiontime.txt"
