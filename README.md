@@ -32,12 +32,14 @@ Perform the following steps:
 - Go to the directory where your source code is, i.e., .\SAF-Argumentation\code
 - Package the project by using the following command:
   mvn clean install
-- After that, use the command to run:
+- After compiling, the jar file is in the target folder, and it contains all the dependencies. Next, use the command to run:
    java -jar -Xmx4G target/my-graal-app-1.0-jar-with-dependencies.jar arg0 arg1
   where arg0 is an input, for example, arg0 = "yago.dlgp"
         arg1 is an output, for example, arg1 = "output/excutiontime.txt"
-- An alternative way is to run dirrectly a command without compiling the project:
+- An alternative way is to run a command directly without compiling the project:
       mvn exec:java -Dexec.mainClass="fr.lirmm.graphik.NAry.Experiment1" arg0 arg1
+  
+Note: This project can also be used as a Java library. After packing the project, add the project as a Maven dependency to your project and profit.
 
 # Status
 This application is still under development. We will update a new version to support OWL2, RDF and DLGP input without performing the translation steps. 
