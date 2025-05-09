@@ -32,7 +32,9 @@ Perform the following steps:
 - Clone a repository to your local computer using a Github link.
 - Go to the directory where your source code is, i.e., .\SAF-Argumentation\code
 - Package the project by using the following command:
-  mvn clean install
+  
+      mvn clean install
+  
 - After compiling, the jar file is in the target folder, and it contains all the dependencies. Next, use the command to run:
   
       java -jar -Xmx4G target/my-graal-app-1.0-jar-with-dependencies.jar arg0 arg1
