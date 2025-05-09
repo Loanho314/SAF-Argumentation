@@ -36,7 +36,7 @@ Perform the following steps:
   
       mvn clean install
   
-- After compiling, the jar file is in the target folder, and it contains all the dependencies. Next, use the command to run:
+- After compiling, the jar file is in the TARGET folder, and it contains all the dependencies. Next, use the command to run:
   
       java -jar -Xmx4G target/my-graal-app-1.0-jar-with-dependencies.jar arg0 arg1
   
