@@ -15,28 +15,7 @@ Link: https://graphik-team.github.io/graal/downloads/owl2dlgp
 # Datasets
 You can download datasets from the links below:
 
-Experiment 1: https://surfdrive.surf.nl/files/index.php/s/zhfEj8cpzvPtswD/download
-
-Experiment 2: https://surfdrive.surf.nl/files/index.php/s/40E05sVJymo19DZ/download
-
-Experiment 3:
-1. DBpedia
-   
-   DBpedia with 1M: https://surfdrive.surf.nl/files/index.php/s/ZnsMJ8CXBh2Nn7z/download
-   
-   DBpedia with 10M: https://surfdrive.surf.nl/files/index.php/s/HwxjCtAZXHb7kGv/download
-   
-   DBpedia-full: https://surfdrive.surf.nl/files/index.php/s/fWA8noAQbbltiG3/download
-   
-3. Yago
-   
-   YAGO with 1M: https://surfdrive.surf.nl/files/index.php/s/UKceczSVHxTFGGx/download
-   
-   YAGO with 10M: https://surfdrive.surf.nl/files/index.php/s/Z7IOJYoXUQ47Fzw/download
-   
-   YAGO-full:
-   
-5. LOV : https://surfdrive.surf.nl/files/index.php/s/8K7QP1OWBgKLIKo/download
+      Zenodo doi: 10.5281/zenodo.15379835. (2025) https://doi.org/10.5281/zenodo.15379836
 
 # Useage
 The code has been made available for reproducing the results we show in our paper. To make sure that it is possible we would refer to the CODE folder.
