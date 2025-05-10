@@ -2,27 +2,45 @@
 Logic-based argumentation framework with collective attacks. We are building a new Darg system to allow human-AI interactions, in which it allows users to query and receive explanatory dialogue about why the query is (not) accepted under certain/ credulous/ grounded semantics. The Darg system is built based on the SAF framework. At the first step of building the Darg system, we provide a graphical representation of explanatory dialogues, i.e., dialogue trees.
 
 # Requirements
-- This is a Java implementation: Full java 11 support, java 11 is a requirement.  
-- Install OWL API
-- Download and install Eclipse
+- This is a Java implementation: Full java 19 support, java 19 is a requirement.
+- Maven
 - It currently supports: DLGP input that supports Datalog+-, logic programming facts.
 - For OWL2 and RDF/XML in Turtle format, you need to run the following command to convert into DLGP format:
-  
-  java -jar owl2dlgp-*.jar -f ./example-owl.ttl -o ./example.dlgp
+
+      java -jar owl2dlgp-*.jar -f ./example-owl.ttl -o ./example.dlgp
 
 - Or download the owl2dlgp tool to use:
 Link: https://graphik-team.github.io/graal/downloads/owl2dlgp
+
+# Datasets
+You can download datasets from the links below:
+
+      Zenodo doi: 10.5281/zenodo.15379835. (2025) https://doi.org/10.5281/zenodo.15379836
 
 # Useage
 The code has been made available for reproducing the results we show in our paper. To make sure that it is possible we would refer to the CODE folder.
 Though the code is still in active development, it is possible that the system will improve.
 
 Perform the following steps:
-- To use, create a location where you store the DLGP. You can store datasets in the created folder.
+- To use, create a location where you store the DLGP. You can store datasets in the created folder, i.e., the "data" folder.
 - Clone a repository to your local computer using a Github link.
 - Go to the directory where your source code is, i.e., .\SAF-Argumentation\code
-- Use the command to run:
-   javac Experiment1.java
+- Package the project by using the following command:
+  
+      mvn clean install
+  
+- After compiling, the jar file is in the TARGET folder, and it contains all the dependencies. Next, use the command to run:
+  
+      java -jar -Xmx4G target/my-graal-app-1.0-jar-with-dependencies.jar arg0 arg1
+  
+  where - arg0 is an input, for example, arg0 = "yago.dlgp"  
+       - arg1 is an output, for example, arg1 = "output/excutiontime.txt"
+  
+- An alternative way is to run a command directly without compiling the project:
+  
+      mvn exec:java -Dexec.mainClass="fr.lirmm.graphik.NAry.Experiment1" arg0 arg1
+  
+Note: This project can also be used as a Java library. After packing the project, add the project as a Maven dependency to your project and profit.
 
 # Status
 This application is still under development. We will update a new version to support OWL2, RDF and DLGP input without performing the translation steps. 
