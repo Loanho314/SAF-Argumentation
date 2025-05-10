@@ -203,7 +203,7 @@ public class FindMinIncSets {
 		return false;
 	}
 
-	private static <Atom> Set<Set<Atom>> cartesianProduct(Collection<Set<Atom>> sets) {
+/*	private static <Atom> Set<Set<Atom>> cartesianProduct(Collection<Set<Atom>> sets) {
 		// Base case: If no sets are provided, return an empty set
 		if (sets == null || sets.isEmpty()) {
 			return Collections.singleton(Collections.emptySet());
@@ -214,6 +214,37 @@ public class FindMinIncSets {
 		// Start with the Cartesian product of the first set
 		Set<Set<Atom>> result = iterator.next().stream().map(Collections::singleton)
 				.collect(Collectors.toSet()); // Convert each element into a singleton set
+
+		// Iteratively combine with the rest of the sets
+		while (iterator.hasNext()) {
+			Set<Atom> currentSet = iterator.next();
+			result = combineToSubsets(result, currentSet);
+		}
+		return result;
+
+	}*/
+	
+	public static <Atom> Set<Set<Atom>> cartesianProduct(Collection<Set<Atom>> sets) {
+		// Base case: If no sets are provided, return an empty set
+		if (sets == null || sets.isEmpty()) {
+			return Collections.singleton(Collections.emptySet());
+		}
+		// Use an iterator to process the collection
+		Iterator<Set<Atom>> iterator = sets.iterator();
+
+		// Start with the Cartesian product of the first set
+		Set<Set<Atom>> result = new HashSet<Set<Atom>>();
+		for (Atom element : iterator.next()) {
+			result.add(Collections.singleton(element));
+		}
+		
+		if (!iterator.hasNext()) {
+			return result;
+		}
+				
+				//Set<Set<Atom>> result = iterator.next().stream().map(Collections::singleton) // Convert each element into a
+																						// singleton set
+				//.collect(Collectors.toSet());
 
 		// Iteratively combine with the rest of the sets
 		while (iterator.hasNext()) {

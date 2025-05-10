@@ -1,8 +1,11 @@
 package fr.lirmm.graphik.NAry;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,11 +56,11 @@ import fr.lirmm.graphik.util.stream.IteratorException;
 
 
 public class Experiment1 {
-	static private String file = "C:/Users/tho310/Data test/testYAGO.dlgp";
-	//static private String file = "C:/Users/tho310/Data test/Museum Case/CKG-Inconsistency.dlgp";
-
+	//static private String file = "C:/Users/tho310/Data test/testYAGO.dlgp";     
+	//static private String file = "data/DBpedia.dlgp";
+	//static private String file = "data/testYAGO.dlgp";
 	public static ArrayList<StructuredArgument> listArguments;
-	public static Set<StructuredArgument> arguments;
+//	public static Set<StructuredArgument> arguments;
 	//// Initialise an attack set
 	public static Set<Attack> attackSet;
 
@@ -65,29 +68,39 @@ public class Experiment1 {
 
 	public static <T> void main(String[] args)
 			throws AtomSetException, ChaseException, HomomorphismException, IOException {
+		String file = "C:\\Users\\tho310\\Data\\Experiment1\\LOV\\n9-a0C0C3C5p0C1C2a1.dlgp";
+		String output = "C:\\Users\\tho310\\my-graal-app\\output-expreriment1\\lov\\LOV9.txt";
+		//System.out.println("running");
+		//String file = args[0];
+		//String output = args[1];
+		//File file = new File(filePath);
 		// TODO Auto-generated method stub
 		DefeasibleKB kb = new DefeasibleKB(file);
 		DefeasibleKB kbArgs = new DefeasibleKB(file);
 		AtomSet initialFacts = new LinkedListAtomSet();
 		RuleSet negativeRuleSet = new LinkedListRuleSet();
 		RuleSet positiveRuleSet = new LinkedListRuleSet();
-		InMemoryAtomSet saturatedAtoms = new LinkedListAtomSet();
+		List<Atom> saturatedAtoms = new ArrayList<Atom>();
+	//InMemoryAtomSet saturatedAtoms = new LinkedListAtomSet();
 		attackSet = new HashSet<Attack>();
+		
+		initialFacts.addAll(kb.facts);
+		//System.out.println(kb.facts);	
+		System.out.println("saturated");
 
 		kbArgs.saturate();
-		saturatedAtoms.addAll(kbArgs.facts);
-		System.out.println("Saturated Facts: " + saturatedAtoms);
-		// kbArgs.unsaturate();
-		// System.out.println("Chase" + saturatedAtoms);
-
-		initialFacts.addAll(kb.facts);
+		CloseableIterator<Atom> f = kbArgs.facts.iterator();
+		while (f.hasNext()) {
+			Atom atom = f.next();	
+			saturatedAtoms.add(atom);
+		}
+		
+		System.out.println("Done saturated!");
+	//	saturatedAtoms.addAll(kbArgs.facts);
+		
+	
 		negativeRuleSet = kb.negativeConstraintSet;
 		positiveRuleSet = kb.rules;
-
-		for (Rule r : negativeRuleSet) {
-			System.out.println(r);
-			System.out.println(r.getBody().getVariables());
-		}
 
 		long startTime = System.currentTimeMillis(); // Get the start time
 		listArguments = computeArguments.generateArgs(kbArgs);
@@ -106,13 +119,15 @@ public class Experiment1 {
 				listArguments.remove(i);
 			}
 		}
+		
+		System.out.println("created arguments!");
 
 		long endTime = System.currentTimeMillis(); // Get the end time
 		long duration = endTime - startTime; // Calculate the duration
 
-		/*
-		 * for (StructuredArgument a : listArguments) { System.out.println(a); }
-		 */
+		
+		 // for (StructuredArgument a : listArguments) { System.out.println(a); }
+		 
 
 		Set<ArgumentTree> trees = new HashSet<ArgumentTree>();
 		ArrayList<Integer> heights = new ArrayList<Integer>();
@@ -122,7 +137,8 @@ public class Experiment1 {
 
 		// compute all minimal conflicts
 		Set<AtomSet> minInconSets = FindMinIncSets.findMinimalIncSubsets(kb);
-		System.out.println("minimal inconsistent subsets: \n " + minInconSets + " \n size: " + minInconSets.size());
+		//System.out.println("minimal inconsistent subsets: \n " + minInconSets + " \n size: " + minInconSets.size());
+		System.out.println("minimal inconsistent subsets: \n " + " \n size: " + minInconSets.size());
 
 		int number = 0;
 
@@ -131,9 +147,10 @@ public class Experiment1 {
 			if (number % 100 == 0) {
 				System.out.println("Running so far " + number);
 			}
-			 arguments = new HashSet<StructuredArgument>();
+			 //arguments = new HashSet<StructuredArgument>();
 
-			ArgumentTree tree = getArgumentTree(argRoot, minInconSets, listArguments, arguments, attackSet, kb);
+			//ArgumentTree tree = getArgumentTree(argRoot, minInconSets, listArguments, arguments, attackSet, kb);
+			 ArgumentTree tree = getArgumentTree(argRoot, minInconSets, listArguments, attackSet, kb);
 			trees.add(tree);
 		}
 
@@ -153,8 +170,11 @@ public class Experiment1 {
 		 * System.out.println("preferred: " + pr.getModels(s));
 		 */
 
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter("execution_time.txt"))) {
-			writer.write("minimal inconsistent subsets: \n " + minInconSets.size());
+		//try (BufferedWriter writer = new BufferedWriter(new FileWriter ("output/execution_time.txt"))) {
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(output))) {
+		
+			writer.write("minimal inconsistent subsets: \n " + minInconSets.size() + " \n " + minInconSets);
 			for (ArgumentTree t : trees) {
 				writer.write("\n Argument tree for " + t.getRoot() + "\n");
 				writer.write("Nodes: " + t.getNumberOfNodes() + " Edges: " + t.getNumberOfEdges() + "\n");
@@ -162,7 +182,7 @@ public class Experiment1 {
 				heights.add(t.getHeight());
 				writer.write(" Width: " + t.getMaxWidth() + "\n");
 				widths.add(t.getMaxWidth());
-				t.printTree(t.getRoot(), writer);
+				//t.printTree(t.getRoot(), writer);
 			}
 
 			writer.write("\nNumber of trees " + trees.size() + "\n");
@@ -197,11 +217,11 @@ public class Experiment1 {
 
 			writer.write("Number of args: " + listArguments.size() + " - Execution time for translating arguments: "
 					+ duration + "\n");
-			for (StructuredArgument a : listArguments) { 
-				writer.write(a.toString() + "\n"); 
-				}
+//			for (StructuredArgument a : listArguments) { 
+//				writer.write(a.toString() + "\n"); 
+//				}
 			writer.write("Number of attacks: " + attackSet.size());
-			System.out.println("Attacks:" + attackSet);
+			//System.out.println("Attacks:" + attackSet);
 			writer.flush(); // Close the BufferedWriter
 			writer.close();
 		}
@@ -364,8 +384,10 @@ public class Experiment1 {
 	 * @throws AtomSetException 
 	 */
 
+	//public static ArgumentTree getArgumentTree(StructuredArgument argRoot, Set<AtomSet> minInconSets,
+	//		ArrayList<StructuredArgument> listArguments, Set<StructuredArgument> arguments, Set<Attack> attackSet, DefeasibleKB kb) throws IteratorException, AtomSetException {
 	public static ArgumentTree getArgumentTree(StructuredArgument argRoot, Set<AtomSet> minInconSets,
-			ArrayList<StructuredArgument> listArguments, Set<StructuredArgument> arguments, Set<Attack> attackSet, DefeasibleKB kb) throws IteratorException, AtomSetException {
+			ArrayList<StructuredArgument> listArguments, Set<Attack> attackSet, DefeasibleKB kb) throws IteratorException, AtomSetException {
 
 		// Initialise an argument tree for a given argument (root).
 		ArgumentNode root = new ArgumentNode(argRoot);
@@ -402,7 +424,7 @@ public class Experiment1 {
 			Set<StructuredArgument> defenceSet = new HashSet<StructuredArgument>();
 			Set<StructuredArgument> culprit = new HashSet<StructuredArgument>();
 			defenceSet.add(argRoot);
-			arguments.add(argRoot);
+		//	arguments.add(argRoot);
 
 			if (!setOfUndercuts.isEmpty()) {
 
@@ -414,7 +436,7 @@ public class Experiment1 {
 					// Set<StructuredArgument> culprit = new HashSet<StructuredArgument>();
 					// defenceSet.add(argRoot);
 					culprit.addAll(undercut);
-					arguments.addAll(undercut);
+					// arguments.addAll(undercut);
 
 					// Process undercuts and ensure undercutNodes are only added once
 					Set<ArgumentNode> undercutNodes = new HashSet<ArgumentNode>();
@@ -438,8 +460,10 @@ public class Experiment1 {
 					remainingMins.remove(set);
 
 					for (ArgumentNode node : undercutNodes) {
+						//subcuts(node, remainingMins, set, new HashSet<>(node.getPremises()), argTree, defenceSet,
+						//		culprit, listArguments, arguments, attackSet, 2, minInconSets, kb);
 						subcuts(node, remainingMins, set, new HashSet<>(node.getPremises()), argTree, defenceSet,
-								culprit, listArguments, arguments, attackSet, 2, minInconSets, kb);
+								culprit, listArguments, attackSet, 2, minInconSets, kb);
 					}
 				}
 			}
@@ -590,9 +614,14 @@ public class Experiment1 {
 	 * @throws IteratorException
 	 * @throws AtomSetException 
 	 */
+//	private static void subcuts(ArgumentNode currentNode, ArrayList<AtomSet> remainingMins, AtomSet current,
+//			Set<Atom> supportOfCurrentNode, ArgumentTree argTree, Set<StructuredArgument> defenceSet,
+//			Set<StructuredArgument> culprit, ArrayList<StructuredArgument> listArguments, Set<StructuredArgument> arguments, Set<Attack> attackSet, int level,
+//			Set<AtomSet> minInconSets, DefeasibleKB kb) throws IteratorException, AtomSetException {
+	
 	private static void subcuts(ArgumentNode currentNode, ArrayList<AtomSet> remainingMins, AtomSet current,
 			Set<Atom> supportOfCurrentNode, ArgumentTree argTree, Set<StructuredArgument> defenceSet,
-			Set<StructuredArgument> culprit, ArrayList<StructuredArgument> listArguments, Set<StructuredArgument> arguments, Set<Attack> attackSet, int level,
+			Set<StructuredArgument> culprit, ArrayList<StructuredArgument> listArguments, Set<Attack> attackSet, int level,
 			Set<AtomSet> minInconSets, DefeasibleKB kb) throws IteratorException, AtomSetException {
 
 		boolean allIntersectionsEmpty = true;
@@ -650,7 +679,7 @@ public class Experiment1 {
 
 							// Create argumentNodes and hyperdeges of the argTree.
 							for (ArrayList<StructuredArgument> undercut : undercuts) {
-								arguments.addAll(undercut);
+								//arguments.addAll(undercut);
 								Set<ArgumentNode> undercutNodes = new HashSet<ArgumentNode>();
 								
 								// Get body in the support of arg in the defence set, culprit, and undercut
@@ -710,8 +739,10 @@ public class Experiment1 {
 								for (ArgumentNode node : undercutNodes) {
 									Set<Atom> newSupport = new HashSet<Atom>(atomsUndercut); // Create the new support
 									newSupport.addAll(node.getPremises());
+//									subcuts(node, newRemainingMins, nextMin, newSupport, argTree, defenceSet, culprit,
+//											listArguments, arguments, attackSet, level + 1, minInconSets, kb);
 									subcuts(node, newRemainingMins, nextMin, newSupport, argTree, defenceSet, culprit,
-											listArguments, arguments, attackSet, level + 1, minInconSets, kb);
+											listArguments, attackSet, level + 1, minInconSets, kb);
 								}
 							}
 						} // End For

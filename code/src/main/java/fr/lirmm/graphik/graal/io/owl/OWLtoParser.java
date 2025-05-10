@@ -14,15 +14,13 @@ import java.util.TreeSet;
 import org.apache.commons.io.input.ReaderInputStream;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
-import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLDocumentFormat;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.util.ShortFormProvider;
+import org.semanticweb.owlapi.model.OWLAxiom;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,9 +38,6 @@ import fr.lirmm.graphik.graal.core.atomset.LinkedListAtomSet;
 import fr.lirmm.graphik.graal.core.atomset.graph.DefaultInMemoryGraphStore;
 import fr.lirmm.graphik.graal.core.factory.DefaultAtomFactory;
 import fr.lirmm.graphik.graal.core.factory.DefaultRuleFactory;
-import fr.lirmm.graphik.graal.io.owl.OWL2Parser;
-import fr.lirmm.graphik.graal.io.owl.OWL2ParserException;
-import fr.lirmm.graphik.graal.io.owl.OWLAxiomParser;
 import fr.lirmm.graphik.util.Prefix;
 import fr.lirmm.graphik.util.stream.AbstractCloseableIterator;
 import fr.lirmm.graphik.util.stream.ArrayBlockingStream;
@@ -53,13 +48,13 @@ public class OWLtoParser extends AbstractCloseableIterator<Object> implements Pa
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OWL2Parser.class);
 	private static final RuleTransformator RULE_TRANSFO = new RuleTransformator();
-	private static final InMemoryAtomSet BOTTOM_ATOMSET = new LinkedListAtomSet(DefaultAtomFactory.instance()
-	        .getBottom());
+	private static final InMemoryAtomSet BOTTOM_ATOMSET = new LinkedListAtomSet(
+			DefaultAtomFactory.instance().getBottom());
 
 	private ArrayBlockingStream<Object> buffer = new ArrayBlockingStream<>(512);
 
 	private InputStream inputStream = null;
-	private OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+	private static OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 	private OWLOntology ontology;
 	private boolean prefixEnable = true;
 
@@ -138,8 +133,7 @@ public class OWLtoParser extends AbstractCloseableIterator<Object> implements Pa
 	/**
 	 * Enable or disable prefix short form.
 	 * 
-	 * @param b
-	 *            Default value is true.
+	 * @param b Default value is true.
 	 */
 	public void prefixEnable(boolean b) {
 		this.prefixEnable = b;
@@ -178,10 +172,9 @@ public class OWLtoParser extends AbstractCloseableIterator<Object> implements Pa
 	private ShortFormProvider getShortFormProvider(OWLOntology ontology) {
 		OWLDocumentFormat format = this.manager.getOntologyFormat(this.ontology);
 		DefaultPrefixManager pm = new DefaultPrefixManager();
-		if (prefixEnable && format.isPrefixOWLDocumentFormat()) {
-		//if (prefixEnable && format.isPrefixOWLOntologyFormat()) {
-			//PrefixDocumentFormat prefixFormat = format.asPrefixOWLOntologyFormat();
-			PrefixDocumentFormat prefixFormat = format.asPrefixOWLDocumentFormat();
+		if (format.isPrefixOWLDocumentFormat()) {
+			 PrefixDocumentFormat prefixFormat = format.asPrefixOWLDocumentFormat();
+		//	PrefixOWLOntologyFormat prefixFormat = (PrefixOWLOntologyFormat) format;
 			Map<String, String> prefixMap = prefixFormat.getPrefixName2PrefixMap();
 
 			Set<String> forbiddenPrefix = new TreeSet<>();
@@ -202,9 +195,6 @@ public class OWLtoParser extends AbstractCloseableIterator<Object> implements Pa
 		return pm;
 	}
 
-	// /////////////////////////////////////////////////////////////////////////
-	// PRIVATE CLASSES
-	// /////////////////////////////////////////////////////////////////////////
 
 	private static class Producer implements Runnable {
 
@@ -222,7 +212,7 @@ public class OWLtoParser extends AbstractCloseableIterator<Object> implements Pa
 		public void run() {
 			try {
 
-				OWLAxiomParser visitor = new OWLAxiomParser(shortForm);
+				OWLaxiomparser visitor = new OWLaxiomparser(shortForm,manager);
 
 				// process axioms containing anonymous individuals
 				Set<OWLAnonymousIndividual> anonymousIndividuals = onto.getAnonymousIndividuals();
@@ -237,10 +227,13 @@ public class OWLtoParser extends AbstractCloseableIterator<Object> implements Pa
 					AnonymousProcessor processor = new AnonymousProcessor(fact);
 
 					// keep an anonymous individu and process it
+					
+	
+					
 					while (!localAnonymousIndividuals.isEmpty()) {
 						OWLAnonymousIndividual i = localAnonymousIndividuals.pollFirst();
-
-						for (OWLAxiom a : onto.getReferencingAxioms(i, Imports.EXCLUDED)) {
+						Set<OWLAxiom> axioms = onto.getReferencingAxioms(i, Imports.EXCLUDED);
+						for (OWLAxiom a : axioms ) {
 							// add individu referenced by this axiom to the
 							// local set and remove it from the global set
 							for (OWLAnonymousIndividual neestedIndividu : a.getAnonymousIndividuals()) {
@@ -258,11 +251,12 @@ public class OWLtoParser extends AbstractCloseableIterator<Object> implements Pa
 				}
 
 				// process other axioms
-				for (OWLAxiom a : onto.getAxioms()) {
-					if (!a.getAnonymousIndividuals().isEmpty()) {
+				Set<OWLAxiom> axioms1 = onto.getAxioms();
+				for (OWLAxiom a1 : axioms1) {
+					if (! a1.getAnonymousIndividuals().isEmpty()) {
 						continue;
 					}
-					processAxiom(a, visitor, noAnonymousProcessor);
+					processAxiom(a1, visitor, noAnonymousProcessor);
 				}
 
 			} finally {
@@ -273,7 +267,7 @@ public class OWLtoParser extends AbstractCloseableIterator<Object> implements Pa
 		/**
 		 * @param a
 		 */
-		private static void processAxiom(OWLAxiom a, OWLAxiomParser visitor, Processor p) {
+		private static void processAxiom(OWLAxiom a, OWLaxiomparser visitor, Processor p) {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("### OWLAxiom: " + a.toString());
 			}
@@ -349,7 +343,7 @@ public class OWLtoParser extends AbstractCloseableIterator<Object> implements Pa
 			while (bodyIt.hasNext()) {
 				Atom a = bodyIt.next();
 				if (a.getPredicate().equals(Predicate.EQUALITY)
-				    && (a.getTerm(0).isVariable() || a.getTerm(1).isVariable())) {
+						&& (a.getTerm(0).isVariable() || a.getTerm(1).isVariable())) {
 					toRemove.add(a);
 					if (a.getTerm(0).isVariable()) {
 						s.put((Variable) a.getTerm(0), a.getTerm(1));

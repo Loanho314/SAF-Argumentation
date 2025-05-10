@@ -40,7 +40,7 @@ import fr.lirmm.graphik.util.stream.IteratorException;
 
 public class Experiment2 {
 
-	static private String file = "C:/Users/tho310/Data test/test2.dlgp";
+	static private String file = "yago-ont.dlgp";
 
 	public static void main(String[] args)
 			throws IteratorException, ChaseException, AtomSetException, FileNotFoundException, HomomorphismException {
@@ -52,6 +52,8 @@ public class Experiment2 {
 		InMemoryAtomSet saturatedAtoms = new LinkedListAtomSet();
 
 		// attackSet = new HashSet<Attack>();
+		
+		System.out.println("Running");
 
 		kbArgs.saturate();
 		saturatedAtoms.addAll(kbArgs.facts);
@@ -61,74 +63,9 @@ public class Experiment2 {
 		initialFacts.addAll(kb.facts);
 		// System.out.println("Facts: " + initialFacts);
 		negativeRuleSet = kb.negativeConstraintSet;
-		// System.out.println("Negative rules:" + negativeRuleSet);
+		//System.out.println("Negative rules:" + negativeRuleSet);
 		positiveRuleSet = kb.rules;
-		// System.out.println("Positive rules:" + positiveRuleSet);
-
-		// listArguments = App1.generateArgs(kbArgs);
-		// kb.unsaturate();
-
-		// Check whether premises of arguments are consistent
-		// If Yes, remove it from ListArgument, otherwise, keep it.
-
-		/*
-		 * AtomSet Test; for (int i = listArguments.size() - 1; i >= 0; i--) { Test =
-		 * new LinkedListAtomSet(); for (Atom p : ((Argument)
-		 * listArguments.get(i)).getPremises()) { Test.add(p); } kbArgs.strictAtomSet =
-		 * Test; if (App1.RIncosistent(kbArgs)) { listArguments.remove(i); } }
-		 * 
-		 * System.out.println(".......List of arguments......."); for (Argument A :
-		 * listArguments) { System.out.println(A); }
-		 * 
-		 * System.out.println("Number of args: " + listArguments.size());
-		 */
-
-		/*
-		 * String queryString = "?(X,Y) :-" + " <professor>(X)," + " teach(X,Y).";
-		 * 
-		 * //String queryString = "?(X) :-" + " professor(X).";
-		 * 
-		 * //String queryString = "? :- postdoc(ann).";
-		 * 
-		 * ArrayList<AtomSet> result = new ArrayList<AtomSet>(); //new
-		 * LinkedListAtomSet(); ConjunctiveQuery query =
-		 * DlgpParser.parseQuery(queryString); System.out.println(query);
-		 * 
-		 * if (query.getAtomSet().getVariables().isEmpty()) { InMemoryAtomSet atoms =
-		 * query.getAtomSet(); //result.add(atoms.iterator().next()); result.add(atoms);
-		 * } else {
-		 * 
-		 * // rewrite a CQ // QueryRewriter rewriter = new PureRewriter(); //
-		 * CloseableIteratorWithoutException it = rewriter.execute(query,
-		 * positiveRuleSet);
-		 * 
-		 * 
-		 * // while (it.hasNext()) { // ConjunctiveQuery subQ = (ConjunctiveQuery)
-		 * it.next(); // System.out.println("sub query: " + subQ);
-		 * CloseableIterator<Substitution> substitutions =
-		 * SmartHomomorphism.instance().execute(query, saturatedAtoms); while
-		 * (substitutions.hasNext()) { Substitution sub = substitutions.next();
-		 * InMemoryAtomSet atoms = sub.createImageOf(query.getAtomSet());
-		 * System.out.println("atoms: " + atoms); //result.addAll(atoms);
-		 * result.add(atoms); } } // }
-		 * 
-		 * System.out.println("result: " + result);
-		 */
-
-		// get answers for the rewrite CQ query
-		/*
-		 * while (it.hasNext()) { ConjunctiveQuery subQuery = (ConjunctiveQuery)
-		 * it.next();
-		 */
-
-		/*
-		 * CloseableIterator<Substitution> substitutions =
-		 * SmartHomomorphism.instance().execute(query, saturatedAtoms); if
-		 * (substitutions.hasNext()) { while (substitutions.hasNext()) { Substitution
-		 * sub = substitutions.next(); AtomSet ans = new LinkedListAtomSet(); ans =
-		 * sub.createImageOf(query.getAtomSet()); result.add(ans.iterator().next());
-		 * System.out.println(result); } } else System.out.println("No answers");
-		 */
+		//System.out.println("Positive rules:" + positiveRuleSet);
 
 		ArrayList<AtomSet> allMinimalConflicts = new ArrayList<AtomSet>();
 
@@ -177,11 +114,18 @@ public class Experiment2 {
 			// Rewrite the query
 			QueryRewriter rewriter = new PureRewriter();
 			CloseableIteratorWithoutException it = rewriter.execute(query, positiveRuleSet);
+			if (it.hasNext()) {
+				System.out.println(it.next().toString());
+			} else
+				System.out.println("No object");
 
 			// UnionOfConjunctiveQueries ucq = new
 			// DefaultUnionOfConjunctiveQueries(query.getAnswerVariables(), it);
 
 			// get answers for the re-writed query, which are minimal inconsistent subsets
+
+			System.out.println("find subQuery");
+			
 
 			while (it.hasNext()) {
 
@@ -196,7 +140,8 @@ public class Experiment2 {
 					AtomSet image = sub.createImageOf(subQuery.getAtomSet());
 					System.out.println("image: " + image);
 
-					if (containsExactSubstring(image.getTerms().toString(), "1") || containsExactSubstring(image.getTerms().toString(), "0")) {
+					if (containsExactSubstring(image.getTerms().toString(), "1")
+							|| containsExactSubstring(image.getTerms().toString(), "0")) {
 
 						// Create a set of subsets for the image
 						Map<Atom, Set<Atom>> tempSets = new HashMap<>();
@@ -257,7 +202,8 @@ public class Experiment2 {
 		for (Map.Entry<Atom, Set<Atom>> entry : targets.entrySet()) {
 			Atom key = entry.getKey();
 			Set<Atom> value = entry.getValue();
-			if (containsExactSubstring(key.getTerms().toString(), "1") || containsExactSubstring(key.getTerms().toString(), "0")) {
+			if (containsExactSubstring(key.getTerms().toString(), "1")
+					|| containsExactSubstring(key.getTerms().toString(), "0")) {
 				value.clear(); // Reset the set before updating
 				for (CloseableIterator<Atom> itAtom1 = saturatedAtoms.iterator(); itAtom1.hasNext();) {
 					Atom at1 = itAtom1.next();
@@ -312,9 +258,18 @@ public class Experiment2 {
 		Iterator<Set<Atom>> iterator = sets.iterator();
 
 		// Start with the Cartesian product of the first set
-		Set<Set<Atom>> result = iterator.next().stream().map(Collections::singleton) // Convert each element into a
+		Set<Set<Atom>> result = new HashSet<Set<Atom>>();
+		for (Atom element : iterator.next()) {
+			result.add(Collections.singleton(element));
+		}
+		
+		if (!iterator.hasNext()) {
+			return result;
+		}
+				
+				//Set<Set<Atom>> result = iterator.next().stream().map(Collections::singleton) // Convert each element into a
 																						// singleton set
-				.collect(Collectors.toSet());
+				//.collect(Collectors.toSet());
 
 		// Iteratively combine with the rest of the sets
 		while (iterator.hasNext()) {
