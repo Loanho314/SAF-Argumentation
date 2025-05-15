@@ -1,0 +1,12 @@
+Number of trees 728413
+Execution time for computing trees 249480000
+Max of heights: 9
+Min of heights: 0
+Average Tree Height: 0,0012624213
+Element: 0, Frequency- Height: 835. Element: 1, Frequency- Height: 72. Element: 3, Frequency- Height: 54. Element: 4, Frequency- Height: 11. Element: 5, Frequency- Height: 8,Element: 6, Frequency- Height: 10,Element: 8, Frequency- Height: 5,Element: 9, Frequency- Height: 3. 
+Max of Widths: 864
+Min of Widths: 1
+Average Tree Width: 3.01321146
+Element: 16, Frequency - width: 8618. Element: 1, Frequency - width: 617835. Element: 2, Frequency - width: 15576. Element: 3, Frequency - width: 9. Element: 4, Frequency - width: 313. Element: 6, Frequency - width: 11. Element: 8, Frequency - width: 32, Element: 9, Frequency - width: 41. Element: 10, Frequency - width: 14,  Element: 18, Frequency - width: 12,  Element: 23, Frequency - width: 21, Element: 16, Frequency - width: 22, Element: 864, Frequency - width: 3.
+Number of args: 728413 - Execution time for translating arguments: 294551
+Number of attacks: 41253
